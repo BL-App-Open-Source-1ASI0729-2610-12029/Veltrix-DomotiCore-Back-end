@@ -1,0 +1,36 @@
+@startuml
+skinparam packageStyle rectangle
+
+package "shared" {
+  class Result
+  class GlobalExceptionHandler
+  class SnakeCasePhysicalNamingStrategy
+}
+
+package "iam" {
+  package "domain.model" {
+    class User <<Aggregate>>
+    class Email <<ValueObject>>
+    class RegisterUserCommand
+    class LoginUserCommand
+    class GetUserByIdQuery
+  }
+
+  interface UserCommandService
+  interface UserQueryService
+  class UserCommandServiceImpl
+  class UserQueryServiceImpl
+  class UserRepository
+  class AuthController
+  class UserController
+}
+
+UserCommandService <|.. UserCommandServiceImpl
+UserQueryService <|.. UserQueryServiceImpl
+UserCommandServiceImpl --> UserRepository
+UserQueryServiceImpl --> UserRepository
+AuthController --> UserCommandService
+UserController --> UserCommandService
+UserController --> UserQueryService
+User --> Email
+@enduml

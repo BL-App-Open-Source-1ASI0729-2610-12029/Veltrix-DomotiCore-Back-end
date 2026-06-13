@@ -1,6 +1,6 @@
 package com.domoticore.shared.security;
 
-import com.domoticore.iam.domain.User;
+import com.domoticore.iam.domain.model.aggregates.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

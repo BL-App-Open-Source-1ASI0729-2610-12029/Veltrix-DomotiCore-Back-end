@@ -1,6 +1,6 @@
 package com.domoticore.shared.config;
 
-import com.domoticore.iam.infrastructure.UserRepository;
+import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import com.domoticore.settings.application.UserProfileService;
 import com.domoticore.shared.application.JsonResourceService;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
@@ -102,7 +102,8 @@ public class DataLoader {
         }
 
         for (JsonNode userNode : usersNode) {
-            com.domoticore.iam.domain.User user = new com.domoticore.iam.domain.User();
+            com.domoticore.iam.domain.model.aggregates.User user =
+                    com.domoticore.iam.domain.model.aggregates.User.newEmpty();
             user.setName(userNode.get("name").asText());
             user.setEmail(userNode.get("email").asText().toLowerCase());
             user.setPasswordHash(passwordEncoder.encode(userNode.get("password").asText()));
