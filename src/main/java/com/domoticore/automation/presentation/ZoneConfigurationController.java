@@ -1,6 +1,7 @@
 package com.domoticore.automation.presentation;
 
 import com.domoticore.automation.application.ZoneConfigurationService;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,20 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class ZoneConfigurationController {
 
     private final ZoneConfigurationService zoneConfigurationService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public ZoneConfigurationController(ZoneConfigurationService zoneConfigurationService) {
+    public ZoneConfigurationController(
+            ZoneConfigurationService zoneConfigurationService,
+            CurrentUserProvider currentUserProvider) {
         this.zoneConfigurationService = zoneConfigurationService;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @GetMapping
     @Operation(summary = "Get SME zone configuration snapshot")
     public JsonNode getZoneConfiguration() {
-        return zoneConfigurationService.getConfiguration();
+        return zoneConfigurationService.getConfiguration(currentUserProvider.requireUserId());
     }
 
     @PatchMapping
     @Operation(summary = "Update zone configuration (budgets, schedules, monitoring)")
     public JsonNode patchZoneConfiguration(@RequestBody JsonNode body) {
-        return zoneConfigurationService.updateConfiguration(body);
+        return zoneConfigurationService.updateConfiguration(currentUserProvider.requireUserId(), body);
     }
 }
