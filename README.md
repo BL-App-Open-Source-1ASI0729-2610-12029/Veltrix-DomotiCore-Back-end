@@ -85,11 +85,30 @@ Standard CRUD (`GET` list, `GET/{id}`, `POST`, `PATCH/{id}`, `DELETE/{id}`):
 - `automation-recipe`, `automation-builder-triggers`, `automation-builder-conditions`, `automation-builder-actions`, `automation-suggested-templates`
 - `user-profile`
 
-## Phase 2 (planned)
+## Phase 2 (implemented)
 
-- `/api/v1/automation/rules`, `group-schedules`, `shutdown-protocol`
-- `/api/v1/team-management`, `/api/v1/operations-hub/snapshot`, `/api/v1/business-profile`
-- Device-detail PATCH for temperature, modes, timer
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/automation/rules` | SME automation rules |
+| PATCH | `/api/v1/automation/rules/{id}` | Update rule |
+| POST | `/api/v1/automation/rules/{id}/toggle` | Toggle rule active |
+| GET | `/api/v1/automation/group-schedules` | Group schedules |
+| GET | `/api/v1/automation/shutdown-protocol` | Shutdown protocol |
+| GET | `/api/v1/automation/efficiency-insights` | Efficiency KPIs |
+| GET | `/api/v1/automation/active-rule-timeline` | Timeline snapshot |
+| GET | `/api/v1/automation/active-scenes` | Active scenes |
+| POST | `/api/v1/automation/active-scenes/{id}/toggle` | Toggle scene |
+| GET | `/api/v1/automation/upcoming-events` | Upcoming events |
+| POST | `/api/v1/automation/upcoming-events/{id}/toggle` | Toggle event |
+| GET | `/api/v1/automation/smart-suggestion` | Smart suggestion |
+| GET | `/api/v1/team-management` | Team + zones snapshot |
+| GET | `/api/v1/operations-hub/snapshot?range=thisMonth` | SME hub KPIs |
+| GET/PATCH | `/api/v1/business-profile` | Business profile |
+| PATCH | `/api/v1/device-details/{id}/temperature` | Target/current temp |
+| PATCH | `/api/v1/device-details/{id}/operation-mode` | Mode / eco / fan |
+| PATCH | `/api/v1/device-details/{id}/timer` | Scheduled timer |
+
+Seed data: `src/main/resources/data/phase2.json` (loaded on startup if collections are empty).
 
 ## Configuration
 

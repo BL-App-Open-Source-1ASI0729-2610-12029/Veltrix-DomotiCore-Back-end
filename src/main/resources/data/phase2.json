@@ -1,0 +1,538 @@
+{
+  "automation-rules": [
+    {
+      "id": "1",
+      "name": "Dim if Office Empty",
+      "description": "If motion is not detected for 10 minutes, dim \"Sales Area\" lights to 20%.",
+      "icon": "visibility_off",
+      "active": false,
+      "group": "Sales Team",
+      "status": "INACTIVE",
+      "timeline": {
+        "startHour": 8,
+        "endHour": 18,
+        "label": "Daylight Optimization: Office Lighting Group",
+        "color": "#3b5bdb"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Adaptive Climate Control",
+      "description": "Adjust thermostat based on external humidity and solar gain sensors.",
+      "icon": "ac_unit",
+      "active": true,
+      "group": "Whole Building",
+      "status": "ACTIVE",
+      "timeline": {
+        "startHour": 8,
+        "endHour": 20,
+        "label": "Main Hall Temperature Regulation (22??C)",
+        "color": "#7048e8"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Warehouse Lighting Sweep",
+      "description": "Progressive dimming across loading bays after shift end.",
+      "icon": "lightbulb",
+      "active": true,
+      "group": "Warehouse",
+      "status": "ACTIVE",
+      "timeline": {
+        "startHour": 9,
+        "endHour": 19,
+        "label": "Warehouse Lighting Sweep",
+        "color": "#1c7ed6"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Server Room Guard",
+      "description": "Maintain cooling and alert on abnormal rack temperature spikes.",
+      "icon": "dns",
+      "active": true,
+      "group": "IT / Server",
+      "status": "ACTIVE",
+      "timeline": {
+        "startHour": 8,
+        "endHour": 22,
+        "label": "Server Room Guard",
+        "color": "#495057"
+      }
+    }
+  ],
+  "automation-group-schedules": [
+    {
+      "id": "executive-suite",
+      "assetGroup": "Executive Suite",
+      "morningOn": "07:30 AM",
+      "eveningOff": "08:00 PM",
+      "overtimeRule": "Manual Override",
+      "overtimeType": "manual"
+    },
+    {
+      "id": "customer-lounge",
+      "assetGroup": "Customer Lounge",
+      "morningOn": "08:00 AM",
+      "eveningOff": "06:00 PM",
+      "overtimeRule": "Motion Sensor",
+      "overtimeType": "motion"
+    },
+    {
+      "id": "external-signage",
+      "assetGroup": "External Signage",
+      "morningOn": "Sunset",
+      "eveningOff": "Sunrise",
+      "overtimeRule": "Photosensor",
+      "overtimeType": "photo"
+    }
+  ],
+  "automation-shutdown-protocol": [
+    {
+      "id": "closing-time",
+      "name": "Closing Time",
+      "description": "Master protocol for facility shutdown. Triggers in 15 minutes.",
+      "triggersInMinutes": 15,
+      "steps": [
+        { "id": "s1", "label": "Lock all external access points", "icon": "lock", "disabled": false },
+        { "id": "s2", "label": "Set HVAC to 18??C (Eco-Mode)", "icon": "thermostat", "disabled": false },
+        { "id": "s3", "label": "Shut down server racks", "icon": "power_settings_new", "disabled": true }
+      ]
+    }
+  ],
+  "automation-efficiency-insights": [
+    {
+      "id": "default",
+      "savingsPercent": 12.4,
+      "totalSavedKwh": 1240,
+      "co2AvoidedTons": 0.85
+    }
+  ],
+  "automation-active-rule-timeline": [
+    {
+      "id": "default",
+      "currentTime": "17:45",
+      "currentDecimal": 17.75,
+      "activeCount": 5,
+      "runningNowCount": 3,
+      "conflictCount": 1,
+      "slots": []
+    }
+  ],
+  "automation-active-scenes": [
+    {
+      "id": "night-mode",
+      "name": "Night Mode",
+      "description": "Triggered at 11:00 PM",
+      "nameKey": "automation.mock.scenes.nightMode.name",
+      "descriptionKey": "automation.mock.scenes.nightMode.description",
+      "icon": "dark_mode",
+      "iconBg": "#e8f0fe",
+      "active": true
+    },
+    {
+      "id": "away-mode",
+      "name": "Away Mode",
+      "description": "When everyone leaves home",
+      "nameKey": "automation.mock.scenes.awayMode.name",
+      "descriptionKey": "automation.mock.scenes.awayMode.description",
+      "icon": "home",
+      "iconBg": "#fff4e6",
+      "active": false
+    },
+    {
+      "id": "morning-routine",
+      "name": "Morning Routine",
+      "description": "Weekdays at 6:30 AM",
+      "nameKey": "automation.mock.scenes.morningRoutine.name",
+      "descriptionKey": "automation.mock.scenes.morningRoutine.description",
+      "icon": "light_mode",
+      "iconBg": "#fff9db",
+      "active": true
+    },
+    {
+      "id": "movie-night",
+      "name": "Movie Night",
+      "description": "Lights dimmed, blinds closed",
+      "nameKey": "automation.mock.scenes.movieNight.name",
+      "descriptionKey": "automation.mock.scenes.movieNight.description",
+      "icon": "tv",
+      "iconBg": "#f3f0ff",
+      "active": false
+    }
+  ],
+  "automation-upcoming-events": [
+    {
+      "id": "u1",
+      "time": "10:00 PM",
+      "title": "TURN OFF ALL LIGHTS",
+      "titleKey": "automation.mock.events.turnOffLights.title",
+      "activeDays": [true, true, true, true, true, false, false],
+      "footerIcon": "lightbulb",
+      "footerText": "24 connected devices",
+      "footerTextKey": "automation.mock.events.turnOffLights.footer",
+      "active": true
+    },
+    {
+      "id": "u2",
+      "time": "07:00 AM",
+      "title": "MORNING WAKE-UP",
+      "titleKey": "automation.mock.events.morningWakeup.title",
+      "activeDays": [true, true, true, true, true, false, false],
+      "footerIcon": "thermostat",
+      "footerText": "Target: 72??F",
+      "footerTextKey": "automation.mock.events.morningWakeup.footer",
+      "active": true
+    },
+    {
+      "id": "u3",
+      "time": "06:00 PM",
+      "title": "EVENING SECURITY CHECK",
+      "titleKey": "automation.mock.events.eveningSecurity.title",
+      "activeDays": [true, true, true, true, true, true, true],
+      "footerIcon": "shield",
+      "footerText": "Perimeter sensors",
+      "footerTextKey": "automation.mock.events.eveningSecurity.footer",
+      "active": false
+    }
+  ],
+  "automation-smart-suggestion": [
+    {
+      "id": "default",
+      "message": "Based on your usage patterns, we suggest creating an automation to turn off the living room TV when no motion is detected for 30 minutes.",
+      "messageKey": "automation.mock.suggestion.message",
+      "visible": true
+    }
+  ],
+  "team-management": [
+    {
+      "id": "default",
+      "summary": {
+        "totalMembers": 24,
+        "membersTrendCount": 2,
+        "administrators": 3,
+        "administratorsLabelKey": "teamManagement.summary.administratorsLabel",
+        "activeZones": 12,
+        "activeZonesLabelKey": "teamManagement.summary.activeZonesLabel",
+        "recentActivity": 156,
+        "recentActivityLabelKey": "teamManagement.summary.recentActivityLabel"
+      },
+      "totalMembers": 24,
+      "pageSize": 4,
+      "zonePermissions": [
+        { "zone": "global", "defaultRole": "administrator", "enabled": true },
+        { "zone": "mainOffice", "defaultRole": "manager", "enabled": true },
+        { "zone": "hq", "defaultRole": "manager", "enabled": true },
+        { "zone": "northWarehouse", "defaultRole": "viewer", "enabled": true },
+        { "zone": "dataCenter", "defaultRole": "viewer", "enabled": true },
+        { "zone": "retailFloor", "defaultRole": "manager", "enabled": false },
+        { "zone": "warehouse", "defaultRole": "viewer", "enabled": true }
+      ],
+      "members": [
+        {
+          "id": "1",
+          "initials": "SM",
+          "name": "Sarah Mitchell",
+          "email": "sarah.mitchell@domoticore.io",
+          "role": "administrator",
+          "zones": ["global"],
+          "status": "active",
+          "tab": "all"
+        },
+        {
+          "id": "2",
+          "initials": "JR",
+          "name": "James Rivera",
+          "email": "james.rivera@domoticore.io",
+          "role": "manager",
+          "zones": ["mainOffice", "hq"],
+          "status": "active",
+          "tab": "all"
+        },
+        {
+          "id": "3",
+          "initials": "ER",
+          "name": "Elena Rodriguez",
+          "email": "elena.rodriguez@domoticore.io",
+          "role": "viewer",
+          "zones": ["northWarehouse", "dataCenter"],
+          "extraZones": 2,
+          "status": "active",
+          "tab": "all"
+        },
+        {
+          "id": "4",
+          "initials": "MC",
+          "name": "Marcus Chen",
+          "email": "marcus.chen@domoticore.io",
+          "role": "viewer",
+          "zones": ["global"],
+          "status": "offline",
+          "tab": "all"
+        },
+        {
+          "id": "5",
+          "initials": "AL",
+          "name": "Alicia Lopez",
+          "email": "alicia.lopez@domoticore.io",
+          "role": "manager",
+          "zones": ["retailFloor"],
+          "status": "active",
+          "tab": "pending"
+        },
+        {
+          "id": "6",
+          "initials": "DK",
+          "name": "David Kim",
+          "email": "david.kim@domoticore.io",
+          "role": "viewer",
+          "zones": ["warehouse"],
+          "status": "offline",
+          "tab": "archived"
+        }
+      ]
+    }
+  ],
+  "business-profile": [
+    {
+      "id": "default",
+      "businessName": "Sterling Energy Solutions LLC",
+      "tin": "XX-XXXX5678",
+      "address": "452 Innovation Way, Ste 300, Palo Alto, CA 94304",
+      "apiKey": "dc_live_7294_bb12_9xae_0012_pq89",
+      "syncInterval": 15,
+      "apiUsagePercent": 75,
+      "provider": {
+        "nameKey": "businessProfile.samples.providerName",
+        "accountId": "982300-442-1",
+        "rateSchedule": "Commercial Rate Schedule B-19",
+        "connected": true,
+        "backupProvider": null
+      },
+      "documents": [
+        {
+          "id": "doc-1",
+          "nameKey": "businessProfile.documents.form3468",
+          "status": "verified",
+          "uploadedAt": "2024-03-12T00:00:00.000Z"
+        },
+        {
+          "id": "doc-2",
+          "nameKey": "businessProfile.documents.solarAudit",
+          "status": "pending",
+          "uploadedAt": "2024-04-05T00:00:00.000Z"
+        }
+      ],
+      "webhooks": [
+        {
+          "id": "grafana",
+          "labelKey": "hooks.grafana",
+          "url": "https://grafana.sterling-energy.io/hooks/domoticore",
+          "connected": true,
+          "enabled": true
+        },
+        {
+          "id": "sap",
+          "labelKey": "hooks.sap",
+          "url": "https://sap.sterling-energy.io/api/energy-events",
+          "connected": true,
+          "enabled": true
+        }
+      ],
+      "upgradeRequested": false
+    }
+  ],
+  "operations-hub-snapshot": [
+    {
+      "id": "thisMonth",
+      "kpis": [
+        {
+          "titleKey": "smeHub.kpis.consumption.title",
+          "value": "14,280",
+          "unit": "kWh",
+          "trend": { "value": "+12.4%", "positive": false },
+          "footerKey": "smeHub.kpis.consumption.footer",
+          "icon": "power",
+          "variant": "consumption",
+          "progress": 75
+        },
+        {
+          "titleKey": "smeHub.kpis.cost.title",
+          "value": "$2,184.50",
+          "projectedKey": "smeHub.kpis.cost.projected",
+          "projectedValue": "$3,450",
+          "breakdown": [
+            { "labelKey": "smeHub.kpis.cost.offPeak", "value": "$840.00" },
+            { "labelKey": "smeHub.kpis.cost.peak", "value": "$1,344.50" }
+          ],
+          "icon": "receipt",
+          "variant": "cost"
+        },
+        {
+          "titleKey": "smeHub.kpis.budget.title",
+          "budgetPercent": 70,
+          "budgetCurrent": "$2,800.00",
+          "budgetTotal": "$4,000.00",
+          "icon": "savings",
+          "variant": "budget"
+        }
+      ],
+      "loadBars": [
+        { "time": "08:00", "hvac": 12, "lighting": 6, "servers": 8 },
+        { "time": "09:00", "hvac": 14, "lighting": 7, "servers": 10 },
+        { "time": "10:00", "hvac": 16, "lighting": 8, "servers": 12 },
+        { "time": "11:00", "hvac": 18, "lighting": 9, "servers": 14 },
+        { "time": "12:00", "hvac": 20, "lighting": 10, "servers": 16 },
+        { "time": "13:00", "hvac": 22, "lighting": 11, "servers": 18, "highlighted": true },
+        { "time": "14:00", "hvac": 19, "lighting": 9, "servers": 15 },
+        { "time": "NOW", "hvac": 17, "lighting": 8, "servers": 13 }
+      ],
+      "alerts": [
+        {
+          "id": "server-rack",
+          "titleKey": "smeHub.alerts.serverRack.title",
+          "descriptionKey": "smeHub.alerts.serverRack.description",
+          "timeKey": "smeHub.alerts.serverRack.time",
+          "critical": true
+        },
+        {
+          "id": "hvac-overload",
+          "titleKey": "smeHub.alerts.hvacOverload.title",
+          "descriptionKey": "smeHub.alerts.hvacOverload.description",
+          "timeKey": "smeHub.alerts.hvacOverload.time",
+          "critical": true
+        },
+        {
+          "id": "lighting-schedule",
+          "titleKey": "smeHub.alerts.lightingSchedule.title",
+          "descriptionKey": "smeHub.alerts.lightingSchedule.description",
+          "timeKey": "smeHub.alerts.lightingSchedule.time",
+          "critical": false
+        }
+      ],
+      "deviceStatuses": [
+        {
+          "id": "hvac",
+          "nameKey": "smeHub.devices.hvac.name",
+          "statusKey": "smeHub.devices.hvac.status",
+          "power": "2.4kW",
+          "icon": "ac_unit",
+          "variant": "online",
+          "route": ["/app/automation/zones"]
+        },
+        {
+          "id": "lighting",
+          "nameKey": "smeHub.devices.lighting.name",
+          "statusKey": "smeHub.devices.lighting.status",
+          "power": "0.8kW",
+          "icon": "lightbulb",
+          "variant": "active",
+          "route": ["/app/devices/management"],
+          "queryParams": { "zone": "retail" }
+        }
+      ],
+      "facilityZones": [
+        {
+          "id": "north-wing",
+          "nameKey": "smeHub.facility.northWing",
+          "power": "8.2 kW",
+          "x": 42,
+          "y": 32,
+          "variant": "normal",
+          "route": ["/app/devices/management"],
+          "queryParams": { "zone": "office" }
+        },
+        {
+          "id": "warehouse",
+          "nameKey": "smeHub.facility.warehouse",
+          "power": "12.5 kW",
+          "x": 72,
+          "y": 58,
+          "variant": "alert",
+          "route": ["/app/devices/explorer"],
+          "queryParams": { "zone": "loading-dock" }
+        }
+      ],
+      "sustainabilityScore": 84,
+      "criticalAlertCount": 2,
+      "highlightedLoadKw": "24.2kW"
+    },
+    {
+      "id": "lastMonth",
+      "kpis": [
+        {
+          "titleKey": "smeHub.kpis.consumption.title",
+          "value": "12,940",
+          "unit": "kWh",
+          "trend": { "value": "-4.2%", "positive": true },
+          "footerKey": "smeHub.kpis.consumption.footer",
+          "icon": "power",
+          "variant": "consumption",
+          "progress": 68
+        },
+        {
+          "titleKey": "smeHub.kpis.cost.title",
+          "value": "$1,982.20",
+          "projectedKey": "smeHub.kpis.cost.projected",
+          "projectedValue": "$3,120",
+          "breakdown": [
+            { "labelKey": "smeHub.kpis.cost.offPeak", "value": "$840.00" },
+            { "labelKey": "smeHub.kpis.cost.peak", "value": "$1,344.50" }
+          ],
+          "icon": "receipt",
+          "variant": "cost"
+        },
+        {
+          "titleKey": "smeHub.kpis.budget.title",
+          "budgetPercent": 62,
+          "budgetCurrent": "$2,480.00",
+          "budgetTotal": "$4,000.00",
+          "icon": "savings",
+          "variant": "budget"
+        }
+      ],
+      "loadBars": [
+        { "time": "08:00", "hvac": 11, "lighting": 5, "servers": 7 },
+        { "time": "NOW", "hvac": 16, "lighting": 7, "servers": 11, "highlighted": true }
+      ],
+      "alerts": [],
+      "deviceStatuses": [],
+      "facilityZones": [],
+      "sustainabilityScore": 81,
+      "criticalAlertCount": 1,
+      "highlightedLoadKw": "21.8kW"
+    },
+    {
+      "id": "thisQuarter",
+      "kpis": [
+        {
+          "titleKey": "smeHub.kpis.consumption.title",
+          "value": "41,560",
+          "unit": "kWh",
+          "trend": { "value": "+8.1%", "positive": false },
+          "footerKey": "smeHub.kpis.consumption.footer",
+          "icon": "power",
+          "variant": "consumption",
+          "progress": 82
+        },
+        {
+          "titleKey": "smeHub.kpis.budget.title",
+          "budgetPercent": 78,
+          "budgetCurrent": "$3,120.00",
+          "budgetTotal": "$4,000.00",
+          "icon": "savings",
+          "variant": "budget"
+        }
+      ],
+      "loadBars": [
+        { "time": "NOW", "hvac": 18, "lighting": 8, "servers": 14, "highlighted": true }
+      ],
+      "alerts": [],
+      "deviceStatuses": [],
+      "facilityZones": [],
+      "sustainabilityScore": 86,
+      "criticalAlertCount": 3,
+      "highlightedLoadKw": "26.4kW"
+    }
+  ]
+}
