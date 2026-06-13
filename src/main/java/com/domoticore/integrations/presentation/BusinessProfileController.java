@@ -1,6 +1,7 @@
 package com.domoticore.integrations.presentation;
 
 import com.domoticore.integrations.application.BusinessProfileService;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,20 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class BusinessProfileController {
 
     private final BusinessProfileService businessProfileService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public BusinessProfileController(BusinessProfileService businessProfileService) {
+    public BusinessProfileController(
+            BusinessProfileService businessProfileService,
+            CurrentUserProvider currentUserProvider) {
         this.businessProfileService = businessProfileService;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @GetMapping
     @Operation(summary = "Get business profile and integration settings")
     public JsonNode getBusinessProfile() {
-        return businessProfileService.getProfile();
+        return businessProfileService.getProfile(currentUserProvider.requireUserId());
     }
 
     @PatchMapping
     @Operation(summary = "Partially update business profile")
     public JsonNode patchBusinessProfile(@RequestBody JsonNode body) {
-        return businessProfileService.updateProfile(body);
+        return businessProfileService.updateProfile(currentUserProvider.requireUserId(), body);
     }
 }

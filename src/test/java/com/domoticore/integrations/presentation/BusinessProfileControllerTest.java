@@ -1,6 +1,7 @@
 package com.domoticore.integrations.presentation;
 
 import com.domoticore.integrations.application.BusinessProfileService;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
 import com.domoticore.shared.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,9 @@ class BusinessProfileControllerTest {
     private BusinessProfileService businessProfileService;
 
     @MockBean
+    private CurrentUserProvider currentUserProvider;
+
+    @MockBean
     private JwtService jwtService;
 
     @MockBean
@@ -46,7 +50,8 @@ class BusinessProfileControllerTest {
         profile.put("businessName", "Sterling Energy Solutions LLC");
         profile.put("tin", "XX-XXXX5678");
 
-        when(businessProfileService.getProfile()).thenReturn(profile);
+        when(currentUserProvider.requireUserId()).thenReturn(7L);
+        when(businessProfileService.getProfile(7L)).thenReturn(profile);
 
         mockMvc.perform(get("/api/v1/business-profile"))
                 .andExpect(status().isOk())
@@ -62,7 +67,8 @@ class BusinessProfileControllerTest {
         updated.put("businessName", "Updated LLC");
         updated.put("tin", "XX-XXXX5678");
 
-        when(businessProfileService.updateProfile(any())).thenReturn(updated);
+        when(currentUserProvider.requireUserId()).thenReturn(7L);
+        when(businessProfileService.updateProfile(org.mockito.ArgumentMatchers.eq(7L), any())).thenReturn(updated);
 
         mockMvc.perform(patch("/api/v1/business-profile")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -70,6 +76,6 @@ class BusinessProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.businessName").value("Updated LLC"));
 
-        verify(businessProfileService).updateProfile(any());
+        verify(businessProfileService).updateProfile(org.mockito.ArgumentMatchers.eq(7L), any());
     }
 }
