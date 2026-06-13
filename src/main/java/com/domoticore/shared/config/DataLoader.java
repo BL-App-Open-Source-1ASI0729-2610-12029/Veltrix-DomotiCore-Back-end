@@ -1,6 +1,7 @@
 package com.domoticore.shared.config;
 
 import com.domoticore.iam.infrastructure.UserRepository;
+import com.domoticore.settings.application.UserProfileService;
 import com.domoticore.shared.application.JsonResourceService;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,8 +36,7 @@ public class DataLoader {
             "automation-builder-triggers",
             "automation-builder-conditions",
             "automation-builder-actions",
-            "automation-suggested-templates",
-            "user-profile"
+            "automation-suggested-templates"
     };
 
     private static final String[] PHASE2_COLLECTIONS = {
@@ -64,8 +64,12 @@ public class DataLoader {
             JsonResourceService jsonResourceService,
             JsonResourceRepository jsonResourceRepository,
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder) {
-        return args -> seed(objectMapper, jsonResourceService, jsonResourceRepository, userRepository, passwordEncoder);
+            PasswordEncoder passwordEncoder,
+            UserProfileService userProfileService) {
+        return args -> {
+            seed(objectMapper, jsonResourceService, jsonResourceRepository, userRepository, passwordEncoder);
+            userRepository.findAll().forEach(user -> userProfileService.ensureProfile(user.getId()));
+        };
     }
 
     static void seed(
