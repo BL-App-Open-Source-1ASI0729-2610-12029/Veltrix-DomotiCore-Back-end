@@ -17,6 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        physical_naming_strategy: com.domoticore.shared.infrastructure.persistence.jpa.strategy.SnakeCasePhysicalNamingStrategy
   flyway:
     enabled: true
     locations: classpath:db/migration

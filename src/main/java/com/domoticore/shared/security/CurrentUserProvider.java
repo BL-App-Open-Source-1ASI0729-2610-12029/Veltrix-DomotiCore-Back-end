@@ -1,6 +1,6 @@
 package com.domoticore.shared.security;
 
-import com.domoticore.iam.domain.User;
+import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.exception.UnauthorizedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

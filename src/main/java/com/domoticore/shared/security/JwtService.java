@@ -1,6 +1,7 @@
 package com.domoticore.shared.security;
 
-import com.domoticore.iam.infrastructure.UserRepository;
+import com.domoticore.iam.domain.model.valueobjects.Email;
+import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -46,7 +47,7 @@ public class JwtService {
 
     public UserDetails loadUserFromToken(String token) {
         String email = extractUsername(token);
-        return userRepository.findByEmailIgnoreCase(email)
+        return userRepository.findByEmailAddress(new Email(email))
                 .map(DomotiCoreUserDetails::new)
                 .orElse(null);
     }
