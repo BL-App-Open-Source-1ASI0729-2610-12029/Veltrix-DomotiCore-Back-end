@@ -1,9 +1,9 @@
-package com.domoticore.history.presentation;
+package com.domoticore.smeoperations.presentation;
 
-import com.domoticore.history.application.CostAnalysisService;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
 import com.domoticore.shared.security.JwtService;
+import com.domoticore.smeoperations.application.OperationsHubService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -18,15 +18,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CostAnalysisController.class)
+@WebMvcTest(OperationsHubController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class CostAnalysisControllerTest {
+class OperationsHubControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private CostAnalysisService costAnalysisService;
+    private OperationsHubService operationsHubService;
 
     @MockBean
     private CurrentUserProvider currentUserProvider;
@@ -38,16 +38,15 @@ class CostAnalysisControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Test
-    void getCostAnalysisReturnsPayload() throws Exception {
-        ObjectNode analysis = new ObjectMapper().createObjectNode();
-        analysis.put("totalBilling", 12482.5);
-        analysis.put("billingCycleLabel", "Oct 01 - Oct 31");
+    void getSnapshotReturnsAuthenticatedUserRangePayload() throws Exception {
+        ObjectNode snapshot = new ObjectMapper().createObjectNode();
+        snapshot.put("criticalAlertCount", 3);
 
         when(currentUserProvider.requireUserId()).thenReturn(7L);
-        when(costAnalysisService.getCostAnalysis(7L)).thenReturn(analysis);
+        when(operationsHubService.getSnapshot(7L, "thisMonth")).thenReturn(snapshot);
 
-        mockMvc.perform(get("/api/v1/cost-analysis"))
+        mockMvc.perform(get("/api/v1/operations-hub/snapshot?range=thisMonth"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalBilling").value(12482.5));
+                .andExpect(jsonPath("$.criticalAlertCount").value(3));
     }
 }

@@ -1,9 +1,9 @@
-package com.domoticore.automation.presentation;
+package com.domoticore.teammanagement.presentation;
 
-import com.domoticore.automation.application.ZoneConfigurationService;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
 import com.domoticore.shared.security.JwtService;
+import com.domoticore.teammanagement.application.TeamManagementService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,9 +23,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ZoneConfigurationController.class)
+@WebMvcTest(TeamManagementController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class ZoneConfigurationControllerTest {
+class TeamManagementControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,7 +34,7 @@ class ZoneConfigurationControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ZoneConfigurationService zoneConfigurationService;
+    private TeamManagementService teamManagementService;
 
     @MockBean
     private CurrentUserProvider currentUserProvider;
@@ -45,37 +46,35 @@ class ZoneConfigurationControllerTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Test
-    void getZoneConfigurationReturnsPayload() throws Exception {
-        ObjectNode configuration = objectMapper.createObjectNode();
-        configuration.put("primaryZoneId", "main-office");
-        configuration.put("globalOptimizerScore", 94);
+    void getTeamManagementReturnsAuthenticatedUserPayload() throws Exception {
+        ObjectNode team = objectMapper.createObjectNode();
+        team.put("totalMembers", 24);
 
         when(currentUserProvider.requireUserId()).thenReturn(7L);
-        when(zoneConfigurationService.getConfiguration(7L)).thenReturn(configuration);
+        when(teamManagementService.getSnapshot(7L)).thenReturn(team);
 
-        mockMvc.perform(get("/api/v1/zone-configuration"))
+        mockMvc.perform(get("/api/v1/team-management"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.primaryZoneId").value("main-office"));
+                .andExpect(jsonPath("$.totalMembers").value(24));
     }
 
     @Test
-    void patchZoneConfigurationUpdatesPayload() throws Exception {
+    void patchTeamManagementUpdatesAuthenticatedUserPayload() throws Exception {
         ObjectNode patch = objectMapper.createObjectNode();
-        patch.put("globalOptimizerScore", 96);
+        patch.put("totalMembers", 25);
 
         ObjectNode updated = objectMapper.createObjectNode();
-        updated.put("primaryZoneId", "main-office");
-        updated.put("globalOptimizerScore", 96);
+        updated.put("totalMembers", 25);
 
         when(currentUserProvider.requireUserId()).thenReturn(7L);
-        when(zoneConfigurationService.updateConfiguration(org.mockito.ArgumentMatchers.eq(7L), any())).thenReturn(updated);
+        when(teamManagementService.updateSnapshot(eq(7L), any())).thenReturn(updated);
 
-        mockMvc.perform(patch("/api/v1/zone-configuration")
+        mockMvc.perform(patch("/api/v1/team-management")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(patch.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.globalOptimizerScore").value(96));
+                .andExpect(jsonPath("$.totalMembers").value(25));
 
-        verify(zoneConfigurationService).updateConfiguration(org.mockito.ArgumentMatchers.eq(7L), any());
+        verify(teamManagementService).updateSnapshot(eq(7L), any());
     }
 }

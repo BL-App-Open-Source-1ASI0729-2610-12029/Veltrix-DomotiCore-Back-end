@@ -1,6 +1,7 @@
 package com.domoticore.history.presentation;
 
 import com.domoticore.history.application.CostAnalysisService;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,14 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class CostAnalysisController {
 
     private final CostAnalysisService costAnalysisService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public CostAnalysisController(CostAnalysisService costAnalysisService) {
+    public CostAnalysisController(
+            CostAnalysisService costAnalysisService,
+            CurrentUserProvider currentUserProvider) {
         this.costAnalysisService = costAnalysisService;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @GetMapping
     @Operation(summary = "Get SME cost analysis and billing audit snapshot")
     public JsonNode getCostAnalysis() {
-        return costAnalysisService.getCostAnalysis();
+        return costAnalysisService.getCostAnalysis(currentUserProvider.requireUserId());
     }
 }
