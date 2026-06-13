@@ -46,6 +46,10 @@ public class JsonResourceService {
         return repository.existsByCollectionName(collectionName);
     }
 
+    public boolean exists(String collectionName, String resourceId) {
+        return repository.findByCollectionNameAndResourceId(collectionName, resourceId).isPresent();
+    }
+
     @Transactional
     public JsonNode toggleBooleanField(String collectionName, String resourceId, String fieldName) {
         JsonNode current = findById(collectionName, resourceId);

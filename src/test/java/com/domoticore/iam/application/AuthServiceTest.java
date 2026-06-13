@@ -36,6 +36,9 @@ class AuthServiceTest {
     @Mock
     private JwtService jwtService;
 
+    @Mock
+    private com.domoticore.settings.application.UserProfileService userProfileService;
+
     @InjectMocks
     private AuthService authService;
 

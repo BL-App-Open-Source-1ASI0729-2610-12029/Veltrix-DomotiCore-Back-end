@@ -8,6 +8,7 @@ import com.domoticore.iam.presentation.dto.LoginRequest;
 import com.domoticore.iam.presentation.dto.RegisterRequest;
 import com.domoticore.iam.presentation.dto.UpdateUserRequest;
 import com.domoticore.iam.presentation.dto.UserResponse;
+import com.domoticore.settings.application.UserProfileService;
 import com.domoticore.shared.exception.ConflictException;
 import com.domoticore.shared.exception.ResourceNotFoundException;
 import com.domoticore.shared.exception.UnauthorizedException;
@@ -25,14 +26,17 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserProfileService userProfileService;
 
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService) {
+            JwtService jwtService,
+            UserProfileService userProfileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userProfileService = userProfileService;
     }
 
     @Transactional
@@ -52,6 +56,7 @@ public class AuthService {
                 + "&background=3455d1&color=ffffff");
 
         User saved = userRepository.save(user);
+        userProfileService.ensureProfile(saved.getId());
         return buildAuthResponse(saved);
     }
 
