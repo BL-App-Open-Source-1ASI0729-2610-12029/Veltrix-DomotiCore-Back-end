@@ -14,8 +14,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
 
 @Configuration
 public class DataLoader {
@@ -41,6 +39,20 @@ public class DataLoader {
             "user-profile"
     };
 
+    private static final String[] PHASE2_COLLECTIONS = {
+            "automation-rules",
+            "automation-group-schedules",
+            "automation-shutdown-protocol",
+            "automation-efficiency-insights",
+            "automation-active-rule-timeline",
+            "automation-active-scenes",
+            "automation-upcoming-events",
+            "automation-smart-suggestion",
+            "team-management",
+            "business-profile",
+            "operations-hub-snapshot"
+    };
+
     @Bean
     CommandLineRunner seedDatabase(
             ObjectMapper objectMapper,
@@ -63,6 +75,9 @@ public class DataLoader {
 
         if (jsonResourceRepository.count() == 0) {
             seedJsonCollections(objectMapper, jsonResourceService);
+            seedPhase2Collections(objectMapper, jsonResourceService);
+        } else {
+            seedPhase2Collections(objectMapper, jsonResourceService);
         }
     }
 
@@ -108,8 +123,37 @@ public class DataLoader {
         }
     }
 
+    private static void seedPhase2Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
+            throws Exception {
+        JsonNode root = loadPhase2Json(objectMapper);
+
+        for (String collection : PHASE2_COLLECTIONS) {
+            if (jsonResourceService.collectionExists(collection)) {
+                continue;
+            }
+
+            JsonNode arrayNode = root.get(collection);
+            if (arrayNode == null || !arrayNode.isArray()) {
+                log.warn("Phase 2 collection {} not found in phase2.json", collection);
+                continue;
+            }
+
+            for (JsonNode item : arrayNode) {
+                jsonResourceService.create(collection, item);
+            }
+            log.info("Seeded phase 2 collection {}", collection);
+        }
+    }
+
     private static JsonNode loadDbJson(ObjectMapper objectMapper) throws Exception {
         ClassPathResource resource = new ClassPathResource("data/db.json");
+        try (InputStream inputStream = resource.getInputStream()) {
+            return objectMapper.readTree(inputStream);
+        }
+    }
+
+    private static JsonNode loadPhase2Json(ObjectMapper objectMapper) throws Exception {
+        ClassPathResource resource = new ClassPathResource("data/phase2.json");
         try (InputStream inputStream = resource.getInputStream()) {
             return objectMapper.readTree(inputStream);
         }

@@ -38,6 +38,26 @@ public class JsonResourceService {
                         "Resource not found: " + collectionName + "/" + resourceId));
     }
 
+    public JsonNode findSingleton(String collectionName, String resourceId) {
+        return findById(collectionName, resourceId);
+    }
+
+    public boolean collectionExists(String collectionName) {
+        return repository.existsByCollectionName(collectionName);
+    }
+
+    @Transactional
+    public JsonNode toggleBooleanField(String collectionName, String resourceId, String fieldName) {
+        JsonNode current = findById(collectionName, resourceId);
+        boolean nextValue = !current.path(fieldName).asBoolean(false);
+        ObjectNode patch = objectMapper.createObjectNode();
+        patch.put(fieldName, nextValue);
+        if (current.has("status")) {
+            patch.put("status", nextValue ? "ACTIVE" : "INACTIVE");
+        }
+        return patch(collectionName, resourceId, patch);
+    }
+
     @Transactional
     public JsonNode create(String collectionName, JsonNode payload) {
         String resourceId = extractId(payload);
