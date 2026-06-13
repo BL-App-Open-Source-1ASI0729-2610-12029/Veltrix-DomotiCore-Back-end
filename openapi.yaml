@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: Veltrix DomotiCore API
+  description: API para la gestión y control de dispositivos IoT en hogares y pequeñas empresas.
+  version: 1.0.0
+servers:
+  - url: https://veltrix-domoticore-back-end.onrender.com
+    description: Servidor de Producción (Render)
+paths:
+  /devices:
+    get:
+      summary: Obtener lista de dispositivos
+      responses:
+        '200':
+          description: Operación exitosa
+          

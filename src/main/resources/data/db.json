@@ -1,0 +1,824 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin DomotiCore",
+      "email": "admin@domoticore.local",
+      "password": "SecurePass123",
+      "role": "Admin",
+      "avatar": "assets/icons/shared/profile-admin.jpg"
+    }
+  ],
+  "devices-overview": [
+    {
+      "id": 1,
+      "totalDevices": 16,
+      "totalRooms": 4,
+      "totalConsumptionKwh": 1.2,
+      "consumptionComparison": "12% lower than average for this time of day.",
+      "rooms": [
+        {
+          "id": "living-room",
+          "name": "Living Room",
+          "icon": "sofa",
+          "layout": "featured",
+          "activeDeviceCount": 0,
+          "totalPowerW": 0,
+          "devices": [
+            {
+              "id": "ceiling-light",
+              "name": "Ceiling Light",
+              "icon": "lightbulb",
+              "connection": "online",
+              "active": false,
+              "powerUsageW": 0
+            },
+            {
+              "id": "smart-ac",
+              "name": "Living Room AC",
+              "icon": "acUnit",
+              "connection": "online",
+              "active": false,
+              "powerUsageW": 0
+            },
+            {
+              "id": "entertainment-center",
+              "name": "Entertainment Center",
+              "icon": "tv",
+              "connection": "online",
+              "active": false,
+              "powerUsageW": 0
+            },
+            {
+              "id": "floor-lamp",
+              "name": "Floor Lamp Plug",
+              "icon": "plug",
+              "connection": "offline",
+              "active": false,
+              "powerUsageW": null
+            },
+            {
+              "id": "custom-1781146117204",
+              "name": "hola",
+              "icon": "moreHoriz",
+              "connection": "online",
+              "active": false,
+              "powerUsageW": 0,
+              "statusLabel": "Online • 0W"
+            }
+          ]
+        },
+        {
+          "id": "kitchen",
+          "name": "Kitchen",
+          "icon": "refrigerator",
+          "layout": "compact",
+          "devices": [
+            {
+              "id": "coffee-machine",
+              "name": "Coffee Machine",
+              "icon": "coffee",
+              "connection": "online",
+              "active": true,
+              "powerUsageW": 850,
+              "statusLabel": "Online • 850W"
+            },
+            {
+              "id": "smart-oven",
+              "name": "Smart Oven",
+              "icon": "oven",
+              "connection": "offline",
+              "active": false,
+              "powerUsageW": null,
+              "statusLabel": "Offline"
+            }
+          ]
+        },
+        {
+          "id": "master-bedroom",
+          "name": "Master Bedroom",
+          "icon": "bed",
+          "layout": "suite",
+          "description": "Optimized for rest and relaxation with smart climate control.",
+          "temperatureC": 22,
+          "humidityPercent": 48,
+          "devices": [
+            {
+              "id": "thermostat",
+              "name": "Smart Thermostat",
+              "icon": "thermostat",
+              "connection": "online",
+              "active": true,
+              "powerUsageW": null,
+              "statusLabel": "Heating"
+            },
+            {
+              "id": "blinds",
+              "name": "Smart Blinds",
+              "icon": "blinds",
+              "connection": "online",
+              "active": true,
+              "powerUsageW": null,
+              "statusLabel": "65% Open"
+            },
+            {
+              "id": "air-purifier",
+              "name": "Air Purifier",
+              "icon": "airPurifier",
+              "connection": "online",
+              "active": true,
+              "powerUsageW": null
+            },
+            {
+              "id": "bedside-speaker",
+              "name": "Bedside Speaker",
+              "icon": "speaker",
+              "connection": "online",
+              "active": false,
+              "powerUsageW": 0
+            }
+          ]
+        }
+      ],
+      "scenes": [
+        {
+          "id": "good-night",
+          "name": "Good Night",
+          "icon": "darkMode"
+        },
+        {
+          "id": "morning",
+          "name": "Morning",
+          "icon": "lightMode"
+        }
+      ]
+    }
+  ],
+  "device-details": [
+    {
+      "id": "smart-ac",
+      "roomId": "living-room",
+      "roomName": "Living Room",
+      "name": "Living Room AC",
+      "icon": "acUnit",
+      "deviceType": "climate",
+      "connection": "online",
+      "active": true,
+      "currentTempC": 22.5,
+      "targetTempC": 24,
+      "operationMode": "cool",
+      "ecoMode": true,
+      "powerLoadKw": 1.18,
+      "powerChartPeriod": "day",
+      "powerChartPoints": [
+        {
+          "label": "06:00",
+          "value": 0.2
+        },
+        {
+          "label": "10:00",
+          "value": 0.9
+        },
+        {
+          "label": "14:00",
+          "value": 1.4
+        },
+        {
+          "label": "18:00",
+          "value": 1.1
+        },
+        {
+          "label": "NOW",
+          "value": 1.18
+        }
+      ],
+      "fanSpeed": "Auto High",
+      "swing": "Vertical",
+      "humidityPercent": 45,
+      "alerts": [],
+      "scheduledTimer": "23:00"
+    },
+    {
+      "id": "thermostat",
+      "roomId": "master-bedroom",
+      "roomName": "Master Bedroom",
+      "name": "Smart Thermostat",
+      "icon": "thermostat",
+      "deviceType": "climate",
+      "connection": "online",
+      "active": true,
+      "currentTempC": 22.5,
+      "targetTempC": 21,
+      "operationMode": "cool",
+      "ecoMode": false,
+      "powerLoadKw": 0,
+      "powerChartPeriod": "realtime",
+      "powerChartPoints": [
+        {
+          "label": "14:00",
+          "value": 0
+        },
+        {
+          "label": "15:00",
+          "value": 0.4
+        },
+        {
+          "label": "16:00",
+          "value": 0.8
+        },
+        {
+          "label": "17:00",
+          "value": 1.1
+        },
+        {
+          "label": "NOW",
+          "value": 0
+        }
+      ],
+      "fanSpeed": "Auto",
+      "swing": "Off",
+      "humidityPercent": 45,
+      "alerts": []
+    },
+    {
+      "id": "coffee-machine",
+      "roomId": "kitchen",
+      "roomName": "Kitchen",
+      "name": "Coffee Machine",
+      "icon": "coffee",
+      "deviceType": "generic",
+      "connection": "online",
+      "active": true,
+      "currentTempC": 0,
+      "targetTempC": 0,
+      "operationMode": "cool",
+      "ecoMode": false,
+      "powerLoadKw": 0.85,
+      "powerChartPeriod": "realtime",
+      "powerChartPoints": [
+        {
+          "label": "NOW",
+          "value": 0
+        }
+      ],
+      "fanSpeed": "—",
+      "swing": "—",
+      "humidityPercent": 0,
+      "alerts": []
+    },
+    {
+      "id": "entertainment-center",
+      "roomId": "living-room",
+      "roomName": "Living Room",
+      "name": "Entertainment Center",
+      "icon": "tv",
+      "deviceType": "generic",
+      "connection": "online",
+      "active": true,
+      "currentTempC": 0,
+      "targetTempC": 0,
+      "operationMode": "cool",
+      "ecoMode": false,
+      "powerLoadKw": 0.18,
+      "powerChartPeriod": "realtime",
+      "powerChartPoints": [
+        {
+          "label": "14:00",
+          "value": 0.8
+        },
+        {
+          "label": "15:00",
+          "value": 1
+        },
+        {
+          "label": "16:00",
+          "value": 1.2
+        },
+        {
+          "label": "17:00",
+          "value": 1.3
+        },
+        {
+          "label": "NOW",
+          "value": 0.18
+        }
+      ],
+      "fanSpeed": "—",
+      "swing": "—",
+      "humidityPercent": 0,
+      "alerts": [],
+      "scheduledTimer": null
+    },
+    {
+      "id": "custom-1781146117204",
+      "roomId": "living-room",
+      "roomName": "Living Room",
+      "name": "hola",
+      "icon": "moreHoriz",
+      "deviceType": "generic",
+      "connection": "online",
+      "active": false,
+      "currentTempC": 0,
+      "targetTempC": 0,
+      "operationMode": "cool",
+      "ecoMode": false,
+      "powerLoadKw": 0,
+      "powerChartPeriod": "realtime",
+      "powerChartPoints": [
+        {
+          "label": "14:00",
+          "value": 0.8
+        },
+        {
+          "label": "15:00",
+          "value": 1
+        },
+        {
+          "label": "16:00",
+          "value": 1.2
+        },
+        {
+          "label": "17:00",
+          "value": 1.3
+        },
+        {
+          "label": "NOW",
+          "value": 0
+        }
+      ],
+      "fanSpeed": "—",
+      "swing": "—",
+      "humidityPercent": 0,
+      "scheduledTimer": null,
+      "alerts": []
+    }
+  ],
+  "activity-streams": [
+    {
+      "id": "as-1",
+      "occurredAt": "2026-06-07T14:32:00.000Z",
+      "deviceName": "Living Room Pendant",
+      "deviceModel": "Smart Bulb v2",
+      "deviceIcon": "lightbulb",
+      "deviceType": "lighting",
+      "action": "turned_on",
+      "actionLabel": "Turned ON",
+      "location": "Ground Floor",
+      "status": "success",
+      "consumptionKwh": 0.045
+    },
+    {
+      "id": "as-2",
+      "occurredAt": "2026-06-07T13:15:00.000Z",
+      "deviceName": "Main Gate Sensor",
+      "deviceModel": "Motion Sensor Pro",
+      "deviceIcon": "door",
+      "deviceType": "sensor",
+      "action": "triggered_alert",
+      "actionLabel": "Triggered Alert",
+      "location": "Entrance",
+      "status": "success"
+    },
+    {
+      "id": "as-3",
+      "occurredAt": "2026-06-07T12:00:00.000Z",
+      "deviceName": "Master HVAC",
+      "deviceModel": "Climate Hub X1",
+      "deviceIcon": "acUnit",
+      "deviceType": "climate",
+      "action": "scheduled",
+      "actionLabel": "Scheduled",
+      "location": "Upper Floor",
+      "status": "success",
+      "consumptionKwh": 1.4
+    },
+    {
+      "id": "as-4",
+      "occurredAt": "2026-06-07T10:45:00.000Z",
+      "deviceName": "Patio Camera",
+      "deviceModel": "Cam Secure 4K",
+      "deviceIcon": "videocam",
+      "deviceType": "camera",
+      "action": "connection_lost",
+      "actionLabel": "Connection Lost",
+      "location": "Exterior",
+      "status": "critical"
+    },
+    {
+      "id": "as-5",
+      "occurredAt": "2026-06-07T09:20:00.000Z",
+      "deviceName": "Living Room AC",
+      "deviceModel": "Smart AC Unit",
+      "deviceIcon": "acUnit",
+      "deviceType": "climate",
+      "action": "consumption_update",
+      "actionLabel": "Consumption Updated",
+      "location": "Ground Floor",
+      "status": "success",
+      "consumptionKwh": 18.4
+    },
+    {
+      "id": "as-6",
+      "occurredAt": "2026-06-07T08:10:00.000Z",
+      "deviceName": "Refrigerator",
+      "deviceModel": "Kitchen Smart Fridge",
+      "deviceIcon": "refrigerator",
+      "deviceType": "appliance",
+      "action": "consumption_update",
+      "actionLabel": "Consumption Updated",
+      "location": "Kitchen",
+      "status": "success",
+      "consumptionKwh": 9.2
+    }
+  ],
+  "history-summary": [
+    {
+      "id": 1,
+      "uptimePercent": 99.98,
+      "lastSyncMinutesAgo": 2,
+      "eventVolumeByDay": [
+        {
+          "day": "Mon",
+          "value": 28
+        },
+        {
+          "day": "Tue",
+          "value": 35
+        },
+        {
+          "day": "Wed",
+          "value": 31
+        },
+        {
+          "day": "Thu",
+          "value": 42
+        },
+        {
+          "day": "Fri",
+          "value": 58
+        },
+        {
+          "day": "Sat",
+          "value": 24
+        },
+        {
+          "day": "Sun",
+          "value": 40
+        }
+      ],
+      "securityAlerts": [
+        {
+          "id": "sa-1",
+          "title": "Unexpected Entry",
+          "hoursAgo": 1,
+          "type": "warning"
+        },
+        {
+          "id": "sa-2",
+          "title": "Auto-lock Activated",
+          "hoursAgo": 3,
+          "type": "info"
+        }
+      ],
+      "totalEntries": 11
+    }
+  ],
+  "security-cameras": [
+    {
+      "id": "living-room",
+      "labelKey": "security.cameras.livingRoom",
+      "imageUrl": "assets/icons/smart-home/camera-living-room.jpg",
+      "isPrimary": true
+    },
+    {
+      "id": "driveway",
+      "labelKey": "security.cameras.driveway",
+      "imageUrl": "assets/icons/smart-home/camera-driveway.jpg",
+      "isPrimary": true
+    },
+    {
+      "id": "patio",
+      "labelKey": "security.cameras.patio",
+      "imageUrl": "assets/icons/smart-home/camera-driveway.jpg",
+      "isPrimary": false
+    },
+    {
+      "id": "backyard",
+      "labelKey": "security.cameras.backyard",
+      "imageUrl": "assets/icons/smart-home/camera-living-room.jpg",
+      "isPrimary": false
+    }
+  ],
+  "smart-locks": [
+    {
+      "id": "front-door",
+      "nameKey": "security.locks.frontDoor",
+      "iconUrl": "assets/icons/smart-home/lock-front-door.svg",
+      "secured": true,
+      "active": true
+    },
+    {
+      "id": "garage-door",
+      "nameKey": "security.locks.garageDoor",
+      "iconUrl": "assets/icons/smart-home/lock-garage.svg",
+      "secured": false,
+      "active": false
+    },
+    {
+      "id": "back-gate",
+      "nameKey": "security.locks.backGate",
+      "iconUrl": "assets/icons/smart-home/lock-gate.svg",
+      "secured": true,
+      "active": true
+    }
+  ],
+  "authorized-users": [
+    {
+      "id": "marcus",
+      "name": "Marcus Chen",
+      "email": "marcus.chen@email.com",
+      "avatarUrl": "assets/icons/smart-home/avatar-marcus.jpg",
+      "accessLevel": "admin",
+      "lastEntry": "Today, 08:15 AM"
+    },
+    {
+      "id": "elena",
+      "name": "Elena Rodriguez",
+      "email": "elena.r@email.com",
+      "avatarUrl": "assets/icons/smart-home/avatar-elena.jpg",
+      "accessLevel": "member",
+      "lastEntry": "Yesterday, 11:40 PM"
+    },
+    {
+      "id": "guest",
+      "name": "Guest - Housekeeper",
+      "email": "guest.housekeeper@email.com",
+      "avatarUrl": "assets/icons/smart-home/avatar-guest.jpg",
+      "accessLevel": "guest",
+      "lastEntry": "Oct 24, 09:00 AM",
+      "expiresIn": "4h"
+    }
+  ],
+  "security-log": [
+    {
+      "id": "1",
+      "titleKey": "security.log.marcusEntered",
+      "locationKey": "security.log.locations.frontDoor",
+      "time": "Today, 08:15 AM",
+      "iconType": "enter",
+      "tone": "success",
+      "snapshotUrl": "assets/icons/smart-home/snapshot-entry.jpg",
+      "snapshotLabelKey": "security.log.snapshotSaved"
+    },
+    {
+      "id": "2",
+      "titleKey": "security.log.elenaExited",
+      "locationKey": "security.log.locations.backGate",
+      "time": "Oct 24, 11:40 PM",
+      "iconType": "exit",
+      "tone": "neutral"
+    },
+    {
+      "id": "3",
+      "titleKey": "security.log.motionDetected",
+      "locationKey": "security.log.locations.patioCamera",
+      "time": "Oct 24, 09:22 PM",
+      "iconType": "alert",
+      "tone": "danger",
+      "actionKey": "security.reviewFootage"
+    },
+    {
+      "id": "4",
+      "titleKey": "security.log.systemDisarmed",
+      "locationKey": "security.log.locations.manualEntry",
+      "time": "Oct 24, 09:00 PM",
+      "iconType": "lock",
+      "tone": "success"
+    }
+  ],
+  "notification-feed": [
+    {
+      "id": "nf-1",
+      "section": "new",
+      "severity": "critical",
+      "icon": "warning",
+      "titleKey": "historyNotifications.items.powerSpike.title",
+      "descriptionKey": "historyNotifications.items.powerSpike.description",
+      "timeLabel": "Just now",
+      "read": false,
+      "actions": [
+        {
+          "id": "view",
+          "labelKey": "historyNotifications.actions.viewDetails",
+          "type": "link"
+        },
+        {
+          "id": "mute",
+          "labelKey": "historyNotifications.actions.muteCircuit",
+          "type": "button"
+        }
+      ]
+    },
+    {
+      "id": "nf-2",
+      "section": "new",
+      "severity": "info",
+      "icon": "info",
+      "titleKey": "historyNotifications.items.ecoMode.title",
+      "descriptionKey": "historyNotifications.items.ecoMode.description",
+      "timeLabel": "12m ago",
+      "read": false,
+      "actions": [
+        {
+          "id": "view",
+          "labelKey": "historyNotifications.actions.viewDetails",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "id": "nf-3",
+      "section": "earlier_today",
+      "severity": "success",
+      "icon": "checkCircle",
+      "titleKey": "historyNotifications.items.firmwareUpdate.title",
+      "descriptionKey": "historyNotifications.items.firmwareUpdate.description",
+      "timeLabel": "2h ago",
+      "read": true,
+      "actions": [
+        {
+          "id": "view",
+          "labelKey": "historyNotifications.actions.viewDetails",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "id": "nf-4",
+      "section": "earlier_today",
+      "severity": "warning",
+      "icon": "emergency",
+      "titleKey": "historyNotifications.items.batteryLow.title",
+      "descriptionKey": "historyNotifications.items.batteryLow.description",
+      "timeLabel": "4h ago",
+      "read": false,
+      "actions": [
+        {
+          "id": "dismiss",
+          "labelKey": "historyNotifications.actions.dismiss",
+          "type": "button"
+        },
+        {
+          "id": "shop",
+          "labelKey": "historyNotifications.actions.orderBattery",
+          "type": "icon",
+          "icon": "shopping"
+        }
+      ]
+    },
+    {
+      "id": "nf-5",
+      "section": "yesterday",
+      "severity": "security",
+      "icon": "lock",
+      "titleKey": "historyNotifications.items.doorLocked.title",
+      "descriptionKey": "historyNotifications.items.doorLocked.description",
+      "timeLabel": "Yesterday, 9:42 PM",
+      "read": true,
+      "actions": [
+        {
+          "id": "view",
+          "labelKey": "historyNotifications.actions.viewDetails",
+          "type": "link"
+        }
+      ]
+    }
+  ],
+  "history-insights": [
+    {
+      "id": 1,
+      "uptimePercent": 99.98,
+      "uptimeStatusKey": "historyNotifications.insights.optimal",
+      "storageUsedPercent": 42,
+      "storageUsedGb": 4.2,
+      "storageTotalGb": 10,
+      "storageDescriptionKey": "historyNotifications.insights.storageDescription"
+    }
+  ],
+  "automation-recipe": [
+    {
+      "id": 1,
+      "nameKey": "automationBuilder.recipes.nightlyPowerSaver",
+      "status": "draft",
+      "category": "efficiency",
+      "selectedTriggerId": "time-of-day",
+      "triggerTime": "23:00",
+      "selectedActionId": "lock-doors"
+    }
+  ],
+  "automation-builder-triggers": [
+    {
+      "id": "time-of-day",
+      "icon": "schedule",
+      "titleKey": "automationBuilder.triggers.timeOfDay.title",
+      "descriptionKey": "automationBuilder.triggers.timeOfDay.description"
+    },
+    {
+      "id": "energy-spike",
+      "icon": "power",
+      "titleKey": "automationBuilder.triggers.energySpike.title",
+      "descriptionKey": "automationBuilder.triggers.energySpike.description"
+    },
+    {
+      "id": "geofencing",
+      "icon": "signal",
+      "titleKey": "automationBuilder.triggers.geofencing.title",
+      "descriptionKey": "automationBuilder.triggers.geofencing.description"
+    }
+  ],
+  "automation-builder-conditions": [
+    {
+      "id": "indoor-temp",
+      "icon": "thermostat",
+      "titleKey": "automationBuilder.conditions.indoorTemperature.title",
+      "ruleKey": "automationBuilder.conditions.indoorTemperature.rule",
+      "ruleValue": "22"
+    }
+  ],
+  "automation-builder-actions": [
+    {
+      "id": "lock-doors",
+      "icon": "lock",
+      "titleKey": "automationBuilder.actions.lockDoors",
+      "tone": "primary"
+    },
+    {
+      "id": "lights-off",
+      "icon": "lightbulb",
+      "titleKey": "automationBuilder.actions.lightsOff",
+      "tone": "blue"
+    },
+    {
+      "id": "climate-mode",
+      "icon": "thermostat",
+      "titleKey": "automationBuilder.actions.climateMode",
+      "tone": "orange"
+    },
+    {
+      "id": "more",
+      "icon": "add",
+      "titleKey": "automationBuilder.actions.more",
+      "tone": "neutral"
+    }
+  ],
+  "automation-suggested-templates": [
+    {
+      "id": "presence-simulation",
+      "type": "featured",
+      "tagKey": "automationBuilder.templates.presenceSimulation.tag",
+      "titleKey": "automationBuilder.templates.presenceSimulation.title",
+      "descriptionKey": "automationBuilder.templates.presenceSimulation.description",
+      "ctaKey": "automationBuilder.templates.presenceSimulation.cta",
+      "imageUrl": "assets/icons/shared/automation-house-dusk.jpg",
+      "preset": {
+        "nameKey": "automationBuilder.recipes.presenceSimulation",
+        "category": "security",
+        "selectedTriggerId": "time-of-day",
+        "triggerTime": "19:00",
+        "selectedActionId": "lights-off"
+      }
+    },
+    {
+      "id": "eco-cooling",
+      "type": "compact",
+      "icon": "eco",
+      "titleKey": "automationBuilder.templates.ecoCooling.title",
+      "descriptionKey": "automationBuilder.templates.ecoCooling.description",
+      "tone": "lavender",
+      "preset": {
+        "nameKey": "automationBuilder.recipes.ecoCooling",
+        "category": "efficiency",
+        "selectedTriggerId": "energy-spike",
+        "selectedActionId": "climate-mode"
+      }
+    }
+  ],
+  "user-profile": [
+    {
+      "id": 1,
+      "fullName": "Alexander Domotic",
+      "email": "alexander@domoticore.io",
+      "homeZone": "North Wing / Primary Residence",
+      "homeZoneKey": "settings.homeZones.northWing",
+      "displayMode": "light",
+      "profilePhoto": "assets/icons/shared/profile-admin.jpg",
+      "twoFactorEnabled": true,
+      "googleConnected": true,
+      "appleKitConnected": false,
+      "nestConnected": true,
+      "roleKey": "settings.administrator",
+      "jobTitleKey": "settings.systemOwner",
+      "dataRetentionDays": 365
+    }
+  ]
+}
