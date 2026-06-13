@@ -12,11 +12,14 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   jackson:
     default-property-inclusion: non_null
     serialization:
@@ -24,6 +27,15 @@ spring:
 
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
 
 domoticore:
   jwt:
@@ -46,12 +58,32 @@ logging:
 spring:
   config:
     activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/domoticore
+    driver-class-name: org.postgresql.Driver
+    username: domoticore
+    password: domoticore
+  h2:
+    console:
+      enabled: false
+
+---
+spring:
+  config:
+    activate:
       on-profile: prod
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/domoticore}
     driver-class-name: org.postgresql.Driver
     username: ${DATABASE_USERNAME:domoticore}
     password: ${DATABASE_PASSWORD:domoticore}
-  jpa:
-    hibernate:
-      ddl-auto: validate
+  h2:
+    console:
+      enabled: false
+
+domoticore:
+  jwt:
+    secret: ${JWT_SECRET:domoticore-dev-secret-change-in-production-min-256-bits-long-key!!}
+  cors:
+    allowed-origins: ${DOMOTICORE_CORS_ORIGINS:http://localhost:4200}

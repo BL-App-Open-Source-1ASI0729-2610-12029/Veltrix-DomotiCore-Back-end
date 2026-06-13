@@ -53,6 +53,11 @@ public class DataLoader {
             "operations-hub-snapshot"
     };
 
+    private static final String[] PHASE3_COLLECTIONS = {
+            "zone-configuration",
+            "cost-analysis"
+    };
+
     @Bean
     CommandLineRunner seedDatabase(
             ObjectMapper objectMapper,
@@ -76,8 +81,10 @@ public class DataLoader {
         if (jsonResourceRepository.count() == 0) {
             seedJsonCollections(objectMapper, jsonResourceService);
             seedPhase2Collections(objectMapper, jsonResourceService);
+            seedPhase3Collections(objectMapper, jsonResourceService);
         } else {
             seedPhase2Collections(objectMapper, jsonResourceService);
+            seedPhase3Collections(objectMapper, jsonResourceService);
         }
     }
 
@@ -125,35 +132,45 @@ public class DataLoader {
 
     private static void seedPhase2Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
             throws Exception {
-        JsonNode root = loadPhase2Json(objectMapper);
+        seedOptionalCollections(objectMapper, jsonResourceService, "data/phase2.json", PHASE2_COLLECTIONS);
+    }
 
-        for (String collection : PHASE2_COLLECTIONS) {
+    private static void seedPhase3Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
+            throws Exception {
+        seedOptionalCollections(objectMapper, jsonResourceService, "data/phase3.json", PHASE3_COLLECTIONS);
+    }
+
+    private static void seedOptionalCollections(
+            ObjectMapper objectMapper,
+            JsonResourceService jsonResourceService,
+            String resourcePath,
+            String[] collections) throws Exception {
+        JsonNode root = loadJson(objectMapper, resourcePath);
+
+        for (String collection : collections) {
             if (jsonResourceService.collectionExists(collection)) {
                 continue;
             }
 
             JsonNode arrayNode = root.get(collection);
             if (arrayNode == null || !arrayNode.isArray()) {
-                log.warn("Phase 2 collection {} not found in phase2.json", collection);
+                log.warn("Collection {} not found in {}", collection, resourcePath);
                 continue;
             }
 
             for (JsonNode item : arrayNode) {
                 jsonResourceService.create(collection, item);
             }
-            log.info("Seeded phase 2 collection {}", collection);
+            log.info("Seeded collection {} from {}", collection, resourcePath);
         }
     }
 
     private static JsonNode loadDbJson(ObjectMapper objectMapper) throws Exception {
-        ClassPathResource resource = new ClassPathResource("data/db.json");
-        try (InputStream inputStream = resource.getInputStream()) {
-            return objectMapper.readTree(inputStream);
-        }
+        return loadJson(objectMapper, "data/db.json");
     }
 
-    private static JsonNode loadPhase2Json(ObjectMapper objectMapper) throws Exception {
-        ClassPathResource resource = new ClassPathResource("data/phase2.json");
+    private static JsonNode loadJson(ObjectMapper objectMapper, String resourcePath) throws Exception {
+        ClassPathResource resource = new ClassPathResource(resourcePath);
         try (InputStream inputStream = resource.getInputStream()) {
             return objectMapper.readTree(inputStream);
         }

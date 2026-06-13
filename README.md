@@ -110,6 +110,34 @@ Standard CRUD (`GET` list, `GET/{id}`, `POST`, `PATCH/{id}`, `DELETE/{id}`):
 
 Seed data: `src/main/resources/data/phase2.json` (loaded on startup if collections are empty).
 
+## Phase 3 (implemented)
+
+### Persistent storage (PostgreSQL + Flyway)
+
+Schema is managed by **Flyway** (`src/main/resources/db/migration/`). Default dev profile still uses **H2 in-memory**; data is lost on restart unless you switch to PostgreSQL.
+
+**Local PostgreSQL with Docker:**
+
+```powershell
+docker compose up -d
+$env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-17.0.19.10-hotspot"
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=postgres
+```
+
+Health check: http://localhost:8080/actuator/health
+
+Production profile (`spring.profiles.active=prod`) reads `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `JWT_SECRET`, and `DOMOTICORE_CORS_ORIGINS` from the environment (see `.env.example`).
+
+### New SME endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/zone-configuration` | Zone budgets, schedules, audit log |
+| PATCH | `/api/v1/zone-configuration` | Save zone configuration changes |
+| GET | `/api/v1/cost-analysis` | Billing KPIs, ROI upgrades, audit |
+
+Seed data: `src/main/resources/data/phase3.json`.
+
 ## Configuration
 
 | Property | Default | Description |
@@ -119,7 +147,13 @@ Seed data: `src/main/resources/data/phase2.json` (loaded on startup if collectio
 | `domoticore.jwt.secret` | dev secret | Change in production |
 | `domoticore.jwt.expiration-ms` | `86400000` | Token TTL (24h) |
 
-Production profile (`spring.profiles.active=prod`) uses PostgreSQL via `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`.
+Production profile (`spring.profiles.active=prod`) uses PostgreSQL via `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, and `JWT_SECRET`.
+
+| Profile | Database | Persistence |
+|---------|----------|-------------|
+| *(default)* | H2 in-memory | Lost on restart |
+| `postgres` | PostgreSQL (Docker) | Persistent |
+| `prod` | PostgreSQL (env vars) | Persistent |
 
 ## Tests
 
@@ -143,7 +177,7 @@ $env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-17.0.19.10-hotspot"
 .\mvnw.cmd spring-boot:run
 ```
 
-Includes unit tests for `AuthService` and `DevicesOverviewController`.
+Includes unit tests for `AuthService`, controllers, and a Flyway startup smoke test.
 
 ## Error format
 
