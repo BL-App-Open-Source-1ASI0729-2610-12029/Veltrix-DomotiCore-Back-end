@@ -1,0 +1,207 @@
+{
+  "zone-configuration": [
+    {
+      "id": "default",
+      "primaryZoneId": "main-office",
+      "zones": [
+        {
+          "id": "main-office",
+          "nameKey": "zoneConfiguration.zones.mainOffice.name",
+          "subtitleKey": "zoneConfiguration.zones.mainOffice.subtitle",
+          "icon": "building",
+          "activeMonitoring": true,
+          "isPrimary": true,
+          "energyBudget": 2450,
+          "energyBudgetMin": 0,
+          "energyBudgetMax": 5000,
+          "efficiencyPercent": 12,
+          "criticalTempAlertsEnabled": true,
+          "upperTempLimit": 26,
+          "lowerTempLimit": 18,
+          "schedule": {
+            "morningOn": "07:30 AM",
+            "eveningOff": "08:00 PM",
+            "overtimeRule": "Manual Override",
+            "overtimeType": "manual"
+          }
+        },
+        {
+          "id": "loading-dock",
+          "nameKey": "zoneConfiguration.zones.loadingDock.name",
+          "subtitleKey": "zoneConfiguration.zones.loadingDock.subtitle",
+          "icon": "loading",
+          "activeMonitoring": true,
+          "isPrimary": false,
+          "energyBudget": 1200,
+          "energyBudgetMin": 0,
+          "energyBudgetMax": 3000,
+          "efficiencyPercent": 8,
+          "criticalTempAlertsEnabled": true,
+          "upperTempLimit": 32,
+          "lowerTempLimit": 10,
+          "alertThreshold": 32,
+          "schedule": {
+            "morningOn": "08:00 AM",
+            "eveningOff": "06:00 PM",
+            "overtimeRule": "Motion Sensor",
+            "overtimeType": "motion"
+          }
+        },
+        {
+          "id": "kitchen",
+          "nameKey": "zoneConfiguration.zones.kitchen.name",
+          "subtitleKey": "zoneConfiguration.zones.kitchen.subtitle",
+          "icon": "kitchen",
+          "activeMonitoring": true,
+          "isPrimary": false,
+          "energyBudget": 3800,
+          "energyBudgetMin": 0,
+          "energyBudgetMax": 6000,
+          "efficiencyPercent": 5,
+          "criticalTempAlertsEnabled": true,
+          "upperTempLimit": 8,
+          "lowerTempLimit": 2,
+          "alertThreshold": 4.5,
+          "alertThresholdIsCold": true,
+          "schedule": {
+            "morningOn": "06:00 AM",
+            "eveningOff": "10:00 PM",
+            "overtimeRule": "Photosensor",
+            "overtimeType": "photo"
+          }
+        }
+      ],
+      "globalOptimizerScore": 94,
+      "insights": [
+        {
+          "id": "insight-1",
+          "type": "warning",
+          "titleKey": "zoneConfiguration.insights.kitchenTemp.title",
+          "detailKey": "zoneConfiguration.insights.kitchenTemp.detail"
+        },
+        {
+          "id": "insight-2",
+          "type": "success",
+          "titleKey": "zoneConfiguration.insights.budgetCompliance.title",
+          "detailKey": "zoneConfiguration.insights.budgetCompliance.detail"
+        }
+      ],
+      "auditLog": [
+        {
+          "id": "audit-1",
+          "timestamp": "Oct 24, 09:42 AM",
+          "modifierName": "Jordan Lee",
+          "modifierType": "user",
+          "modifierInitials": "JL",
+          "actionKey": "zoneConfiguration.audit.actions.budgetUpdate",
+          "zoneKey": "zoneConfiguration.zones.mainOffice.name",
+          "status": "applied"
+        },
+        {
+          "id": "audit-2",
+          "timestamp": "Oct 23, 14:15 PM",
+          "modifierName": "System AI",
+          "modifierType": "system",
+          "actionKey": "zoneConfiguration.audit.actions.tempBoundAdjusted",
+          "zoneKey": "zoneConfiguration.zones.kitchen.name",
+          "status": "applied"
+        }
+      ]
+    }
+  ],
+  "cost-analysis": [
+    {
+      "id": "default",
+      "billingCycleLabel": "Oct 01 - Oct 31",
+      "totalBilling": 12482.5,
+      "billingTrendPercent": 14.2,
+      "billingBars": [
+        { "label": "May", "value": 62, "amount": 7740, "peakAmount": 2322 },
+        { "label": "Jun", "value": 71, "amount": 8860, "peakAmount": 2658 },
+        { "label": "Jul", "value": 68, "amount": 8480, "peakAmount": 2544 },
+        { "label": "Aug", "value": 79, "amount": 9860, "peakAmount": 3056 },
+        { "label": "Sep", "value": 84, "amount": 10485, "peakAmount": 3250 },
+        { "label": "Oct", "value": 100, "amount": 12482.5, "peakAmount": 3842.12, "isCurrent": true }
+      ],
+      "peakSurcharge": 3842.12,
+      "peakSurchargePercent": 31,
+      "peakRiskLabelKey": "costAnalysis.peak.riskWindow",
+      "peakRiskProgress": 78,
+      "strategicSuggestionKey": "costAnalysis.peak.suggestion",
+      "areaEfficiencies": [
+        {
+          "id": "production",
+          "nameKey": "costAnalysis.areas.productionFloor",
+          "icon": "factory",
+          "valuePerSqFt": 4.12,
+          "barPercent": 64
+        },
+        {
+          "id": "corporate",
+          "nameKey": "costAnalysis.areas.corporateSuites",
+          "icon": "briefcase",
+          "valuePerSqFt": 1.85,
+          "barPercent": 29
+        },
+        {
+          "id": "cold-storage",
+          "nameKey": "costAnalysis.areas.coldStorage",
+          "icon": "refrigerator",
+          "valuePerSqFt": 6.45,
+          "barPercent": 100
+        }
+      ],
+      "roiUpgrades": [
+        {
+          "id": "hvac",
+          "nameKey": "costAnalysis.roi.hvac.name",
+          "status": "approved",
+          "paybackMonths": 14,
+          "estimatedSavingsYear1": 8400
+        },
+        {
+          "id": "led",
+          "nameKey": "costAnalysis.roi.led.name",
+          "status": "review",
+          "paybackMonths": 22,
+          "estimatedSavingsYear1": 12200
+        }
+      ],
+      "billingAudit": [
+        {
+          "id": "oct-2023",
+          "period": "Oct 2023",
+          "baseUsageKwh": 42840,
+          "peakDemandKwh": 12840,
+          "peakDemandHigh": true,
+          "demandCharge": 2842.5,
+          "taxesAndFees": 1240.0,
+          "netAmount": 12482.5,
+          "status": "paid"
+        },
+        {
+          "id": "sep-2023",
+          "period": "Sep 2023",
+          "baseUsageKwh": 40120,
+          "peakDemandKwh": 11200,
+          "peakDemandHigh": false,
+          "demandCharge": 2510.0,
+          "taxesAndFees": 1180.5,
+          "netAmount": 10924.75,
+          "status": "paid"
+        },
+        {
+          "id": "aug-2023",
+          "period": "Aug 2023",
+          "baseUsageKwh": 45200,
+          "peakDemandKwh": 15600,
+          "peakDemandHigh": true,
+          "demandCharge": 3120.0,
+          "taxesAndFees": 1310.25,
+          "netAmount": 13240.8,
+          "status": "paid"
+        }
+      ]
+    }
+  ]
+}

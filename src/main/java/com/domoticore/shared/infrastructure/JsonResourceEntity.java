@@ -29,6 +29,6 @@ public class JsonResourceEntity {
     @Column(name = "resource_id", nullable = false)
     private String resourceId;
 
-    @Column(name = "json_payload", nullable = false, columnDefinition = "CLOB")
+    @Column(name = "json_payload", nullable = false, columnDefinition = "TEXT")
     private String jsonPayload;
 }
