@@ -1,6 +1,8 @@
 package com.domoticore.automation.presentation;
 
 import com.domoticore.automation.application.ZoneConfigurationService;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,12 +29,14 @@ public class ZoneConfigurationController {
     }
 
     @GetMapping
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get SME zone configuration snapshot")
     public JsonNode getZoneConfiguration() {
         return zoneConfigurationService.getConfiguration(currentUserProvider.requireUserId());
     }
 
     @PatchMapping
+    @ApiAuthenticatedPatchResponses
     @Operation(summary = "Update zone configuration (budgets, schedules, monitoring)")
     public JsonNode patchZoneConfiguration(@RequestBody JsonNode body) {
         return zoneConfigurationService.updateConfiguration(currentUserProvider.requireUserId(), body);

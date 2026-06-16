@@ -1,6 +1,8 @@
 package com.domoticore.integrations.presentation;
 
 import com.domoticore.integrations.application.BusinessProfileService;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,12 +29,14 @@ public class BusinessProfileController {
     }
 
     @GetMapping
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get business profile and integration settings")
     public JsonNode getBusinessProfile() {
         return businessProfileService.getProfile(currentUserProvider.requireUserId());
     }
 
     @PatchMapping
+    @ApiAuthenticatedPatchResponses
     @Operation(summary = "Partially update business profile")
     public JsonNode patchBusinessProfile(@RequestBody JsonNode body) {
         return businessProfileService.updateProfile(currentUserProvider.requireUserId(), body);

@@ -1,6 +1,7 @@
 package com.domoticore.history.presentation;
 
 import com.domoticore.history.application.CostAnalysisService;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,7 @@ public class CostAnalysisController {
     }
 
     @GetMapping
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get SME cost analysis and billing audit snapshot")
     public JsonNode getCostAnalysis() {
         return costAnalysisService.getCostAnalysis(currentUserProvider.requireUserId());
