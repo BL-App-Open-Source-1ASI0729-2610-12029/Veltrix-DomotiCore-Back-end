@@ -1,0 +1,683 @@
+{
+  "energy-intelligence": [
+    {
+      "id": "day",
+      "period": "day",
+      "totalConsumptionKwh": 6.1,
+      "trendPercent": 4,
+      "trendDirection": "down",
+      "trendLabel": "vs yesterday",
+      "chartPoints": [
+        { "label": "00:00", "value": 0.2 },
+        { "label": "04:00", "value": 0.3 },
+        { "label": "08:00", "value": 0.9 },
+        { "label": "12:00", "value": 1.1 },
+        { "label": "16:00", "value": 1.4 },
+        { "label": "20:00", "value": 1.0 },
+        { "label": "23:59", "value": 0.4 }
+      ],
+      "highestConsumer": {
+        "name": "HVAC System",
+        "consumptionKwh": 2.6,
+        "sharePercent": 43,
+        "icon": "acUnit"
+      },
+      "dailyAverageKwh": 6.1,
+      "dailyAverageLabel": "Stable vs last 30 days",
+      "dailyAverageBars": [42, 55, 48, 62, 58, 70, 65],
+      "ecoTip": "Lowering your thermostat by just 2°C could save you 0.6 kWh today.",
+      "devices": [
+        { "id": "hvac", "name": "HVAC System", "consumptionKwh": 2.6, "sharePercent": 43, "icon": "acUnit" },
+        { "id": "fridge", "name": "Refrigerator", "consumptionKwh": 1.3, "sharePercent": 21, "icon": "refrigerator" },
+        { "id": "washer", "name": "Washer & Dryer", "consumptionKwh": 0.9, "sharePercent": 15, "icon": "washer" },
+        { "id": "lighting", "name": "Lighting", "consumptionKwh": 0.7, "sharePercent": 11, "icon": "lightbulb" },
+        { "id": "entertainment", "name": "Entertainment", "consumptionKwh": 0.3, "sharePercent": 5, "icon": "tv" },
+        { "id": "other", "name": "Other Devices", "consumptionKwh": 0.3, "sharePercent": 5, "icon": "moreHoriz" }
+      ]
+    },
+    {
+      "id": "week",
+      "period": "week",
+      "totalConsumptionKwh": 42.8,
+      "trendPercent": 12,
+      "trendDirection": "down",
+      "trendLabel": "vs last week",
+      "chartPoints": [
+        { "label": "Mon", "value": 5.4 },
+        { "label": "Tue", "value": 6.3 },
+        { "label": "Wed", "value": 5.7 },
+        { "label": "Thu", "value": 7.1 },
+        { "label": "Fri", "value": 6.0 },
+        { "label": "Sat", "value": 5.5 },
+        { "label": "Sun", "value": 6.8 }
+      ],
+      "highestConsumer": {
+        "name": "HVAC System",
+        "consumptionKwh": 18.4,
+        "sharePercent": 43,
+        "icon": "acUnit"
+      },
+      "dailyAverageKwh": 6.1,
+      "dailyAverageLabel": "Stable vs last 30 days",
+      "dailyAverageBars": [42, 55, 48, 62, 58, 70, 65],
+      "ecoTip": "Lowering your thermostat by just 2°C could save you 4.2 kWh this week.",
+      "devices": [
+        { "id": "hvac", "name": "HVAC System", "consumptionKwh": 18.4, "sharePercent": 43, "icon": "acUnit" },
+        { "id": "fridge", "name": "Refrigerator", "consumptionKwh": 9.2, "sharePercent": 21, "icon": "refrigerator" },
+        { "id": "washer", "name": "Washer & Dryer", "consumptionKwh": 6.5, "sharePercent": 15, "icon": "washer" },
+        { "id": "lighting", "name": "Lighting", "consumptionKwh": 4.8, "sharePercent": 11, "icon": "lightbulb" },
+        { "id": "entertainment", "name": "Entertainment", "consumptionKwh": 2.1, "sharePercent": 5, "icon": "tv" },
+        { "id": "other", "name": "Other Devices", "consumptionKwh": 1.8, "sharePercent": 5, "icon": "moreHoriz" }
+      ]
+    },
+    {
+      "id": "month",
+      "period": "month",
+      "totalConsumptionKwh": 184.2,
+      "trendPercent": 8,
+      "trendDirection": "down",
+      "trendLabel": "vs last month",
+      "chartPoints": [
+        { "label": "W1", "value": 41.2 },
+        { "label": "W2", "value": 44.8 },
+        { "label": "W3", "value": 46.1 },
+        { "label": "W4", "value": 52.1 }
+      ],
+      "highestConsumer": {
+        "name": "HVAC System",
+        "consumptionKwh": 79.2,
+        "sharePercent": 43,
+        "icon": "acUnit"
+      },
+      "dailyAverageKwh": 6.1,
+      "dailyAverageLabel": "Stable vs last 30 days",
+      "dailyAverageBars": [38, 52, 46, 60, 55, 68, 62],
+      "ecoTip": "Lowering your thermostat by just 2°C could save you 18.4 kWh this month.",
+      "devices": [
+        { "id": "hvac", "name": "HVAC System", "consumptionKwh": 79.2, "sharePercent": 43, "icon": "acUnit" },
+        { "id": "fridge", "name": "Refrigerator", "consumptionKwh": 39.6, "sharePercent": 21, "icon": "refrigerator" },
+        { "id": "washer", "name": "Washer & Dryer", "consumptionKwh": 28.0, "sharePercent": 15, "icon": "washer" },
+        { "id": "lighting", "name": "Lighting", "consumptionKwh": 20.6, "sharePercent": 11, "icon": "lightbulb" },
+        { "id": "entertainment", "name": "Entertainment", "consumptionKwh": 9.0, "sharePercent": 5, "icon": "tv" },
+        { "id": "other", "name": "Other Devices", "consumptionKwh": 7.7, "sharePercent": 5, "icon": "moreHoriz" }
+      ]
+    }
+  ],
+  "business-reports": [
+    {
+      "id": "thisMonth",
+      "efficiencyGoalPercent": 75,
+      "efficiencyLabelKey": "businessReports.efficiency.optimal",
+      "efficiencyComparisonKey": "businessReports.efficiency.comparison",
+      "weeklyChart": [
+        { "label": "MON", "value": 920 },
+        { "label": "TUE", "value": 1040 },
+        { "label": "WED", "value": 980 },
+        { "label": "THU", "value": 1120 },
+        { "label": "FRI", "value": 1010 },
+        { "label": "SAT", "value": 760 },
+        { "label": "SUN", "value": 690 }
+      ],
+      "monthlyChart": [
+        { "label": "W1", "value": 4200 },
+        { "label": "W2", "value": 4680 },
+        { "label": "W3", "value": 4510 },
+        { "label": "W4", "value": 4890 }
+      ],
+      "zones": [
+        { "id": "z1", "name": "East Wing Production", "usageKwh": 4280 },
+        { "id": "z2", "name": "Data Center Hub", "usageKwh": 3150 },
+        { "id": "z3", "name": "Corporate Offices", "usageKwh": 1820 },
+        { "id": "z4", "name": "Storage & Logistics", "usageKwh": 940 }
+      ],
+      "peakAlert": {
+        "titleKey": "businessReports.peak.title",
+        "timeLabel": "Today, 2:30 PM",
+        "messageKey": "businessReports.peak.message"
+      },
+      "devices": [
+        {
+          "id": "d1",
+          "name": "HVAC System A1",
+          "sublabelKey": "businessReports.devices.hvacSublabel",
+          "zone": "Production Wing",
+          "consumptionKwh": 820,
+          "trendPercent": 4.2,
+          "trend": "up",
+          "status": "OPTIMAL",
+          "icon": "acUnit"
+        },
+        {
+          "id": "d2",
+          "name": "Smart Lighting Hub",
+          "sublabelKey": "businessReports.devices.lightingSublabel",
+          "zone": "Corporate Offices",
+          "consumptionKwh": 215,
+          "trendPercent": 12.5,
+          "trend": "down",
+          "status": "STEADY",
+          "icon": "lightbulb"
+        },
+        {
+          "id": "d3",
+          "name": "Server Rack S3",
+          "sublabelKey": "businessReports.devices.serverSublabel",
+          "zone": "Data Center Hub",
+          "consumptionKwh": 1450,
+          "trendPercent": 0,
+          "trend": "stable",
+          "status": "STEADY",
+          "icon": "dns"
+        }
+      ]
+    },
+    {
+      "id": "lastMonth",
+      "efficiencyGoalPercent": 69,
+      "efficiencyLabelKey": "businessReports.efficiency.optimal",
+      "efficiencyComparisonKey": "businessReports.efficiency.comparison",
+      "weeklyChart": [
+        { "label": "MON", "value": 846 },
+        { "label": "TUE", "value": 957 },
+        { "label": "WED", "value": 902 },
+        { "label": "THU", "value": 1030 },
+        { "label": "FRI", "value": 929 },
+        { "label": "SAT", "value": 699 },
+        { "label": "SUN", "value": 635 }
+      ],
+      "monthlyChart": [
+        { "label": "W1", "value": 3864 },
+        { "label": "W2", "value": 4306 },
+        { "label": "W3", "value": 4149 },
+        { "label": "W4", "value": 4499 }
+      ],
+      "zones": [
+        { "id": "z1", "name": "East Wing Production", "usageKwh": 3938 },
+        { "id": "z2", "name": "Data Center Hub", "usageKwh": 2898 },
+        { "id": "z3", "name": "Corporate Offices", "usageKwh": 1674 },
+        { "id": "z4", "name": "Storage & Logistics", "usageKwh": 865 }
+      ],
+      "peakAlert": {
+        "titleKey": "businessReports.peak.title",
+        "timeLabel": "Sep 28, 3:15 PM",
+        "messageKey": "businessReports.peak.message"
+      },
+      "devices": [
+        {
+          "id": "d1",
+          "name": "HVAC System A1",
+          "sublabelKey": "businessReports.devices.hvacSublabel",
+          "zone": "Production Wing",
+          "consumptionKwh": 754,
+          "trendPercent": 4.2,
+          "trend": "up",
+          "status": "OPTIMAL",
+          "icon": "acUnit"
+        },
+        {
+          "id": "d2",
+          "name": "Smart Lighting Hub",
+          "sublabelKey": "businessReports.devices.lightingSublabel",
+          "zone": "Corporate Offices",
+          "consumptionKwh": 198,
+          "trendPercent": 12.5,
+          "trend": "down",
+          "status": "STEADY",
+          "icon": "lightbulb"
+        },
+        {
+          "id": "d3",
+          "name": "Server Rack S3",
+          "sublabelKey": "businessReports.devices.serverSublabel",
+          "zone": "Data Center Hub",
+          "consumptionKwh": 1334,
+          "trendPercent": 0,
+          "trend": "stable",
+          "status": "STEADY",
+          "icon": "dns"
+        }
+      ]
+    },
+    {
+      "id": "thisQuarter",
+      "efficiencyGoalPercent": 81,
+      "efficiencyLabelKey": "businessReports.efficiency.optimal",
+      "efficiencyComparisonKey": "businessReports.efficiency.comparison",
+      "weeklyChart": [
+        { "label": "MON", "value": 994 },
+        { "label": "TUE", "value": 1123 },
+        { "label": "WED", "value": 1058 },
+        { "label": "THU", "value": 1210 },
+        { "label": "FRI", "value": 1091 },
+        { "label": "SAT", "value": 821 },
+        { "label": "SUN", "value": 745 }
+      ],
+      "monthlyChart": [
+        { "label": "W1", "value": 4536 },
+        { "label": "W2", "value": 5054 },
+        { "label": "W3", "value": 4871 },
+        { "label": "W4", "value": 5281 }
+      ],
+      "zones": [
+        { "id": "z1", "name": "East Wing Production", "usageKwh": 4622 },
+        { "id": "z2", "name": "Data Center Hub", "usageKwh": 3402 },
+        { "id": "z3", "name": "Corporate Offices", "usageKwh": 1966 },
+        { "id": "z4", "name": "Storage & Logistics", "usageKwh": 1015 }
+      ],
+      "peakAlert": {
+        "titleKey": "businessReports.peak.title",
+        "timeLabel": "Q4 Peak, 1:45 PM",
+        "messageKey": "businessReports.peak.message"
+      },
+      "devices": [
+        {
+          "id": "d1",
+          "name": "HVAC System A1",
+          "sublabelKey": "businessReports.devices.hvacSublabel",
+          "zone": "Production Wing",
+          "consumptionKwh": 886,
+          "trendPercent": 4.2,
+          "trend": "up",
+          "status": "OPTIMAL",
+          "icon": "acUnit"
+        },
+        {
+          "id": "d2",
+          "name": "Smart Lighting Hub",
+          "sublabelKey": "businessReports.devices.lightingSublabel",
+          "zone": "Corporate Offices",
+          "consumptionKwh": 232,
+          "trendPercent": 12.5,
+          "trend": "down",
+          "status": "STEADY",
+          "icon": "lightbulb"
+        },
+        {
+          "id": "d3",
+          "name": "Server Rack S3",
+          "sublabelKey": "businessReports.devices.serverSublabel",
+          "zone": "Data Center Hub",
+          "consumptionKwh": 1566,
+          "trendPercent": 0,
+          "trend": "stable",
+          "status": "STEADY",
+          "icon": "dns"
+        }
+      ]
+    }
+  ],
+  "alerts-history": [
+    {
+      "id": "default",
+      "summary": {
+        "criticalAlerts": 12,
+        "deviceFailures": 4,
+        "energyPeaks": 28,
+        "resolutionPercent": 94
+      },
+      "totalRecords": 12,
+      "totalPages": 2,
+      "pageSize": 6,
+      "entries": [
+        {
+          "id": "log-1",
+          "priority": "critical",
+          "titleKey": "alertsHistory.events.overConsumption.title",
+          "detailKey": "alertsHistory.events.overConsumption.detail",
+          "locationKey": "alertsHistory.locations.productionFloor",
+          "locationIcon": "factory",
+          "timestamp": "Today, 14:22:05",
+          "status": "unresolved",
+          "category": "alert"
+        },
+        {
+          "id": "log-2",
+          "priority": "medium",
+          "titleKey": "alertsHistory.events.coldChain.title",
+          "detailKey": "alertsHistory.events.coldChain.detail",
+          "locationKey": "alertsHistory.locations.coldStorage",
+          "locationIcon": "acUnit",
+          "timestamp": "Today, 11:08:41",
+          "status": "acknowledged",
+          "category": "alert"
+        },
+        {
+          "id": "log-3",
+          "priority": "low",
+          "titleKey": "alertsHistory.events.manualOverride.title",
+          "detailKey": "alertsHistory.events.manualOverride.detail",
+          "locationKey": "alertsHistory.locations.loadingDock",
+          "locationIcon": "localShipping",
+          "timestamp": "Yesterday, 23:45:00",
+          "status": "investigating",
+          "category": "manual"
+        },
+        {
+          "id": "log-4",
+          "priority": "low",
+          "titleKey": "alertsHistory.events.peakStabilized.title",
+          "detailKey": "alertsHistory.events.peakStabilized.detail",
+          "locationKey": "alertsHistory.locations.mainOffice",
+          "locationIcon": "briefcase",
+          "timestamp": "Yesterday, 18:12:33",
+          "status": "systemNormal",
+          "category": "system"
+        },
+        {
+          "id": "log-5",
+          "priority": "critical",
+          "titleKey": "alertsHistory.events.sensorOffline.title",
+          "detailKey": "alertsHistory.events.sensorOffline.detail",
+          "locationKey": "alertsHistory.locations.productionFloor",
+          "locationIcon": "factory",
+          "timestamp": "Yesterday, 09:30:18",
+          "status": "acknowledged",
+          "category": "alert"
+        },
+        {
+          "id": "log-6",
+          "priority": "medium",
+          "titleKey": "alertsHistory.events.energyPeak.title",
+          "detailKey": "alertsHistory.events.energyPeak.detail",
+          "locationKey": "alertsHistory.locations.kitchen",
+          "locationIcon": "refrigerator",
+          "timestamp": "Oct 22, 16:55:02",
+          "status": "unresolved",
+          "category": "alert"
+        },
+        {
+          "id": "log-7",
+          "priority": "critical",
+          "titleKey": "alertsHistory.events.overConsumption.title",
+          "detailKey": "alertsHistory.events.overConsumption.detail",
+          "locationKey": "alertsHistory.locations.kitchen",
+          "locationIcon": "refrigerator",
+          "timestamp": "Today, 08:14:22",
+          "status": "unresolved",
+          "category": "alert"
+        },
+        {
+          "id": "log-8",
+          "priority": "medium",
+          "titleKey": "alertsHistory.events.energyPeak.title",
+          "detailKey": "alertsHistory.events.energyPeak.detail",
+          "locationKey": "alertsHistory.locations.mainOffice",
+          "locationIcon": "briefcase",
+          "timestamp": "Oct 21, 13:40:11",
+          "status": "systemNormal",
+          "category": "alert"
+        },
+        {
+          "id": "log-9",
+          "priority": "low",
+          "titleKey": "alertsHistory.events.manualOverride.title",
+          "detailKey": "alertsHistory.events.manualOverride.detail",
+          "locationKey": "alertsHistory.locations.loadingDock",
+          "locationIcon": "localShipping",
+          "timestamp": "Oct 20, 21:05:44",
+          "status": "investigating",
+          "category": "manual"
+        },
+        {
+          "id": "log-10",
+          "priority": "critical",
+          "titleKey": "alertsHistory.events.sensorOffline.title",
+          "detailKey": "alertsHistory.events.sensorOffline.detail",
+          "locationKey": "alertsHistory.locations.coldStorage",
+          "locationIcon": "acUnit",
+          "timestamp": "Oct 19, 07:18:09",
+          "status": "acknowledged",
+          "category": "alert"
+        },
+        {
+          "id": "log-11",
+          "priority": "medium",
+          "titleKey": "alertsHistory.events.coldChain.title",
+          "detailKey": "alertsHistory.events.coldChain.detail",
+          "locationKey": "alertsHistory.locations.coldStorage",
+          "locationIcon": "acUnit",
+          "timestamp": "Oct 18, 15:22:57",
+          "status": "systemNormal",
+          "category": "alert"
+        },
+        {
+          "id": "log-12",
+          "priority": "low",
+          "titleKey": "alertsHistory.events.peakStabilized.title",
+          "detailKey": "alertsHistory.events.peakStabilized.detail",
+          "locationKey": "alertsHistory.locations.productionFloor",
+          "locationIcon": "factory",
+          "timestamp": "Oct 17, 19:01:33",
+          "status": "systemNormal",
+          "category": "system"
+        }
+      ],
+      "alertFrequency": {
+        "percent": 64,
+        "locationKey": "alertsHistory.locations.productionFloor",
+        "primaryAlertKey": "alertsHistory.insights.primaryAlertType"
+      },
+      "meanTimeToResolve": {
+        "minutes": 12,
+        "seconds": 45,
+        "trendPercent": 4.2,
+        "trendImproved": true
+      },
+      "systemIntegrity": {
+        "stabilityPercent": 98,
+        "statusKey": "alertsHistory.insights.integrityOptimal"
+      }
+    }
+  ],
+  "business-devices-overview": [
+    {
+      "id": "default",
+      "activeDeviceCount": 42,
+      "zoneCount": 3,
+      "totalConsumptionKw": 14.2,
+      "zones": [
+        {
+          "id": "office",
+          "name": "Office Zone",
+          "deviceCount": 12,
+          "layout": "cards",
+          "ecoPromoKey": "businessDevices.zones.office.ecoPromo",
+          "ecoPromoCtaKey": "businessDevices.zones.office.ecoCta",
+          "cards": [
+            {
+              "id": "ac-main",
+              "name": "Main AC Unit",
+              "icon": "acUnit",
+              "status": "active",
+              "active": true,
+              "loadKw": 2.4,
+              "metricLabel": "22°C"
+            },
+            {
+              "id": "lights-overhead",
+              "name": "Overhead Lighting",
+              "icon": "lightbulb",
+              "status": "active",
+              "active": true,
+              "loadKw": 0.8,
+              "metricLabel": "80%"
+            },
+            {
+              "id": "server-rack-b",
+              "name": "Server Rack B",
+              "icon": "dns",
+              "status": "offline",
+              "active": false,
+              "loadKw": 0,
+              "metricLabel": "Offline"
+            }
+          ]
+        },
+        {
+          "id": "warehouse",
+          "name": "Warehouse",
+          "deviceCount": 24,
+          "layout": "table",
+          "viewAllCount": 24,
+          "tableRows": [
+            {
+              "id": "charger-04",
+              "name": "Charger Station 04",
+              "status": "ACTIVE",
+              "loadKw": 5.2,
+              "active": true
+            },
+            {
+              "id": "belt-a",
+              "name": "Sortation Belt A",
+              "status": "ACTIVE",
+              "loadKw": 3.8,
+              "active": true
+            },
+            {
+              "id": "fan-02",
+              "name": "Industrial Fan 02",
+              "status": "STANDBY",
+              "loadKw": 0.2,
+              "active": false
+            }
+          ]
+        },
+        {
+          "id": "retail",
+          "name": "Retail Floor",
+          "deviceCount": 20,
+          "layout": "mixed",
+          "lightingGroup": {
+            "active": true,
+            "activeUnits": 18,
+            "totalUnits": 20,
+            "efficiencyPercent": 94,
+            "chartBars": [42, 58, 52, 70, 64, 78, 72, 68]
+          },
+          "environment": {
+            "imageUrl": "assets/icons/shared/automation-house-dusk.jpg",
+            "airQualityLabelKey": "businessDevices.environment.excellent",
+            "aqi": 12,
+            "temperatureC": 22.4
+          }
+        }
+      ]
+    }
+  ],
+  "device-explorer": [
+    {
+      "id": "default",
+      "totalResults": 34,
+      "pageSize": 4,
+      "liveCoveragePercent": 98.2,
+      "facilityZones": ["all", "main-office", "north-wing", "loading-dock", "cold-storage"],
+      "protocols": ["MQTT", "Zigbee", "Modbus", "HTTP"],
+      "categories": ["hvac", "lighting", "security", "sensors", "powerPlugs"],
+      "devices": [
+        {
+          "id": "dev-1",
+          "deviceId": "SN-TEMP-401",
+          "name": "Honeywell SmartSensor Pro",
+          "icon": "thermostat",
+          "ipAddress": "192.168.12.104",
+          "zoneHierarchyKey": "deviceExplorer.zones.lobby",
+          "facilityZone": "main-office",
+          "status": "online",
+          "category": "sensors",
+          "protocol": "MQTT",
+          "subnet": "192.168.12",
+          "online": true,
+          "firmwareOutdated": false,
+          "mapX": 80,
+          "mapY": 21
+        },
+        {
+          "id": "dev-2",
+          "deviceId": "LT-GRID-882",
+          "name": "Philips Hue Enterprise Grid",
+          "icon": "lightbulb",
+          "ipAddress": "192.168.12.118",
+          "zoneHierarchyKey": "deviceExplorer.zones.northWing",
+          "facilityZone": "north-wing",
+          "status": "standby",
+          "category": "lighting",
+          "protocol": "MQTT",
+          "subnet": "192.168.12",
+          "online": true,
+          "firmwareOutdated": true,
+          "mapX": 83,
+          "mapY": 14
+        },
+        {
+          "id": "dev-3",
+          "deviceId": "SEC-CAM-219",
+          "name": "Axis P3245-V Dome",
+          "icon": "videocam",
+          "ipAddress": "192.168.14.032",
+          "zoneHierarchyKey": "deviceExplorer.zones.loadingDock",
+          "facilityZone": "loading-dock",
+          "status": "offline",
+          "category": "security",
+          "protocol": "HTTP",
+          "subnet": "192.168.14",
+          "online": false,
+          "firmwareOutdated": false,
+          "mapX": 86,
+          "mapY": 62
+        },
+        {
+          "id": "dev-4",
+          "deviceId": "HVAC-CTRL-07",
+          "name": "Carrier OptiControl 500",
+          "icon": "acUnit",
+          "ipAddress": "192.168.12.201",
+          "zoneHierarchyKey": "deviceExplorer.zones.mainOffice",
+          "facilityZone": "main-office",
+          "status": "online",
+          "category": "hvac",
+          "protocol": "Modbus",
+          "subnet": "192.168.12",
+          "online": true,
+          "firmwareOutdated": true,
+          "mapX": 18,
+          "mapY": 17
+        },
+        {
+          "id": "dev-5",
+          "deviceId": "PWR-PLG-144",
+          "name": "Shelly Pro 3EM",
+          "icon": "plug",
+          "ipAddress": "192.168.12.155",
+          "zoneHierarchyKey": "deviceExplorer.zones.kitchen",
+          "facilityZone": "main-office",
+          "status": "online",
+          "category": "powerPlugs",
+          "protocol": "MQTT",
+          "subnet": "192.168.12",
+          "online": true,
+          "firmwareOutdated": false,
+          "mapX": 14,
+          "mapY": 48
+        },
+        {
+          "id": "dev-6",
+          "deviceId": "SN-HUM-332",
+          "name": "Sensirion SHT40 Node",
+          "icon": "airPurifier",
+          "ipAddress": "192.168.14.088",
+          "zoneHierarchyKey": "deviceExplorer.zones.coldStorage",
+          "facilityZone": "cold-storage",
+          "status": "standby",
+          "category": "sensors",
+          "protocol": "Zigbee",
+          "subnet": "192.168.14",
+          "online": true,
+          "firmwareOutdated": false,
+          "mapX": 16,
+          "mapY": 81
+        }
+      ]
+    }
+  ]
+}
