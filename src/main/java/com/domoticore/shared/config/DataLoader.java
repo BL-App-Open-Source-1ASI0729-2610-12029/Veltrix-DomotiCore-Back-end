@@ -58,6 +58,14 @@ public class DataLoader {
             "cost-analysis"
     };
 
+    private static final String[] PHASE4_COLLECTIONS = {
+            "energy-intelligence",
+            "business-reports",
+            "alerts-history",
+            "business-devices-overview",
+            "device-explorer"
+    };
+
     @Bean
     CommandLineRunner seedDatabase(
             ObjectMapper objectMapper,
@@ -86,9 +94,11 @@ public class DataLoader {
             seedJsonCollections(objectMapper, jsonResourceService);
             seedPhase2Collections(objectMapper, jsonResourceService);
             seedPhase3Collections(objectMapper, jsonResourceService);
+            seedPhase4Collections(objectMapper, jsonResourceService);
         } else {
             seedPhase2Collections(objectMapper, jsonResourceService);
             seedPhase3Collections(objectMapper, jsonResourceService);
+            seedPhase4Collections(objectMapper, jsonResourceService);
         }
     }
 
@@ -143,6 +153,11 @@ public class DataLoader {
     private static void seedPhase3Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
             throws Exception {
         seedOptionalCollections(objectMapper, jsonResourceService, "data/phase3.json", PHASE3_COLLECTIONS);
+    }
+
+    private static void seedPhase4Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
+            throws Exception {
+        seedOptionalCollections(objectMapper, jsonResourceService, "data/phase4.json", PHASE4_COLLECTIONS);
     }
 
     private static void seedOptionalCollections(
