@@ -27,7 +27,7 @@ spring:
       write-dates-as-timestamps: false
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 management:
   endpoints:
@@ -75,7 +75,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/domoticore}
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:domoticore}}
     driver-class-name: org.postgresql.Driver
     username: ${DATABASE_USERNAME:domoticore}
     password: ${DATABASE_PASSWORD:domoticore}
