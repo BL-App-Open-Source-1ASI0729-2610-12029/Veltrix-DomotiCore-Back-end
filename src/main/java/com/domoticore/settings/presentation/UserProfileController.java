@@ -1,6 +1,8 @@
 package com.domoticore.settings.presentation;
 
 import com.domoticore.settings.application.UserProfileService;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,12 +29,14 @@ public class UserProfileController {
     }
 
     @GetMapping("/me")
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get settings profile for the authenticated user")
     public JsonNode getMyProfile() {
         return userProfileService.getProfile(currentUserProvider.requireUserId());
     }
 
     @PatchMapping("/me")
+    @ApiAuthenticatedPatchResponses
     @Operation(summary = "Update settings profile for the authenticated user")
     public JsonNode patchMyProfile(@RequestBody JsonNode body) {
         return userProfileService.updateProfile(currentUserProvider.requireUserId(), body);

@@ -1,6 +1,7 @@
 package com.domoticore.devicecontrol.presentation;
 
 import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.shared.config.openapi.ApiPatchMutationResponses;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -28,6 +29,7 @@ public class DeviceDetailCommandsController {
     }
 
     @PatchMapping("/{id}/temperature")
+    @ApiPatchMutationResponses
     @Operation(summary = "Update device target/current temperature")
     public JsonNode patchTemperature(@PathVariable String id, @RequestBody JsonNode body) {
         ObjectNode patch = objectMapper.createObjectNode();
@@ -41,6 +43,7 @@ public class DeviceDetailCommandsController {
     }
 
     @PatchMapping("/{id}/operation-mode")
+    @ApiPatchMutationResponses
     @Operation(summary = "Update device operation mode and eco mode")
     public JsonNode patchOperationMode(@PathVariable String id, @RequestBody JsonNode body) {
         ObjectNode patch = objectMapper.createObjectNode();
@@ -60,6 +63,7 @@ public class DeviceDetailCommandsController {
     }
 
     @PatchMapping("/{id}/timer")
+    @ApiPatchMutationResponses
     @Operation(summary = "Update device scheduled timer")
     public JsonNode patchTimer(@PathVariable String id, @RequestBody JsonNode body) {
         ObjectNode patch = objectMapper.createObjectNode();

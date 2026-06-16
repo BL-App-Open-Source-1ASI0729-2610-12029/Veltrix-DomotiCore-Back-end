@@ -6,6 +6,8 @@ import com.domoticore.iam.interfaces.resources.LoginRequest;
 import com.domoticore.iam.interfaces.resources.RegisterRequest;
 import com.domoticore.iam.interfaces.transform.UserCommandFromResourceAssembler;
 import com.domoticore.iam.interfaces.transform.UserResponseAssembler;
+import com.domoticore.shared.config.openapi.ApiLoginResponses;
+import com.domoticore.shared.config.openapi.ApiRegisterResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,6 +38,7 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiRegisterResponses
     @Operation(summary = "Register a new user")
     public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
         return responseAssembler.toAuthResponse(
@@ -45,6 +48,7 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
+    @ApiLoginResponses
     @Operation(summary = "Login and receive JWT")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return responseAssembler.toAuthResponse(

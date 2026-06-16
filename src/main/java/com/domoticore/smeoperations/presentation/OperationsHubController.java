@@ -1,5 +1,6 @@
 package com.domoticore.smeoperations.presentation;
 
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.smeoperations.application.OperationsHubService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +27,7 @@ public class OperationsHubController {
     }
 
     @GetMapping("/snapshot")
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get operations hub KPI snapshot for a date range")
     public JsonNode getSnapshot(
             @RequestParam(defaultValue = "thisMonth") String range) {

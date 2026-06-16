@@ -1,6 +1,11 @@
 package com.domoticore.shared.interfaces;
 
 import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.shared.config.openapi.ApiDeleteResponses;
+import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
+import com.domoticore.shared.config.openapi.ApiGetListResponses;
+import com.domoticore.shared.config.openapi.ApiPatchMutationResponses;
+import com.domoticore.shared.config.openapi.ApiPostCreateResponses;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
@@ -25,12 +30,14 @@ public abstract class AbstractJsonCollectionController {
     }
 
     @GetMapping
+    @ApiGetListResponses
     @Operation(summary = "List all resources in collection")
     public List<JsonNode> list() {
         return jsonResourceService.findAll(collectionName);
     }
 
     @GetMapping("/{id}")
+    @ApiGetByIdResponses
     @Operation(summary = "Get resource by id")
     public JsonNode getById(@PathVariable String id) {
         return jsonResourceService.findById(collectionName, id);
@@ -38,12 +45,14 @@ public abstract class AbstractJsonCollectionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiPostCreateResponses
     @Operation(summary = "Create resource")
     public JsonNode create(@RequestBody JsonNode body) {
         return jsonResourceService.create(collectionName, body);
     }
 
     @PatchMapping("/{id}")
+    @ApiPatchMutationResponses
     @Operation(summary = "Partially update resource")
     public JsonNode patch(@PathVariable String id, @RequestBody JsonNode body) {
         return jsonResourceService.patch(collectionName, id, body);
@@ -51,6 +60,7 @@ public abstract class AbstractJsonCollectionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiDeleteResponses
     @Operation(summary = "Delete resource")
     public void delete(@PathVariable String id) {
         jsonResourceService.delete(collectionName, id);
