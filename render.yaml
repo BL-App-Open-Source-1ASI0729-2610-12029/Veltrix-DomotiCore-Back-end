@@ -1,0 +1,45 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# After deploy, set DOMOTICORE_CORS_ORIGINS in the dashboard to your Vercel URL.
+
+databases:
+  - name: domoticore-db
+    databaseName: domoticore
+    user: domoticore
+    plan: free
+
+services:
+  - type: web
+    name: domoticore-api
+    runtime: java
+    plan: free
+    branch: develop
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -Dspring.profiles.active=prod -jar target/domoticore-backend-1.0.0-SNAPSHOT.jar
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
+        fromDatabase:
+          name: domoticore-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: domoticore-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: domoticore-db
+          property: database
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: domoticore-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: domoticore-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DOMOTICORE_CORS_ORIGINS
+        sync: false
