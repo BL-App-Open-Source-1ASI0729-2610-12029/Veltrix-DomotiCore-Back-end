@@ -44,6 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Login and receive JWT")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return responseAssembler.toAuthResponse(
