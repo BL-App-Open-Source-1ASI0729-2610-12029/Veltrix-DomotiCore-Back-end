@@ -8,6 +8,8 @@ import com.domoticore.iam.interfaces.resources.UpdateUserRequest;
 import com.domoticore.iam.interfaces.resources.UserResponse;
 import com.domoticore.iam.interfaces.transform.UserCommandFromResourceAssembler;
 import com.domoticore.iam.interfaces.transform.UserResponseAssembler;
+import com.domoticore.shared.config.openapi.ApiGetListResponses;
+import com.domoticore.shared.config.openapi.ApiUserSelfResponses;
 import com.domoticore.shared.exception.ForbiddenException;
 import com.domoticore.shared.security.CurrentUserProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,6 +48,7 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiGetListResponses
     @Operation(summary = "List auth users (without password)")
     public List<UserResponse> listUsers() {
         return userQueryService.handle(new ListUsersQuery()).stream()
@@ -54,6 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @ApiUserSelfResponses
     @Operation(summary = "Get auth user profile")
     public UserResponse getUser(@PathVariable Long id) {
         assertSelf(id);
@@ -64,6 +68,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
+    @ApiUserSelfResponses
     @Operation(summary = "Update user profile / onboarding")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
         assertSelf(id);
