@@ -45,18 +45,28 @@ Demo credentials:
 
 ## Frontend Integration
 
-For local Angular development, the frontend must use:
+For local Angular development against the deployed Render API, the frontend uses:
+
+```typescript
+apiUrl: 'https://domoticore-api.onrender.com/api/v1',
+```
+
+(`src/environments/environment.ts` in the frontend repo.)
+
+For a local backend instead:
 
 ```typescript
 apiUrl: 'http://localhost:8080/api/v1',
 ```
 
-CORS currently allows:
+CORS on Render must allow your frontend origin. Default backend config allows:
 
 ```text
 http://localhost:4200
 http://127.0.0.1:4200
 ```
+
+If the frontend is deployed on Vercel, set `DOMOTICORE_CORS_ORIGINS` on Render to include your Vercel URL.
 
 Use the local Angular server for local backend testing:
 
