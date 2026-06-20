@@ -87,4 +87,4 @@ domoticore:
   jwt:
     secret: ${JWT_SECRET:domoticore-dev-secret-change-in-production-min-256-bits-long-key!!}
   cors:
-    allowed-origins: ${DOMOTICORE_CORS_ORIGINS:http://localhost:4200,http://127.0.0.1:4200}
+    allowed-origins: ${DOMOTICORE_CORS_ORIGINS:http://localhost:4200,http://127.0.0.1:4200,https://*.vercel.app}

@@ -7,6 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -16,7 +17,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource(
             @Value("${domoticore.cors.allowed-origins}") String allowedOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(allowedOrigins.split(",")));
+        configuration.setAllowedOriginPatterns(parseOrigins(allowedOrigins));
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
@@ -24,5 +25,12 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    private List<String> parseOrigins(String allowedOrigins) {
+        return Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(origin -> !origin.isEmpty())
+                .toList();
     }
 }
