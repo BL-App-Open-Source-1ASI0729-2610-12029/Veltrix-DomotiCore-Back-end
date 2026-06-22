@@ -2,8 +2,13 @@ package com.domoticore.shared.config;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 final class RenderDatabaseUrlConverter {
+
+    private static final Pattern JDBC_HOST_PATTERN =
+            Pattern.compile("jdbc:postgresql://([^:/]+)");
 
     private RenderDatabaseUrlConverter() {
     }
@@ -13,13 +18,15 @@ final class RenderDatabaseUrlConverter {
 
     static JdbcConnectionDetails resolve(
             String databaseUrl,
+            String externalDatabaseUrl,
             String host,
             String port,
             String databaseName,
             String username,
             String password) {
-        if (databaseUrl != null && !databaseUrl.isBlank()) {
-            return fromDatabaseUrl(databaseUrl.trim(), username, password);
+        String connectionUrl = firstNonBlank(databaseUrl, externalDatabaseUrl);
+        if (connectionUrl != null) {
+            return fromDatabaseUrl(connectionUrl.trim(), username, password);
         }
 
         if (host != null && !host.isBlank()) {
@@ -29,12 +36,12 @@ final class RenderDatabaseUrlConverter {
                     + defaultPort(port)
                     + "/"
                     + defaultDatabase(databaseName)
-                    + sslQuery(host);
+                    + sslQuery(host.trim());
             return new JdbcConnectionDetails(jdbcUrl, username, password);
         }
 
         throw new IllegalStateException(
-                "Database is not configured. Link the PostgreSQL instance on Render or set DATABASE_URL.");
+                "Database is not configured. Link domoticore-db to domoticore-api or set DATABASE_URL.");
     }
 
     private static JdbcConnectionDetails fromDatabaseUrl(
@@ -42,10 +49,8 @@ final class RenderDatabaseUrlConverter {
             String fallbackUsername,
             String fallbackPassword) {
         if (databaseUrl.startsWith("jdbc:")) {
-            return new JdbcConnectionDetails(
-                    ensureSslQuery(databaseUrl),
-                    fallbackUsername,
-                    fallbackPassword);
+            String jdbcUrl = normalizeJdbcUrl(databaseUrl);
+            return new JdbcConnectionDetails(jdbcUrl, fallbackUsername, fallbackPassword);
         }
 
         String normalized = databaseUrl.replaceFirst("^postgres://", "postgresql://");
@@ -98,6 +103,47 @@ final class RenderDatabaseUrlConverter {
         }
 
         return new JdbcConnectionDetails(jdbcUrl, resolvedUsername, resolvedPassword);
+    }
+
+    static String hostForLogging(String jdbcUrl) {
+        if (jdbcUrl == null) {
+            return "unknown";
+        }
+        Matcher matcher = JDBC_HOST_PATTERN.matcher(jdbcUrl);
+        return matcher.find() ? matcher.group(1) : "unknown";
+    }
+
+    private static String normalizeJdbcUrl(String jdbcUrl) {
+        String host = extractHost(jdbcUrl);
+        if (isInternalRenderHost(host)) {
+            return stripSslMode(jdbcUrl);
+        }
+        return ensureSslQuery(jdbcUrl);
+    }
+
+    private static String extractHost(String jdbcUrl) {
+        Matcher matcher = JDBC_HOST_PATTERN.matcher(jdbcUrl);
+        return matcher.find() ? matcher.group(1) : "";
+    }
+
+    private static boolean isInternalRenderHost(String host) {
+        return host != null && host.matches("dpg-[a-z0-9]+-[a-z0-9]+");
+    }
+
+    private static String stripSslMode(String jdbcUrl) {
+        return jdbcUrl
+                .replaceAll("[?&]sslmode=[^&]*", "")
+                .replaceAll("\\?$", "");
+    }
+
+    private static String firstNonBlank(String first, String second) {
+        if (first != null && !first.isBlank()) {
+            return first;
+        }
+        if (second != null && !second.isBlank()) {
+            return second;
+        }
+        return null;
     }
 
     private static String defaultPort(String port) {
