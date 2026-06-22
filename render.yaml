@@ -1,5 +1,5 @@
 # Render Blueprint: https://render.com/docs/blueprint-spec
-# After deploy, set DOMOTICORE_CORS_ORIGINS in the dashboard to your Vercel URL.
+# After deploy, verify domoticore-api is linked to domoticore-db (Connections tab).
 
 databases:
   - name: domoticore-db
@@ -10,27 +10,18 @@ databases:
 services:
   - type: web
     name: domoticore-api
-    runtime: java
+    runtime: docker
     plan: free
     branch: develop
-    buildCommand: ./mvnw clean package -DskipTests
-    startCommand: java -Dspring.profiles.active=prod -jar target/domoticore-backend-1.0.0-SNAPSHOT.jar
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: DB_HOST
+      - key: DATABASE_URL
         fromDatabase:
           name: domoticore-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: domoticore-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: domoticore-db
-          property: database
+          property: connectionString
       - key: DATABASE_USERNAME
         fromDatabase:
           name: domoticore-db
@@ -42,4 +33,4 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DOMOTICORE_CORS_ORIGINS
-        sync: false
+        value: https://veltrix-domoti-core-front-end-omega.vercel.app,http://localhost:4200,http://127.0.0.1:4200
