@@ -140,23 +140,43 @@ Seed files:
 
 ## Deployment Notes
 
+### Render (backend)
+
+The `prod` profile expects PostgreSQL. Render injects `DATABASE_URL` as `postgresql://...` (not JDBC). The app converts it automatically via `RenderDatabaseConfig`.
+
+**If the service fails with `UnknownHostException: dpg-xxxxx-a`:**
+
+1. Open **domoticore-api** → **Connections** → link **domoticore-db**
+2. Or set **External Database URL** from the Postgres dashboard as `DATABASE_EXTERNAL_URL` (recommended if internal DNS still fails)
+3. Redeploy after changing environment variables
+
+**Required env vars on Render:**
+
+| Variable | Example |
+|----------|---------|
+| `SPRING_PROFILES_ACTIVE` | `prod` |
+| `DATABASE_URL` | auto from linked Postgres (`connectionString`) |
+| `DATABASE_EXTERNAL_URL` | optional override — External Database URL from Render |
+| `JWT_SECRET` | long random secret, at least 256 bits |
+| `DOMOTICORE_CORS_ORIGINS` | `https://veltrix-domoti-core-front-end-omega.vercel.app,http://localhost:4200` |
+
+### Vercel (frontend)
+
 For Vercel frontend deployment, the frontend must receive a public backend URL:
 
 ```text
-NG_APP_API_URL=https://your-backend-domain.com/api/v1
+NG_APP_API_URL=https://domoticore-api.onrender.com/api/v1
 ```
 
-The backend must be deployed separately, for example on Render, Railway, Fly.io or another Java-compatible host.
+The backend must be deployed separately on Render (or another Java host).
 
 Production env vars:
 
 | Variable | Example |
 |----------|---------|
-| `DATABASE_URL` | `jdbc:postgresql://host:5432/domoticore` |
-| `DATABASE_USERNAME` | `domoticore` |
-| `DATABASE_PASSWORD` | `...` |
+| `NG_APP_API_URL` | `https://domoticore-api.onrender.com/api/v1` |
 | `JWT_SECRET` | long random secret, at least 256 bits |
-| `DOMOTICORE_CORS_ORIGINS` | `https://your-app.vercel.app,http://localhost:4200` |
+| `DOMOTICORE_CORS_ORIGINS` | `https://veltrix-domoti-core-front-end-omega.vercel.app,http://localhost:4200` |
 
 `localhost:8080` only works when frontend and backend are running on your own machine.
 
