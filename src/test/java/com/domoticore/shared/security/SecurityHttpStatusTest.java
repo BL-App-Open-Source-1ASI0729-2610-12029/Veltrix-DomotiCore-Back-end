@@ -7,17 +7,31 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "domoticore.cors.allowed-origins=https://veltrix-domoti-core-front-end-omega.vercel.app,http://localhost:4200")
 @AutoConfigureMockMvc
 class SecurityHttpStatusTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    void corsPreflightForLoginIsAllowed() throws Exception {
+        mockMvc.perform(options("/api/v1/auth/login")
+                        .header("Origin", "https://veltrix-domoti-core-front-end-omega.vercel.app")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "content-type,authorization"))
+                .andExpect(status().isOk())
+                .andExpect(header().string(
+                        "Access-Control-Allow-Origin",
+                        "https://veltrix-domoti-core-front-end-omega.vercel.app"));
+    }
 
     @Test
     void unauthenticatedMutationReturns401() throws Exception {
