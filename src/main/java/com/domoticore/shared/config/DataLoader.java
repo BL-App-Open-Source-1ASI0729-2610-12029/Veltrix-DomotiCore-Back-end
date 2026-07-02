@@ -1,5 +1,7 @@
 package com.domoticore.shared.config;
 
+import com.domoticore.iam.domain.model.valueobjects.AccountType;
+import com.domoticore.iam.domain.model.valueobjects.Email;
 import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import com.domoticore.settings.application.UserProfileService;
 import com.domoticore.shared.application.JsonResourceService;
@@ -44,7 +46,6 @@ public class DataLoader {
             "automation-group-schedules",
             "automation-shutdown-protocol",
             "automation-efficiency-insights",
-            "automation-active-rule-timeline",
             "automation-active-scenes",
             "automation-upcoming-events",
             "automation-smart-suggestion",
@@ -86,9 +87,7 @@ public class DataLoader {
             JsonResourceRepository jsonResourceRepository,
             UserRepository userRepository,
             PasswordEncoder passwordEncoder) throws Exception {
-        if (userRepository.count() == 0) {
-            seedUsers(objectMapper, userRepository, passwordEncoder);
-        }
+        seedUsers(objectMapper, userRepository, passwordEncoder);
 
         if (jsonResourceRepository.count() == 0) {
             seedJsonCollections(objectMapper, jsonResourceService);
@@ -111,20 +110,34 @@ public class DataLoader {
             return;
         }
 
+        int seeded = 0;
         for (JsonNode userNode : usersNode) {
+            String email = userNode.get("email").asText().toLowerCase();
+            if (userRepository.existsByEmailAddress(new Email(email))) {
+                continue;
+            }
+
             com.domoticore.iam.domain.model.aggregates.User user =
                     com.domoticore.iam.domain.model.aggregates.User.newEmpty();
             user.setName(userNode.get("name").asText());
-            user.setEmail(userNode.get("email").asText().toLowerCase());
+            user.setEmail(email);
             user.setPasswordHash(passwordEncoder.encode(userNode.get("password").asText()));
-            user.setRole(userNode.path("role").asText("Admin"));
+            user.setRole(userNode.path("role").asText("User"));
             if (userNode.hasNonNull("avatar")) {
                 user.setAvatar(userNode.get("avatar").asText());
             }
-            user.setOnboardingCompleted(false);
+            if (userNode.hasNonNull("accountType")) {
+                user.setAccountType(AccountType.fromJson(userNode.get("accountType").asText()));
+            }
+            user.setOnboardingCompleted(
+                    userNode.has("onboardingCompleted") && userNode.get("onboardingCompleted").asBoolean());
             userRepository.save(user);
+            seeded++;
         }
-        log.info("Seeded demo users");
+
+        if (seeded > 0) {
+            log.info("Seeded {} demo user(s)", seeded);
+        }
     }
 
     private static void seedJsonCollections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)

@@ -3,16 +3,13 @@ package com.domoticore.automation.presentation;
 import com.domoticore.shared.application.JsonResourceService;
 import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
 import com.domoticore.shared.config.openapi.ApiGetListResponses;
-import com.domoticore.shared.config.openapi.ApiPatchMutationResponses;
 import com.domoticore.shared.config.openapi.ApiPostActionResponses;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +24,6 @@ public class AutomationOperationsController {
     private static final String GROUP_SCHEDULES = "automation-group-schedules";
     private static final String SHUTDOWN_PROTOCOL = "automation-shutdown-protocol";
     private static final String EFFICIENCY = "automation-efficiency-insights";
-    private static final String TIMELINE = "automation-active-rule-timeline";
     private static final String SCENES = "automation-active-scenes";
     private static final String EVENTS = "automation-upcoming-events";
     private static final String SUGGESTION = "automation-smart-suggestion";
@@ -43,13 +39,6 @@ public class AutomationOperationsController {
     @Operation(summary = "List SME automation rules")
     public List<JsonNode> getRules() {
         return jsonResourceService.findAll(RULES);
-    }
-
-    @PatchMapping("/rules/{id}")
-    @ApiPatchMutationResponses
-    @Operation(summary = "Partially update an automation rule")
-    public JsonNode patchRule(@PathVariable String id, @RequestBody JsonNode body) {
-        return jsonResourceService.patch(RULES, id, body);
     }
 
     @PostMapping("/rules/{id}/toggle")
@@ -78,13 +67,6 @@ public class AutomationOperationsController {
     @Operation(summary = "Get automation efficiency insights")
     public JsonNode getEfficiencyInsights() {
         return jsonResourceService.findSingleton(EFFICIENCY, "default");
-    }
-
-    @GetMapping("/active-rule-timeline")
-    @ApiGetByIdResponses
-    @Operation(summary = "Get active rule timeline snapshot")
-    public JsonNode getActiveRuleTimeline() {
-        return jsonResourceService.findSingleton(TIMELINE, "default");
     }
 
     @GetMapping("/active-scenes")

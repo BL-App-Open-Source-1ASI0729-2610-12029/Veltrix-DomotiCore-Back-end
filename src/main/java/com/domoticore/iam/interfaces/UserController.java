@@ -3,12 +3,10 @@ package com.domoticore.iam.interfaces;
 import com.domoticore.iam.application.commandservices.UserCommandService;
 import com.domoticore.iam.application.queryservices.UserQueryService;
 import com.domoticore.iam.domain.model.queries.GetUserByIdQuery;
-import com.domoticore.iam.domain.model.queries.ListUsersQuery;
 import com.domoticore.iam.interfaces.resources.UpdateUserRequest;
 import com.domoticore.iam.interfaces.resources.UserResponse;
 import com.domoticore.iam.interfaces.transform.UserCommandFromResourceAssembler;
 import com.domoticore.iam.interfaces.transform.UserResponseAssembler;
-import com.domoticore.shared.config.openapi.ApiGetListResponses;
 import com.domoticore.shared.config.openapi.ApiUserSelfResponses;
 import com.domoticore.shared.exception.ForbiddenException;
 import com.domoticore.shared.security.CurrentUserProvider;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -45,15 +41,6 @@ public class UserController {
         this.commandAssembler = commandAssembler;
         this.responseAssembler = responseAssembler;
         this.currentUserProvider = currentUserProvider;
-    }
-
-    @GetMapping
-    @ApiGetListResponses
-    @Operation(summary = "List auth users (without password)")
-    public List<UserResponse> listUsers() {
-        return userQueryService.handle(new ListUsersQuery()).stream()
-                .map(UserResponse::from)
-                .toList();
     }
 
     @GetMapping("/{id}")

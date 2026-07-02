@@ -7,6 +7,22 @@
       "password": "SecurePass123",
       "role": "Admin",
       "avatar": "assets/icons/shared/profile-admin.jpg"
+    },
+    {
+      "name": "Home Demo",
+      "email": "home@domoticore.local",
+      "password": "SecurePass123",
+      "role": "User",
+      "accountType": "smart-home",
+      "onboardingCompleted": true
+    },
+    {
+      "name": "Business Demo",
+      "email": "business@domoticore.local",
+      "password": "SecurePass123",
+      "role": "User",
+      "accountType": "small-business",
+      "onboardingCompleted": true
     }
   ],
   "devices-overview": [
