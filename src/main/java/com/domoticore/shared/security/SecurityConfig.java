@@ -51,7 +51,7 @@ public class SecurityConfig {
                                 "/actuator/info",
                                 "/api/v1/auth/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+                        .requestMatchers("/api/v1/**").authenticated()
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

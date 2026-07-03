@@ -9,6 +9,10 @@ public interface JsonResourceRepository extends JpaRepository<JsonResourceEntity
 
     List<JsonResourceEntity> findByCollectionNameOrderByResourceIdAsc(String collectionName);
 
+    List<JsonResourceEntity> findByCollectionNameAndResourceIdStartingWith(String collectionName, String prefix);
+
+    boolean existsByCollectionNameAndResourceIdStartingWith(String collectionName, String prefix);
+
     Optional<JsonResourceEntity> findByCollectionNameAndResourceId(String collectionName, String resourceId);
 
     void deleteByCollectionNameAndResourceId(String collectionName, String resourceId);

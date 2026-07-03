@@ -10,6 +10,7 @@ import com.domoticore.iam.interfaces.transform.UserCommandFromResourceAssembler;
 import com.domoticore.iam.interfaces.transform.UserResponseAssembler;
 import com.domoticore.shared.config.openapi.ApiUserSelfResponses;
 import com.domoticore.shared.exception.ForbiddenException;
+import com.domoticore.shared.security.PlatformRole;
 import com.domoticore.shared.security.CurrentUserProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,6 +65,10 @@ public class UserController {
     @Operation(summary = "Update user profile / onboarding")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
         assertSelf(id);
+        var actor = currentUserProvider.requireUser();
+        if (request.role() != null && PlatformRole.from(actor.getRole()) != PlatformRole.ADMIN) {
+            throw new ForbiddenException("iam.user.error.roleChangeForbidden");
+        }
         return responseAssembler.toUserResponse(
                 userCommandService.update(commandAssembler.toUpdateCommand(id, request))
         );

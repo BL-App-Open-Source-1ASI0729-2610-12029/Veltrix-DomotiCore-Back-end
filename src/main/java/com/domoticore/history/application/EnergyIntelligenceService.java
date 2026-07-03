@@ -1,6 +1,7 @@
 package com.domoticore.history.application;
 
-import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.application.UserCollectionAccessService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -17,20 +18,20 @@ public class EnergyIntelligenceService {
     private static final Set<String> ALLOWED_PERIODS = Set.of("day", "week", "month");
     private static final String DEFAULT_PERIOD = "week";
 
-    private final JsonResourceService jsonResourceService;
+    private final UserCollectionAccessService userCollectionAccessService;
     private final ObjectMapper objectMapper;
 
-    public EnergyIntelligenceService(JsonResourceService jsonResourceService, ObjectMapper objectMapper) {
-        this.jsonResourceService = jsonResourceService;
+    public EnergyIntelligenceService(UserCollectionAccessService userCollectionAccessService, ObjectMapper objectMapper) {
+        this.userCollectionAccessService = userCollectionAccessService;
         this.objectMapper = objectMapper;
     }
 
-    public JsonNode getEnergyIntelligence(String period) {
+    public JsonNode getEnergyIntelligence(User user, String segment, String period) {
         String resolvedPeriod = period == null || period.isBlank() ? DEFAULT_PERIOD : period.trim();
         if (!ALLOWED_PERIODS.contains(resolvedPeriod)) {
             throw new IllegalArgumentException("Invalid period: " + period);
         }
-        JsonNode snapshot = jsonResourceService.findById(COLLECTION, resolvedPeriod);
+        JsonNode snapshot = userCollectionAccessService.getSingleton(user, segment, COLLECTION, resolvedPeriod);
         return enrichSnapshot(snapshot, resolvedPeriod);
     }
 

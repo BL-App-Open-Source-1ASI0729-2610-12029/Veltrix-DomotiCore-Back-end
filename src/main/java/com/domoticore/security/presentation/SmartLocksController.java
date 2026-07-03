@@ -1,7 +1,8 @@
 package com.domoticore.security.presentation;
 
-import com.domoticore.shared.application.JsonResourceService;
-import com.domoticore.shared.interfaces.AbstractJsonCollectionController;
+import com.domoticore.shared.application.UserCollectionAccessService;
+import com.domoticore.shared.interfaces.AbstractUserScopedJsonCollectionController;
+import com.domoticore.shared.security.CurrentUserProvider;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/smart-locks")
 @Tag(name = "Smart Locks")
-public class SmartLocksController extends AbstractJsonCollectionController {
+public class SmartLocksController extends AbstractUserScopedJsonCollectionController {
 
-    public SmartLocksController(JsonResourceService jsonResourceService) {
-        super(jsonResourceService, "smart-locks");
+    public SmartLocksController(
+            UserCollectionAccessService userCollectionAccessService,
+            CurrentUserProvider currentUserProvider) {
+        super(userCollectionAccessService, currentUserProvider, "smart-locks");
     }
 }

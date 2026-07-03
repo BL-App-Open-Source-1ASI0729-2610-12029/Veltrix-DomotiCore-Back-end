@@ -1,10 +1,12 @@
 package com.domoticore.devicecontrol.presentation;
 
-import com.domoticore.shared.application.JsonResourceService;
-import com.domoticore.shared.security.JwtAuthenticationFilter;
-import com.domoticore.shared.security.JwtService;
+import com.domoticore.shared.application.UserCollectionAccessService;
+import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.iam.domain.model.aggregates.User;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,13 +37,25 @@ class DevicesOverviewControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private JsonResourceService jsonResourceService;
+    private UserCollectionAccessService userCollectionAccessService;
 
     @MockBean
-    private JwtService jwtService;
+    private CurrentUserProvider currentUserProvider;
 
     @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private com.domoticore.shared.security.JwtService jwtService;
+
+    @MockBean
+    private com.domoticore.shared.security.JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @BeforeEach
+    void setUp() {
+        User user = User.newEmpty();
+        user.setId(1L);
+        user.setRole("Admin");
+        when(currentUserProvider.requireUser()).thenReturn(user);
+        when(currentUserProvider.requireSegment()).thenReturn("smart-home");
+    }
 
     @Test
     void listReturnsOverviewCollection() throws Exception {
@@ -48,7 +63,7 @@ class DevicesOverviewControllerTest {
         overview.put("id", 1);
         overview.put("totalDevices", 16);
 
-        when(jsonResourceService.findAll("devices-overview")).thenReturn(List.of(overview));
+        when(userCollectionAccessService.list(any(), any(), eq("devices-overview"))).thenReturn(List.of(overview));
 
         mockMvc.perform(get("/api/v1/devices-overview"))
                 .andExpect(status().isOk())
@@ -61,7 +76,7 @@ class DevicesOverviewControllerTest {
         overview.put("id", 1);
         overview.put("totalRooms", 4);
 
-        when(jsonResourceService.findById("devices-overview", "1")).thenReturn(overview);
+        when(userCollectionAccessService.getById(any(), any(), eq("devices-overview"), eq("1"))).thenReturn(overview);
 
         mockMvc.perform(get("/api/v1/devices-overview/1"))
                 .andExpect(status().isOk())
@@ -77,7 +92,7 @@ class DevicesOverviewControllerTest {
         updated.put("id", 1);
         updated.put("totalDevices", 17);
 
-        when(jsonResourceService.patch(eq("devices-overview"), eq("1"), org.mockito.ArgumentMatchers.any()))
+        when(userCollectionAccessService.patch(any(), any(), eq("devices-overview"), eq("1"), any()))
                 .thenReturn(updated);
 
         mockMvc.perform(patch("/api/v1/devices-overview/1")
@@ -86,6 +101,6 @@ class DevicesOverviewControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalDevices").value(17));
 
-        verify(jsonResourceService).patch(eq("devices-overview"), eq("1"), org.mockito.ArgumentMatchers.any());
+        verify(userCollectionAccessService).patch(any(), any(), eq("devices-overview"), eq("1"), any());
     }
 }

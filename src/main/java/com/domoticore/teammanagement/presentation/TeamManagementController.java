@@ -32,6 +32,7 @@ public class TeamManagementController {
     @ApiAuthenticatedGetResponses
     @Operation(summary = "Get team management snapshot (members, zones, summary)")
     public JsonNode getTeamManagement() {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.TEAM_MANAGE);
         return teamManagementService.getSnapshot(currentUserProvider.requireUserId());
     }
 
@@ -39,6 +40,7 @@ public class TeamManagementController {
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Update team management snapshot")
     public JsonNode patchTeamManagement(@RequestBody JsonNode body) {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.TEAM_MANAGE);
         return teamManagementService.updateSnapshot(currentUserProvider.requireUserId(), body);
     }
 }

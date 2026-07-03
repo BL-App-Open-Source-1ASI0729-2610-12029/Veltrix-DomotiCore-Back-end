@@ -1,7 +1,8 @@
 package com.domoticore.devicecontrol.presentation;
 
 import com.domoticore.devicecontrol.application.BusinessDevicesService;
-import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,15 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class BusinessDevicesController {
 
     private final BusinessDevicesService businessDevicesService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public BusinessDevicesController(BusinessDevicesService businessDevicesService) {
+    public BusinessDevicesController(
+            BusinessDevicesService businessDevicesService,
+            CurrentUserProvider currentUserProvider) {
         this.businessDevicesService = businessDevicesService;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @GetMapping("/overview")
-    @ApiGetByIdResponses
+    @ApiAuthenticatedGetResponses
     @Operation(summary = "Get SME business devices overview by zones")
     public JsonNode getOverview() {
-        return businessDevicesService.getOverview();
+        var user = currentUserProvider.requireUser();
+        return businessDevicesService.getOverview(user, currentUserProvider.requireSegment());
     }
 }

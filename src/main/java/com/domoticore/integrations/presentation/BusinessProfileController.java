@@ -39,6 +39,7 @@ public class BusinessProfileController {
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Partially update business profile")
     public JsonNode patchBusinessProfile(@RequestBody JsonNode body) {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.BUSINESS_PROFILE);
         return businessProfileService.updateProfile(currentUserProvider.requireUserId(), body);
     }
 }

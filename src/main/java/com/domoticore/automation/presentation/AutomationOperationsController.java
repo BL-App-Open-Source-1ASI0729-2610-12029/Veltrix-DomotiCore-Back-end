@@ -1,9 +1,11 @@
 package com.domoticore.automation.presentation;
 
-import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.shared.application.UserCollectionAccessService;
+import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
 import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
 import com.domoticore.shared.config.openapi.ApiGetListResponses;
 import com.domoticore.shared.config.openapi.ApiPostActionResponses;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,86 +31,116 @@ public class AutomationOperationsController {
     private static final String SUGGESTION = "automation-smart-suggestion";
     private static final String TIMELINE = "automation-active-rule-timeline";
 
-    private final JsonResourceService jsonResourceService;
+    private final UserCollectionAccessService userCollectionAccessService;
+    private final CurrentUserProvider currentUserProvider;
 
-    public AutomationOperationsController(JsonResourceService jsonResourceService) {
-        this.jsonResourceService = jsonResourceService;
+    public AutomationOperationsController(
+            UserCollectionAccessService userCollectionAccessService,
+            CurrentUserProvider currentUserProvider) {
+        this.userCollectionAccessService = userCollectionAccessService;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @GetMapping("/rules")
+    @ApiAuthenticatedGetResponses
     @ApiGetListResponses
     @Operation(summary = "List SME automation rules")
     public List<JsonNode> getRules() {
-        return jsonResourceService.findAll(RULES);
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.list(user, currentUserProvider.requireSegment(), RULES);
     }
 
     @PostMapping("/rules/{id}/toggle")
     @ApiPostActionResponses
     @Operation(summary = "Toggle automation rule active state")
     public JsonNode toggleRule(@PathVariable String id) {
-        return jsonResourceService.toggleBooleanField(RULES, id, "active");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.toggleBooleanField(
+                user, currentUserProvider.requireSegment(), RULES, id, "active");
     }
 
     @GetMapping("/group-schedules")
+    @ApiAuthenticatedGetResponses
     @ApiGetListResponses
     @Operation(summary = "List automation group schedules")
     public List<JsonNode> getGroupSchedules() {
-        return jsonResourceService.findAll(GROUP_SCHEDULES);
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.list(user, currentUserProvider.requireSegment(), GROUP_SCHEDULES);
     }
 
     @GetMapping("/shutdown-protocol")
+    @ApiAuthenticatedGetResponses
     @ApiGetByIdResponses
     @Operation(summary = "Get facility shutdown protocol")
     public JsonNode getShutdownProtocol() {
-        return jsonResourceService.findSingleton(SHUTDOWN_PROTOCOL, "closing-time");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.getSingleton(
+                user, currentUserProvider.requireSegment(), SHUTDOWN_PROTOCOL, "closing-time");
     }
 
     @GetMapping("/efficiency-insights")
+    @ApiAuthenticatedGetResponses
     @ApiGetByIdResponses
     @Operation(summary = "Get automation efficiency insights")
     public JsonNode getEfficiencyInsights() {
-        return jsonResourceService.findSingleton(EFFICIENCY, "default");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.getSingleton(
+                user, currentUserProvider.requireSegment(), EFFICIENCY, "default");
     }
 
     @GetMapping("/active-scenes")
+    @ApiAuthenticatedGetResponses
     @ApiGetListResponses
     @Operation(summary = "List active automation scenes")
     public List<JsonNode> getActiveScenes() {
-        return jsonResourceService.findAll(SCENES);
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.list(user, currentUserProvider.requireSegment(), SCENES);
     }
 
     @PostMapping("/active-scenes/{id}/toggle")
     @ApiPostActionResponses
     @Operation(summary = "Toggle automation scene")
     public JsonNode toggleScene(@PathVariable String id) {
-        return jsonResourceService.toggleBooleanField(SCENES, id, "active");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.toggleBooleanField(
+                user, currentUserProvider.requireSegment(), SCENES, id, "active");
     }
 
     @GetMapping("/upcoming-events")
+    @ApiAuthenticatedGetResponses
     @ApiGetListResponses
     @Operation(summary = "List upcoming automation events")
     public List<JsonNode> getUpcomingEvents() {
-        return jsonResourceService.findAll(EVENTS);
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.list(user, currentUserProvider.requireSegment(), EVENTS);
     }
 
     @PostMapping("/upcoming-events/{id}/toggle")
     @ApiPostActionResponses
     @Operation(summary = "Toggle upcoming automation event")
     public JsonNode toggleUpcomingEvent(@PathVariable String id) {
-        return jsonResourceService.toggleBooleanField(EVENTS, id, "active");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.toggleBooleanField(
+                user, currentUserProvider.requireSegment(), EVENTS, id, "active");
     }
 
     @GetMapping("/smart-suggestion")
+    @ApiAuthenticatedGetResponses
     @ApiGetByIdResponses
     @Operation(summary = "Get smart automation suggestion")
     public JsonNode getSmartSuggestion() {
-        return jsonResourceService.findSingleton(SUGGESTION, "default");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.getSingleton(
+                user, currentUserProvider.requireSegment(), SUGGESTION, "default");
     }
 
     @GetMapping("/active-rule-timeline")
+    @ApiAuthenticatedGetResponses
     @ApiGetByIdResponses
     @Operation(summary = "Get active automation rule timeline for SME operations")
     public JsonNode getActiveRuleTimeline() {
-        return jsonResourceService.findSingleton(TIMELINE, "default");
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.getSingleton(
+                user, currentUserProvider.requireSegment(), TIMELINE, "default");
     }
 }

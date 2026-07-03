@@ -48,6 +48,7 @@ public class GatewayController {
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Link a gateway by MAC address or pairing code")
     public JsonNode linkGateway(@RequestBody ObjectNode body) {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.GATEWAY_MANAGE);
         String macOrId = body.path("macOrId").asText("");
         String label = body.path("label").asText("");
         return gatewayService.linkGateway(currentUserProvider.requireUserId(), macOrId, label);
@@ -57,6 +58,7 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Unlink the current gateway and clear registered nodes")
     public void unlinkGateway() {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.GATEWAY_MANAGE);
         gatewayService.unlinkGateway(currentUserProvider.requireUserId());
     }
 
@@ -72,6 +74,7 @@ public class GatewayController {
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Register a new device node on the gateway")
     public JsonNode registerNode(@RequestBody ObjectNode body) {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.GATEWAY_MANAGE);
         return gatewayService.registerNode(
                 currentUserProvider.requireUserId(),
                 body.path("name").asText(""),

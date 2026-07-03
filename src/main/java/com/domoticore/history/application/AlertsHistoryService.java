@@ -1,6 +1,7 @@
 package com.domoticore.history.application;
 
-import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.application.UserCollectionAccessService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +11,13 @@ public class AlertsHistoryService {
     private static final String COLLECTION = "alerts-history";
     private static final String DEFAULT_TEMPLATE = "default";
 
-    private final JsonResourceService jsonResourceService;
+    private final UserCollectionAccessService userCollectionAccessService;
 
-    public AlertsHistoryService(JsonResourceService jsonResourceService) {
-        this.jsonResourceService = jsonResourceService;
+    public AlertsHistoryService(UserCollectionAccessService userCollectionAccessService) {
+        this.userCollectionAccessService = userCollectionAccessService;
     }
 
-    public JsonNode getAlertsHistory() {
-        return jsonResourceService.findById(COLLECTION, DEFAULT_TEMPLATE);
+    public JsonNode getAlertsHistory(User user, String segment) {
+        return userCollectionAccessService.getSingleton(user, segment, COLLECTION, DEFAULT_TEMPLATE);
     }
 }

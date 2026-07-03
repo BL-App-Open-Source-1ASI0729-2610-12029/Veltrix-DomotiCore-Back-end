@@ -41,6 +41,7 @@ public class MaintenanceController {
     @ApiPostCreateResponses
     @Operation(summary = "Register a completed maintenance visit")
     public JsonNode registerRecord(@RequestBody JsonNode body) {
+        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.MAINTENANCE_REGISTER);
         return maintenanceService.registerRecord(currentUserProvider.requireUserId(), body);
     }
 }

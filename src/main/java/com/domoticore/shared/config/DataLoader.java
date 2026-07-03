@@ -140,6 +140,9 @@ public class DataLoader {
             }
             user.setOnboardingCompleted(
                     userNode.has("onboardingCompleted") && userNode.get("onboardingCompleted").asBoolean());
+            if ("Admin".equalsIgnoreCase(user.getRole())) {
+                user.setOnboardingCompleted(true);
+            }
             userRepository.save(user);
             seeded++;
         }
