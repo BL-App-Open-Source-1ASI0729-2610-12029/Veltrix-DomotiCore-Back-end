@@ -6,6 +6,7 @@ import com.domoticore.shared.security.JwtService;
 import com.domoticore.teammanagement.application.TeamManagementService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,12 +47,17 @@ class TeamManagementControllerTest {
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @BeforeEach
+    void setUp() {
+        when(currentUserProvider.requireUserId()).thenReturn(7L);
+        doNothing().when(currentUserProvider).requirePermission(any());
+    }
+
     @Test
     void getTeamManagementReturnsAuthenticatedUserPayload() throws Exception {
         ObjectNode team = objectMapper.createObjectNode();
         team.put("totalMembers", 24);
 
-        when(currentUserProvider.requireUserId()).thenReturn(7L);
         when(teamManagementService.getSnapshot(7L)).thenReturn(team);
 
         mockMvc.perform(get("/api/v1/team-management"))
@@ -66,7 +73,6 @@ class TeamManagementControllerTest {
         ObjectNode updated = objectMapper.createObjectNode();
         updated.put("totalMembers", 25);
 
-        when(currentUserProvider.requireUserId()).thenReturn(7L);
         when(teamManagementService.updateSnapshot(eq(7L), any())).thenReturn(updated);
 
         mockMvc.perform(patch("/api/v1/team-management")

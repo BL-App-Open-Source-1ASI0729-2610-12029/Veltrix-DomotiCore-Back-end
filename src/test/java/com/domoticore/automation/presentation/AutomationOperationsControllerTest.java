@@ -1,10 +1,12 @@
 package com.domoticore.automation.presentation;
 
-import com.domoticore.shared.application.JsonResourceService;
+import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.application.UserCollectionAccessService;
+import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
 import com.domoticore.shared.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,13 +34,24 @@ class AutomationOperationsControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private JsonResourceService jsonResourceService;
+    private UserCollectionAccessService userCollectionAccessService;
+
+    @MockBean
+    private CurrentUserProvider currentUserProvider;
 
     @MockBean
     private JwtService jwtService;
 
     @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @BeforeEach
+    void setUp() {
+        User user = User.newEmpty();
+        user.setId(1L);
+        when(currentUserProvider.requireUser()).thenReturn(user);
+        when(currentUserProvider.requireSegment()).thenReturn("small-business");
+    }
 
     @Test
     void getRulesReturnsAutomationRules() throws Exception {
@@ -45,7 +60,7 @@ class AutomationOperationsControllerTest {
         rule.put("name", "Dim if Office Empty");
         rule.put("active", false);
 
-        when(jsonResourceService.findAll("automation-rules")).thenReturn(List.of(rule));
+        when(userCollectionAccessService.list(any(), any(), eq("automation-rules"))).thenReturn(List.of(rule));
 
         mockMvc.perform(get("/api/v1/automation/rules"))
                 .andExpect(status().isOk())
@@ -60,7 +75,8 @@ class AutomationOperationsControllerTest {
         protocol.put("triggersInMinutes", 15);
         protocol.set("steps", objectMapper.createArrayNode());
 
-        when(jsonResourceService.findSingleton("automation-shutdown-protocol", "closing-time"))
+        when(userCollectionAccessService.getSingleton(
+                any(), any(), eq("automation-shutdown-protocol"), eq("closing-time")))
                 .thenReturn(protocol);
 
         mockMvc.perform(get("/api/v1/automation/shutdown-protocol"))
