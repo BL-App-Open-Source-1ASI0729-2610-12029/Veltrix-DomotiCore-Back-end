@@ -67,6 +67,13 @@ public class DataLoader {
             "device-explorer"
     };
 
+    private static final String[] PHASE5_COLLECTIONS = {
+            "gateway-state",
+            "maintenance-records",
+            "automation-active-rule-timeline",
+            "automation-home-preferences"
+    };
+
     @Bean
     CommandLineRunner seedDatabase(
             ObjectMapper objectMapper,
@@ -94,10 +101,12 @@ public class DataLoader {
             seedPhase2Collections(objectMapper, jsonResourceService);
             seedPhase3Collections(objectMapper, jsonResourceService);
             seedPhase4Collections(objectMapper, jsonResourceService);
+            seedPhase5Collections(objectMapper, jsonResourceService);
         } else {
             seedPhase2Collections(objectMapper, jsonResourceService);
             seedPhase3Collections(objectMapper, jsonResourceService);
             seedPhase4Collections(objectMapper, jsonResourceService);
+            seedPhase5Collections(objectMapper, jsonResourceService);
         }
     }
 
@@ -171,6 +180,11 @@ public class DataLoader {
     private static void seedPhase4Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
             throws Exception {
         seedOptionalCollections(objectMapper, jsonResourceService, "data/phase4.json", PHASE4_COLLECTIONS);
+    }
+
+    private static void seedPhase5Collections(ObjectMapper objectMapper, JsonResourceService jsonResourceService)
+            throws Exception {
+        seedOptionalCollections(objectMapper, jsonResourceService, "data/phase5.json", PHASE5_COLLECTIONS);
     }
 
     private static void seedOptionalCollections(

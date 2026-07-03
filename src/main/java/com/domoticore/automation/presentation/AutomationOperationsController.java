@@ -27,6 +27,7 @@ public class AutomationOperationsController {
     private static final String SCENES = "automation-active-scenes";
     private static final String EVENTS = "automation-upcoming-events";
     private static final String SUGGESTION = "automation-smart-suggestion";
+    private static final String TIMELINE = "automation-active-rule-timeline";
 
     private final JsonResourceService jsonResourceService;
 
@@ -102,5 +103,12 @@ public class AutomationOperationsController {
     @Operation(summary = "Get smart automation suggestion")
     public JsonNode getSmartSuggestion() {
         return jsonResourceService.findSingleton(SUGGESTION, "default");
+    }
+
+    @GetMapping("/active-rule-timeline")
+    @ApiGetByIdResponses
+    @Operation(summary = "Get active automation rule timeline for SME operations")
+    public JsonNode getActiveRuleTimeline() {
+        return jsonResourceService.findSingleton(TIMELINE, "default");
     }
 }

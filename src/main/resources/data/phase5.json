@@ -1,0 +1,70 @@
+{
+  "gateway-state": [
+    {
+      "id": "default",
+      "gateway": null,
+      "nodes": []
+    }
+  ],
+  "maintenance-records": [
+    {
+      "id": "default",
+      "records": [
+        {
+          "id": "maint-seed-1",
+          "deviceId": "smart-ac",
+          "deviceName": "Living Room AC",
+          "performedAt": "2026-05-20T10:00:00.000Z",
+          "description": "Filter cleaning and coolant check",
+          "technician": "Internal team"
+        }
+      ]
+    }
+  ],
+  "automation-active-rule-timeline": [
+    {
+      "id": "default",
+      "currentTime": "17:45",
+      "currentDecimal": 17.75,
+      "activeCount": 5,
+      "runningNowCount": 3,
+      "conflictCount": 1,
+      "slots": [
+        {
+          "id": "slot-hvac",
+          "label": "HVAC Pre-cool",
+          "startHour": 14,
+          "endHour": 16,
+          "category": "energy",
+          "style": "solid",
+          "group": "Climate",
+          "description": "Pre-cooling cycle before peak tariff window.",
+          "isRunningNow": false,
+          "progressPercent": 0,
+          "hasConflict": false
+        },
+        {
+          "id": "slot-lighting",
+          "label": "Perimeter Lighting",
+          "startHour": 18,
+          "endHour": 22,
+          "category": "security",
+          "style": "dashed",
+          "group": "Perimeter",
+          "description": "Automated lockdown sequence for all external access points.",
+          "isRunningNow": true,
+          "progressPercent": 8,
+          "hasConflict": true
+        }
+      ]
+    }
+  ],
+  "automation-home-preferences": [
+    {
+      "id": "default",
+      "inactivityAutoOffEnabled": false,
+      "inactivityMinutes": 30,
+      "autoOptimizationEnabled": false
+    }
+  ]
+}

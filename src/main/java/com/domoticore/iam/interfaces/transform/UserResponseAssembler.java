@@ -48,7 +48,8 @@ public class UserResponseAssembler {
         if (failure instanceof UserCommandFailure.Duplicate) {
             return new ConflictException(failure.messageKey());
         }
-        if (failure instanceof UserCommandFailure.InvalidCredentials) {
+        if (failure instanceof UserCommandFailure.InvalidCredentials
+                || failure instanceof UserCommandFailure.WrongPassword) {
             return new UnauthorizedException(failure.messageKey());
         }
         return new ResourceNotFoundException(failure.messageKey());

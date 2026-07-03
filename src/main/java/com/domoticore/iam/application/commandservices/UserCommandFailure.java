@@ -1,6 +1,6 @@
 package com.domoticore.iam.application.commandservices;
 
-public sealed interface UserCommandFailure permits UserCommandFailure.Duplicate, UserCommandFailure.InvalidCredentials, UserCommandFailure.NotFound {
+public sealed interface UserCommandFailure permits UserCommandFailure.Duplicate, UserCommandFailure.InvalidCredentials, UserCommandFailure.NotFound, UserCommandFailure.WrongPassword {
 
     String messageKey();
 
@@ -22,6 +22,13 @@ public sealed interface UserCommandFailure permits UserCommandFailure.Duplicate,
         @Override
         public String messageKey() {
             return "iam.user.error.notFound";
+        }
+    }
+
+    record WrongPassword() implements UserCommandFailure {
+        @Override
+        public String messageKey() {
+            return "iam.user.error.wrongPassword";
         }
     }
 }

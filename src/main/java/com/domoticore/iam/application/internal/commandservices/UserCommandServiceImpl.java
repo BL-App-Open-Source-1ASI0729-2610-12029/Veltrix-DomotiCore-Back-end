@@ -3,6 +3,7 @@ package com.domoticore.iam.application.internal.commandservices;
 import com.domoticore.iam.application.commandservices.UserCommandFailure;
 import com.domoticore.iam.application.commandservices.UserCommandService;
 import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.iam.domain.model.commands.ChangePasswordCommand;
 import com.domoticore.iam.domain.model.commands.LoginUserCommand;
 import com.domoticore.iam.domain.model.commands.RegisterUserCommand;
 import com.domoticore.iam.domain.model.commands.UpdateUserCommand;
@@ -57,6 +58,20 @@ public class UserCommandServiceImpl implements UserCommandService {
         return userRepository.findById(command.userId())
                 .map(user -> {
                     user.apply(command);
+                    return Result.<User, UserCommandFailure>success(userRepository.save(user));
+                })
+                .orElse(Result.failure(new UserCommandFailure.NotFound()));
+    }
+
+    @Override
+    @Transactional
+    public Result<User, UserCommandFailure> changePassword(ChangePasswordCommand command) {
+        return userRepository.findById(command.userId())
+                .map(user -> {
+                    if (!passwordEncoder.matches(command.currentPassword(), user.getPasswordHash())) {
+                        return Result.<User, UserCommandFailure>failure(new UserCommandFailure.WrongPassword());
+                    }
+                    user.setPasswordHash(passwordEncoder.encode(command.newPassword()));
                     return Result.<User, UserCommandFailure>success(userRepository.save(user));
                 })
                 .orElse(Result.failure(new UserCommandFailure.NotFound()));
