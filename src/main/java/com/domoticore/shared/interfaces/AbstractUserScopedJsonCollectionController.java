@@ -76,7 +76,11 @@ public abstract class AbstractUserScopedJsonCollectionController {
     @ApiDeleteResponses
     @Operation(summary = "Delete user-scoped resource")
     public void delete(@PathVariable String id) {
+        beforeDelete();
         var user = currentUserProvider.requireUser();
         userCollectionAccessService.delete(user, currentUserProvider.requireSegment(), collectionName, id);
+    }
+
+    protected void beforeDelete() {
     }
 }

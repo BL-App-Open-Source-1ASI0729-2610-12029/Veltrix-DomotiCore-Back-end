@@ -523,5 +523,53 @@
       "criticalAlertCount": 3,
       "highlightedLoadKw": "26.4kW"
     }
+  ],
+  "smart-integrations": [
+    {
+      "id": "default",
+      "connectedIntegrations": [
+        {
+          "id": "lighting-hub",
+          "nameKey": "integrations.samples.lightingHub",
+          "provider": "Veltrix Lighting",
+          "connected": true,
+          "status": "online"
+        },
+        {
+          "id": "hvac-bridge",
+          "nameKey": "integrations.samples.hvacBridge",
+          "provider": "ClimateSync",
+          "connected": false,
+          "status": "offline"
+        }
+      ],
+      "schedules": [
+        {
+          "id": "sched-office-lights",
+          "integrationId": "lighting-hub",
+          "deviceName": "Main Office Lights",
+          "onTime": "08:00",
+          "offTime": "18:00",
+          "enabled": true,
+          "timezone": "America/Lima"
+        },
+        {
+          "id": "sched-hvac-eco",
+          "integrationId": "hvac-bridge",
+          "deviceName": "HVAC Eco Schedule",
+          "onTime": "07:30",
+          "offTime": "19:00",
+          "enabled": true,
+          "timezone": "America/Lima"
+        }
+      ],
+      "compatibilityCatalog": [
+        { "model": "Veltrix Smart Bulb", "type": "lighting", "compatible": true },
+        { "model": "Veltrix Smart Plug", "type": "powerPlugs", "compatible": true },
+        { "model": "Veltrix Motion Sensor", "type": "sensors", "compatible": true },
+        { "model": "Generic Thermostat X", "type": "hvac", "compatible": false },
+        { "model": "Unknown IoT Device", "type": "generic", "compatible": false }
+      ]
+    }
   ]
 }

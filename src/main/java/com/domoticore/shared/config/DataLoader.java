@@ -51,7 +51,8 @@ public class DataLoader {
             "automation-smart-suggestion",
             "team-management",
             "business-profile",
-            "operations-hub-snapshot"
+            "operations-hub-snapshot",
+            "smart-integrations"
     };
 
     private static final String[] PHASE3_COLLECTIONS = {
