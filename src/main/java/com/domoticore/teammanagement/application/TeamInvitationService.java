@@ -48,6 +48,7 @@ public class TeamInvitationService {
     private final ObjectMapper objectMapper;
     private final DomotiCoreMailProperties mailProperties;
     private final ObjectProvider<JavaMailSender> mailSenderProvider;
+    private final TeamMembershipService teamMembershipService;
 
     public TeamInvitationService(
             TeamInvitationRepository invitationRepository,
@@ -55,13 +56,15 @@ public class TeamInvitationService {
             RolePermissionService rolePermissionService,
             ObjectMapper objectMapper,
             DomotiCoreMailProperties mailProperties,
-            ObjectProvider<JavaMailSender> mailSenderProvider) {
+            ObjectProvider<JavaMailSender> mailSenderProvider,
+            TeamMembershipService teamMembershipService) {
         this.invitationRepository = invitationRepository;
         this.userRepository = userRepository;
         this.rolePermissionService = rolePermissionService;
         this.objectMapper = objectMapper;
         this.mailProperties = mailProperties;
         this.mailSenderProvider = mailSenderProvider;
+        this.teamMembershipService = teamMembershipService;
     }
 
     @Transactional
@@ -140,7 +143,12 @@ public class TeamInvitationService {
         assertPending(invitation);
         invitation.setStatus(STATUS_ACCEPTED);
         invitation.setRead(true);
-        return toResponse(invitationRepository.save(invitation));
+        if (invitation.getRecipientUserId() == null) {
+            invitation.setRecipientUserId(user.getId());
+        }
+        TeamInvitation saved = invitationRepository.save(invitation);
+        teamMembershipService.activateAcceptedInvitation(user, saved);
+        return toResponse(saved);
     }
 
     @Transactional

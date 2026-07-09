@@ -571,5 +571,11 @@
         { "model": "Unknown IoT Device", "type": "generic", "compatible": false }
       ]
     }
+  ],
+  "team-membership": [
+    {
+      "id": "default",
+      "memberships": []
+    }
   ]
 }
