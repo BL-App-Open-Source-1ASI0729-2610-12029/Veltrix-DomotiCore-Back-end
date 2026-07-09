@@ -53,20 +53,6 @@ public class TeamInvitationsController {
         return teamInvitationService.listMine(currentUserProvider.requireUser());
     }
 
-    @GetMapping("/sent")
-    @ApiAuthenticatedGetResponses
-    @Operation(summary = "List invitations sent by the current user")
-    public List<TeamInvitationResponse> listSent() {
-        return teamInvitationService.listSent(currentUserProvider.requireUser());
-    }
-
-    @GetMapping("/by-token/{token}")
-    @ApiAuthenticatedGetResponses
-    @Operation(summary = "Find a pending invitation by email token for the current user")
-    public TeamInvitationResponse findByToken(@PathVariable String token) {
-        return teamInvitationService.findByTokenForUser(currentUserProvider.requireUser(), token);
-    }
-
     @PatchMapping("/{id}/read")
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Mark an invitation notification as read")

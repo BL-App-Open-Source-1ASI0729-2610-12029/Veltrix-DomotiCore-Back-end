@@ -122,35 +122,11 @@ public class TeamInvitationService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<TeamInvitationResponse> listSent(User user) {
-        rolePermissionService.require(user, PlatformPermission.TEAM_INVITE);
-        return invitationRepository.findByInviterUserIdOrderByCreatedAtDesc(user.getId()).stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
     @Transactional
     public TeamInvitationResponse markRead(User user, String invitationId) {
         TeamInvitation invitation = requireRecipientInvitation(user, invitationId);
         invitation.setRead(true);
         return toResponse(invitationRepository.save(invitation));
-    }
-
-    @Transactional(readOnly = true)
-    public TeamInvitationResponse findByTokenForUser(User user, String token) {
-        TeamInvitation invitation = invitationRepository.findByToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("team.invitation.error.notFound"));
-
-        boolean matchesEmail = invitation.getRecipientEmail().equalsIgnoreCase(user.getEmail());
-        boolean matchesUserId = invitation.getRecipientUserId() != null
-                && invitation.getRecipientUserId().equals(user.getId());
-
-        if (!matchesEmail && !matchesUserId) {
-            throw new ForbiddenException("team.invitation.error.forbidden");
-        }
-
-        return toResponse(invitation);
     }
 
     @Transactional

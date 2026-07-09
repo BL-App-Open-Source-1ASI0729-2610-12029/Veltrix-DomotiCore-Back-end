@@ -42,12 +42,6 @@ public class ActivityStreamService {
                 .toList();
     }
 
-    public JsonNode getById(User user, String segment, String id) {
-        JsonNode entry = userCollectionAccessService.getById(user, segment, COLLECTION, id);
-        assertCanView(user, entry);
-        return entry;
-    }
-
     @Transactional
     public JsonNode create(User user, String segment, JsonNode body) {
         ObjectNode payload = body instanceof ObjectNode objectNode
@@ -74,13 +68,6 @@ public class ActivityStreamService {
         JsonNode existing = userCollectionAccessService.getById(user, segment, COLLECTION, id);
         assertCanManage(user, existing);
         userCollectionAccessService.delete(user, segment, COLLECTION, id);
-    }
-
-    private void assertCanView(User user, JsonNode entry) {
-        if (isAdmin(user) || ActivityActorMetadata.belongsToUser(entry, user.getId())) {
-            return;
-        }
-        throw new ForbiddenException("history.activity.error.forbidden");
     }
 
     private void assertCanManage(User user, JsonNode entry) {

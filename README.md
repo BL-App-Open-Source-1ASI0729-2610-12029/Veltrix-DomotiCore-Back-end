@@ -277,13 +277,9 @@ Resources:
 - `automation-builder-actions`
 - `automation-suggested-templates`
 
-### Device Detail Commands
+### Device Details
 
-| Method | Endpoint |
-|--------|----------|
-| PATCH | `/api/v1/device-details/{id}/temperature` |
-| PATCH | `/api/v1/device-details/{id}/operation-mode` |
-| PATCH | `/api/v1/device-details/{id}/timer` |
+Use `PATCH /api/v1/device-details/{id}` for temperature, mode, timer, rename and power state updates.
 
 ### SME Automation
 

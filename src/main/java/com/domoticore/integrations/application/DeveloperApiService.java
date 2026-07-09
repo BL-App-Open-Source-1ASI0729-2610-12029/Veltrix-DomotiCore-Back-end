@@ -47,12 +47,6 @@ public class DeveloperApiService {
         return result;
     }
 
-    public JsonNode getDeviceStatus(User user, String deviceId) {
-        String segment = resolveSegment(user);
-        JsonNode device = userCollectionAccessService.getById(user, segment, DEVICE_DETAILS_COLLECTION, deviceId);
-        return toDeviceStatus(device);
-    }
-
     private ObjectNode toDeviceStatus(JsonNode device) {
         ObjectNode status = objectMapper.createObjectNode();
         status.put("id", device.path("id").asText());

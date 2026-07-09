@@ -3,7 +3,6 @@ package com.domoticore.history.presentation;
 import com.domoticore.history.application.ActivityStreamService;
 import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
 import com.domoticore.shared.infrastructure.config.openapi.ApiDeleteResponses;
-import com.domoticore.shared.infrastructure.config.openapi.ApiGetByIdResponses;
 import com.domoticore.shared.infrastructure.config.openapi.ApiGetListResponses;
 import com.domoticore.shared.infrastructure.config.openapi.ApiPatchMutationResponses;
 import com.domoticore.shared.infrastructure.config.openapi.ApiPostCreateResponses;
@@ -46,15 +45,6 @@ public class ActivityStreamsController {
     public List<JsonNode> list() {
         var user = currentUserProvider.requireUser();
         return activityStreamService.list(user, currentUserProvider.requireSegment());
-    }
-
-    @GetMapping("/{id}")
-    @ApiAuthenticatedGetResponses
-    @ApiGetByIdResponses
-    @Operation(summary = "Get activity stream entry by id")
-    public JsonNode getById(@PathVariable String id) {
-        var user = currentUserProvider.requireUser();
-        return activityStreamService.getById(user, currentUserProvider.requireSegment(), id);
     }
 
     @PostMapping
