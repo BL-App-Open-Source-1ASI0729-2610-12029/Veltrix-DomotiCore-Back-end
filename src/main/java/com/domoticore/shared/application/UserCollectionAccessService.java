@@ -3,7 +3,7 @@ package com.domoticore.shared.application;
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.infrastructure.JsonResourceEntity;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
-import com.domoticore.shared.security.UserDataScopeResolver;
+import com.domoticore.shared.infrastructure.security.UserDataScopeResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

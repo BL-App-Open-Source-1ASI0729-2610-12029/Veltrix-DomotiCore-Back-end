@@ -1,7 +1,5 @@
 /**
- * DDD bounded context package.
- * Target structure:
- * domain/model, application/commandservices|queryservices|internal,
- * infrastructure/persistence/jpa, interfaces/resources|transform.
+ * Automation bounded context with DDD layers:
+ * domain.model, application, infrastructure, presentation.
  */
 package com.domoticore.automation;

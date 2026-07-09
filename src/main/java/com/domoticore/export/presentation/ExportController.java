@@ -1,8 +1,8 @@
 package com.domoticore.export.presentation;
 
 import com.domoticore.export.application.ExportService;
-import com.domoticore.shared.security.CurrentUserProvider;
-import com.domoticore.shared.security.PlatformPermission;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.security.PlatformPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;

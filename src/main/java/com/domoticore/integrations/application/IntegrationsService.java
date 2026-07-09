@@ -1,7 +1,7 @@
 package com.domoticore.integrations.application;
 
 import com.domoticore.shared.application.UserScopedJsonResourceService;
-import com.domoticore.shared.exception.ResourceNotFoundException;
+import com.domoticore.shared.domain.model.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;

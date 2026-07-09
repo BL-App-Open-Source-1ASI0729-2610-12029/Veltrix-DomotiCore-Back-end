@@ -1,0 +1,17 @@
+package com.domoticore.shared.infrastructure.security;
+
+public enum PlatformPermission {
+    SEGMENT_BOTH,
+    TEAM_MANAGE,
+    TEAM_INVITE,
+    TEAM_DELETE,
+    SETTINGS_ACCESS,
+    SETTINGS_SYSTEM,
+    SETTINGS_AUTHORIZED_USERS,
+    DEVICES_DELETE,
+    MAINTENANCE_REGISTER,
+    EXPORT_DATA,
+    GATEWAY_MANAGE,
+    INTEGRATIONS_MANAGE,
+    BUSINESS_PROFILE
+}

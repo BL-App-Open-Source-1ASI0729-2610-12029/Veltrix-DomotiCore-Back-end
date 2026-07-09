@@ -1,8 +1,8 @@
 package com.domoticore.teammanagement.presentation;
 
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedPatchResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.teammanagement.application.TeamManagementService;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class TeamManagementController {
     @ApiAuthenticatedGetResponses
     @Operation(summary = "Get team management snapshot (members, zones, summary)")
     public JsonNode getTeamManagement() {
-        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.TEAM_MANAGE);
+        currentUserProvider.requirePermission(com.domoticore.shared.infrastructure.security.PlatformPermission.TEAM_MANAGE);
         return teamManagementService.getSnapshot(currentUserProvider.requireUserId());
     }
 

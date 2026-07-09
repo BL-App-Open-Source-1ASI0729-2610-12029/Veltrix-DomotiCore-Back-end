@@ -2,9 +2,22 @@
 skinparam packageStyle rectangle
 
 package "shared" {
-  class Result
-  class GlobalExceptionHandler
-  class SnakeCasePhysicalNamingStrategy
+  package "domain.model" {
+    class Result
+    class ApiError
+  }
+  package "application" {
+    class JsonResourceService
+  }
+  package "infrastructure" {
+    class JsonResourceRepository
+    class SnakeCasePhysicalNamingStrategy
+    class SecurityConfig
+  }
+  package "presentation" {
+    class GlobalExceptionHandler
+    class AbstractJsonCollectionController
+  }
 }
 
 package "iam" {
@@ -15,14 +28,21 @@ package "iam" {
     class LoginUserCommand
     class GetUserByIdQuery
   }
-
-  interface UserCommandService
-  interface UserQueryService
-  class UserCommandServiceImpl
-  class UserQueryServiceImpl
-  class UserRepository
-  class AuthController
-  class UserController
+  package "application" {
+    interface UserCommandService
+    interface UserQueryService
+    class UserCommandServiceImpl
+    class UserQueryServiceImpl
+  }
+  package "infrastructure" {
+    class UserRepository
+    class UserResponseAssembler
+    class LoginRequest
+  }
+  package "presentation" {
+    class AuthController
+    class UserController
+  }
 }
 
 UserCommandService <|.. UserCommandServiceImpl

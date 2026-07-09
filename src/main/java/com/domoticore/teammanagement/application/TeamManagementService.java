@@ -2,8 +2,8 @@ package com.domoticore.teammanagement.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.application.UserScopedJsonResourceService;
-import com.domoticore.shared.security.PlatformPermission;
-import com.domoticore.shared.security.RolePermissionService;
+import com.domoticore.shared.infrastructure.security.PlatformPermission;
+import com.domoticore.shared.infrastructure.security.RolePermissionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

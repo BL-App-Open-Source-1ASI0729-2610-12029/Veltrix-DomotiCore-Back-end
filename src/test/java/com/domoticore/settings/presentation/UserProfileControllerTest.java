@@ -1,9 +1,9 @@
 package com.domoticore.settings.presentation;
 
 import com.domoticore.settings.application.UserProfileService;
-import com.domoticore.shared.security.CurrentUserProvider;
-import com.domoticore.shared.security.JwtAuthenticationFilter;
-import com.domoticore.shared.security.JwtService;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter;
+import com.domoticore.shared.infrastructure.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;

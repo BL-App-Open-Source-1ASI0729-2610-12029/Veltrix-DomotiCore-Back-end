@@ -9,7 +9,7 @@ import com.domoticore.iam.domain.model.commands.RegisterUserCommand;
 import com.domoticore.iam.domain.model.commands.UpdateUserCommand;
 import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import com.domoticore.settings.application.UserProfileService;
-import com.domoticore.shared.application.result.Result;
+import com.domoticore.shared.domain.model.Result;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

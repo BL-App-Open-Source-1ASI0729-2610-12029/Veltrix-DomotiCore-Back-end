@@ -1,6 +1,6 @@
 package com.domoticore.shared.application;
 
-import com.domoticore.shared.exception.ResourceNotFoundException;
+import com.domoticore.shared.domain.model.ResourceNotFoundException;
 import com.domoticore.shared.infrastructure.JsonResourceEntity;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

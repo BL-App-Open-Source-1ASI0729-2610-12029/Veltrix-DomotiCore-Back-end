@@ -5,7 +5,7 @@ import com.domoticore.iam.domain.model.commands.ChangePasswordCommand;
 import com.domoticore.iam.domain.model.commands.LoginUserCommand;
 import com.domoticore.iam.domain.model.commands.RegisterUserCommand;
 import com.domoticore.iam.domain.model.commands.UpdateUserCommand;
-import com.domoticore.shared.application.result.Result;
+import com.domoticore.shared.domain.model.Result;
 
 public interface UserCommandService {
 

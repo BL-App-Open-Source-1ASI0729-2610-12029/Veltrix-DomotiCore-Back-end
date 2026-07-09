@@ -1,9 +1,9 @@
 package com.domoticore.maintenance.presentation;
 
 import com.domoticore.maintenance.application.MaintenanceService;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.config.openapi.ApiPostCreateResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiPostCreateResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +41,7 @@ public class MaintenanceController {
     @ApiPostCreateResponses
     @Operation(summary = "Register a completed maintenance visit")
     public JsonNode registerRecord(@RequestBody JsonNode body) {
-        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.MAINTENANCE_REGISTER);
+        currentUserProvider.requirePermission(com.domoticore.shared.infrastructure.security.PlatformPermission.MAINTENANCE_REGISTER);
         return maintenanceService.registerRecord(currentUserProvider.requireUserId(), body);
     }
 }

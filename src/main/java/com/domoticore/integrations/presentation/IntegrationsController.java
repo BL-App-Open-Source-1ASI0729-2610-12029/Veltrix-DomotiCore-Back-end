@@ -1,11 +1,11 @@
 package com.domoticore.integrations.presentation;
 
 import com.domoticore.integrations.application.IntegrationsService;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
-import com.domoticore.shared.config.openapi.ApiDeleteResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
-import com.domoticore.shared.security.PlatformPermission;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedPatchResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiDeleteResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.security.PlatformPermission;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

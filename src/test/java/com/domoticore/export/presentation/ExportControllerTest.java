@@ -1,10 +1,10 @@
 package com.domoticore.export.presentation;
 
 import com.domoticore.export.application.ExportService;
-import com.domoticore.shared.security.CurrentUserProvider;
-import com.domoticore.shared.security.JwtAuthenticationFilter;
-import com.domoticore.shared.security.JwtService;
-import com.domoticore.shared.security.PlatformPermission;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter;
+import com.domoticore.shared.infrastructure.security.JwtService;
+import com.domoticore.shared.infrastructure.security.PlatformPermission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

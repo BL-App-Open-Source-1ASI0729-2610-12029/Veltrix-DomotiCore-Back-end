@@ -2,11 +2,11 @@ package com.domoticore.automation.presentation;
 
 import com.domoticore.automation.application.AutomationActionService;
 import com.domoticore.shared.application.UserCollectionAccessService;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
-import com.domoticore.shared.config.openapi.ApiGetListResponses;
-import com.domoticore.shared.config.openapi.ApiPostActionResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiGetByIdResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiGetListResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiPostActionResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.oas.annotations.Operation;

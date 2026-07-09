@@ -2,7 +2,7 @@ package com.domoticore.integrations.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.application.UserCollectionAccessService;
-import com.domoticore.shared.security.UserDataScopeResolver;
+import com.domoticore.shared.infrastructure.security.UserDataScopeResolver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;

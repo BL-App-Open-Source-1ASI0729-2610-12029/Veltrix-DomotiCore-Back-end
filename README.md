@@ -182,24 +182,47 @@ Production env vars:
 
 ## Architecture
 
+Each bounded context follows the [Learning Center](https://github.com/upc-pre-202610-1asi0729-11848/learning-center) DDD layout:
+
 ```text
-com.domoticore
-Ôö£ÔöÇÔöÇ iam                 auth, users, onboarding
-Ôö£ÔöÇÔöÇ settings            user-profile/me
-Ôö£ÔöÇÔöÇ devicecontrol       devices overview, details and commands
-Ôö£ÔöÇÔöÇ security            cameras, locks, authorized users, logs
-Ôö£ÔöÇÔöÇ automation          rules, schedules, scenes, zone configuration
-Ôö£ÔöÇÔöÇ history             activity, notifications, cost analysis
-Ôö£ÔöÇÔöÇ integrations        business profile
-Ôö£ÔöÇÔöÇ teammanagement      SME team snapshot and mutations
-Ôö£ÔöÇÔöÇ smeoperations       operations hub snapshots
-ÔööÔöÇÔöÇ shared              security, JSON store, exceptions, seed, helpers
+domain/model -> application -> infrastructure -> presentation
 ```
 
-Contexts follow the project convention:
+```text
+com.domoticore
+├── iam                 auth, users, onboarding
+├── settings            user-profile/me
+├── devicecontrol       devices overview, details and commands
+├── security            cameras, locks, authorized users, logs
+├── automation          rules, schedules, scenes, zone configuration
+├── history             activity, notifications, cost analysis
+├── integrations        business profile, developer API
+├── teammanagement      SME team snapshot and mutations
+├── smeoperations       operations hub snapshots
+├── dashboard           aggregated dashboard snapshot
+├── export              CSV/Excel/PDF exports
+├── gateway             gateway link and node management
+├── maintenance         maintenance records
+└── shared              cross-cutting domain, application, infrastructure and presentation
+```
+
+### Layer responsibilities
+
+| Layer | Responsibility |
+|-------|----------------|
+| `domain/model` | Aggregates, entities, commands, queries, value objects |
+| `application` | Use cases, application services, CQRS handlers |
+| `infrastructure` | Persistence, DTOs, assemblers, security, config |
+| `presentation` | REST controllers and API error handling |
+
+### Shared kernel
 
 ```text
-domain -> application -> infrastructure -> presentation
+shared/
+├── domain/model        Result, ApiError, domain exceptions
+├── application         JsonResourceService and cross-context helpers
+├── infrastructure      JPA repositories, JWT, Spring config, seed data
+└── presentation        Base controllers, GlobalExceptionHandler
 ```
 
 The project uses regular JPA for users and a generic `json_resources` table for demo/domain resources that mirror the frontend JSON contracts.

@@ -1,8 +1,8 @@
 package com.domoticore.devicecontrol.presentation;
 
 import com.domoticore.shared.application.UserCollectionAccessService;
-import com.domoticore.shared.config.openapi.ApiPatchMutationResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiPatchMutationResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

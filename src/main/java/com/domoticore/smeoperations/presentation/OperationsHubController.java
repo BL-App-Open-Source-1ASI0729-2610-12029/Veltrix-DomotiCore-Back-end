@@ -1,7 +1,7 @@
 package com.domoticore.smeoperations.presentation;
 
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.smeoperations.application.OperationsHubService;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;

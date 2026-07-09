@@ -3,7 +3,7 @@ package com.domoticore.settings.application;
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import com.domoticore.shared.application.JsonResourceService;
-import com.domoticore.shared.exception.ResourceNotFoundException;
+import com.domoticore.shared.domain.model.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

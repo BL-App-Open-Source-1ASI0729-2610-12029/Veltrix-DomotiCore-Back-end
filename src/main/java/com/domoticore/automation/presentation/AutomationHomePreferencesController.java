@@ -1,9 +1,9 @@
 package com.domoticore.automation.presentation;
 
 import com.domoticore.automation.application.AutomationHomePreferencesService;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedPatchResponses;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedPatchResponses;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

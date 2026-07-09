@@ -2,7 +2,7 @@ package com.domoticore.integrations.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
-import com.domoticore.shared.exception.UnauthorizedException;
+import com.domoticore.shared.domain.model.UnauthorizedException;
 import com.domoticore.shared.infrastructure.JsonResourceEntity;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

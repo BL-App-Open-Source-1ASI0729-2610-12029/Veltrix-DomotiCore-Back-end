@@ -2,9 +2,9 @@ package com.domoticore.devicecontrol.presentation;
 
 import com.domoticore.devicecontrol.application.DevicesOverviewRefreshService;
 import com.domoticore.shared.application.UserCollectionAccessService;
-import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
-import com.domoticore.shared.interfaces.AbstractUserScopedJsonCollectionController;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedGetResponses;
+import com.domoticore.shared.presentation.AbstractUserScopedJsonCollectionController;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

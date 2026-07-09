@@ -2,7 +2,7 @@ package com.domoticore.devicecontrol.presentation;
 
 import com.domoticore.devicecontrol.application.DevicesOverviewRefreshService;
 import com.domoticore.shared.application.UserCollectionAccessService;
-import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.iam.domain.model.aggregates.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,10 +47,10 @@ class DevicesOverviewControllerTest {
     private CurrentUserProvider currentUserProvider;
 
     @MockBean
-    private com.domoticore.shared.security.JwtService jwtService;
+    private com.domoticore.shared.infrastructure.security.JwtService jwtService;
 
     @MockBean
-    private com.domoticore.shared.security.JwtAuthenticationFilter jwtAuthenticationFilter;
+    private com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @BeforeEach
     void setUp() {
