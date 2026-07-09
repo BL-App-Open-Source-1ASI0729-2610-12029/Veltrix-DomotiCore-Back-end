@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -106,6 +107,15 @@ public class AutomationOperationsController {
         var user = currentUserProvider.requireUser();
         return userCollectionAccessService.getSingleton(
                 user, currentUserProvider.requireSegment(), SHUTDOWN_PROTOCOL, "closing-time");
+    }
+
+    @PutMapping("/shutdown-protocol")
+    @ApiPostActionResponses
+    @Operation(summary = "Update facility shutdown protocol")
+    public JsonNode saveShutdownProtocol(@RequestBody ObjectNode body) {
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.patch(
+                user, currentUserProvider.requireSegment(), SHUTDOWN_PROTOCOL, "closing-time", body);
     }
 
     @GetMapping("/efficiency-insights")

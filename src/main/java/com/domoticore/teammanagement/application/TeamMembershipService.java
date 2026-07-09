@@ -1,8 +1,11 @@
 package com.domoticore.teammanagement.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.application.JsonResourceService;
 import com.domoticore.shared.application.UserScopedJsonResourceService;
 import com.domoticore.teammanagement.domain.model.TeamInvitation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -15,22 +18,27 @@ import java.util.Locale;
 @Service
 public class TeamMembershipService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TeamMembershipService.class);
     private static final String TEAM_MANAGEMENT_COLLECTION = "team-management";
     private static final String TEAM_MEMBERSHIP_COLLECTION = "team-membership";
     private static final String TEMPLATE_ID = "default";
 
     private final UserScopedJsonResourceService scopedJsonResourceService;
+    private final JsonResourceService jsonResourceService;
     private final ObjectMapper objectMapper;
 
     public TeamMembershipService(
             UserScopedJsonResourceService scopedJsonResourceService,
+            JsonResourceService jsonResourceService,
             ObjectMapper objectMapper) {
         this.scopedJsonResourceService = scopedJsonResourceService;
+        this.jsonResourceService = jsonResourceService;
         this.objectMapper = objectMapper;
     }
 
     @Transactional(readOnly = true)
     public JsonNode getMine(User user) {
+        ensureCollectionTemplate(TEAM_MEMBERSHIP_COLLECTION);
         return scopedJsonResourceService.getOrCreateFromTemplate(
                 TEAM_MEMBERSHIP_COLLECTION,
                 user.getId(),
@@ -39,12 +47,39 @@ public class TeamMembershipService {
 
     @Transactional
     public void activateAcceptedInvitation(User invitee, TeamInvitation invitation) {
+        ensureCollectionTemplate(TEAM_MEMBERSHIP_COLLECTION);
+
         if (invitation.getRecipientUserId() == null) {
             invitation.setRecipientUserId(invitee.getId());
         }
 
-        activateInviterMember(invitation, invitee);
+        try {
+            activateInviterMember(invitation, invitee);
+        } catch (RuntimeException ex) {
+            LOGGER.warn(
+                    "Could not update inviter team snapshot for invitation {}: {}",
+                    invitation.getId(),
+                    ex.getMessage());
+        }
+
         upsertInviteeMembership(invitee, invitation);
+    }
+
+    private void ensureCollectionTemplate(String collectionName) {
+        if (jsonResourceService.exists(collectionName, TEMPLATE_ID)) {
+            return;
+        }
+
+        ObjectNode template = objectMapper.createObjectNode();
+        template.put("id", TEMPLATE_ID);
+        if (TEAM_MEMBERSHIP_COLLECTION.equals(collectionName)) {
+            template.set("memberships", objectMapper.createArrayNode());
+        } else if (TEAM_MANAGEMENT_COLLECTION.equals(collectionName)) {
+            template.set("members", objectMapper.createArrayNode());
+            template.set("zonePermissions", objectMapper.createArrayNode());
+        }
+        jsonResourceService.create(collectionName, template);
+        LOGGER.info("Created missing JSON template {}/{}", collectionName, TEMPLATE_ID);
     }
 
     private void activateInviterMember(TeamInvitation invitation, User invitee) {

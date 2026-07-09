@@ -3,6 +3,9 @@ package com.domoticore.iam.presentation;
 import com.domoticore.iam.application.commandservices.UserCommandService;
 import com.domoticore.iam.application.queryservices.UserQueryService;
 import com.domoticore.iam.domain.model.queries.GetUserByIdQuery;
+import com.domoticore.iam.domain.model.queries.ListUsersQuery;
+import com.domoticore.shared.infrastructure.security.PlatformPermission;
+import com.domoticore.shared.infrastructure.security.RolePermissionService;
 import com.domoticore.iam.infrastructure.ChangePasswordRequest;
 import com.domoticore.iam.infrastructure.UpdateUserRequest;
 import com.domoticore.iam.infrastructure.UserResponse;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @Tag(name = "Users")
@@ -35,18 +40,31 @@ public class UserController {
     private final UserCommandFromResourceAssembler commandAssembler;
     private final UserResponseAssembler responseAssembler;
     private final CurrentUserProvider currentUserProvider;
+    private final RolePermissionService rolePermissionService;
 
     public UserController(
             UserCommandService userCommandService,
             UserQueryService userQueryService,
             UserCommandFromResourceAssembler commandAssembler,
             UserResponseAssembler responseAssembler,
-            CurrentUserProvider currentUserProvider) {
+            CurrentUserProvider currentUserProvider,
+            RolePermissionService rolePermissionService) {
         this.userCommandService = userCommandService;
         this.userQueryService = userQueryService;
         this.commandAssembler = commandAssembler;
         this.responseAssembler = responseAssembler;
         this.currentUserProvider = currentUserProvider;
+        this.rolePermissionService = rolePermissionService;
+    }
+
+    @GetMapping
+    @ApiUserSelfResponses
+    @Operation(summary = "List users for team invitations (requires TEAM_INVITE)")
+    public List<UserResponse> listUsers() {
+        rolePermissionService.require(currentUserProvider.requireUser(), PlatformPermission.TEAM_INVITE);
+        return userQueryService.handle(new ListUsersQuery()).stream()
+                .map(UserResponse::from)
+                .toList();
     }
 
     @GetMapping("/{id}")

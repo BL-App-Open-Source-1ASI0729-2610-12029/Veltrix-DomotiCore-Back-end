@@ -5,6 +5,7 @@ import com.domoticore.shared.infrastructure.config.openapi.ApiAuthenticatedPatch
 import com.domoticore.shared.infrastructure.config.openapi.ApiPostCreateResponses;
 import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.teammanagement.application.TeamInvitationService;
+import com.domoticore.teammanagement.infrastructure.AcceptInvitationByTokenRequest;
 import com.domoticore.teammanagement.infrastructure.SendTeamInvitationRequest;
 import com.domoticore.teammanagement.infrastructure.TeamInvitationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,6 +60,13 @@ public class TeamInvitationsController {
         return teamInvitationService.listSent(currentUserProvider.requireUser());
     }
 
+    @GetMapping("/by-token/{token}")
+    @ApiAuthenticatedGetResponses
+    @Operation(summary = "Find a pending invitation by email token for the current user")
+    public TeamInvitationResponse findByToken(@PathVariable String token) {
+        return teamInvitationService.findByTokenForUser(currentUserProvider.requireUser(), token);
+    }
+
     @PatchMapping("/{id}/read")
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Mark an invitation notification as read")
@@ -71,6 +79,13 @@ public class TeamInvitationsController {
     @Operation(summary = "Accept a pending team invitation")
     public TeamInvitationResponse accept(@PathVariable String id) {
         return teamInvitationService.accept(currentUserProvider.requireUser(), id);
+    }
+
+    @PostMapping("/accept-by-token")
+    @ApiPostCreateResponses
+    @Operation(summary = "Accept a pending team invitation using the email token")
+    public TeamInvitationResponse acceptByToken(@Valid @RequestBody AcceptInvitationByTokenRequest request) {
+        return teamInvitationService.acceptByToken(currentUserProvider.requireUser(), request.token());
     }
 
     @PostMapping("/{id}/decline")

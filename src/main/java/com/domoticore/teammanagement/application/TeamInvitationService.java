@@ -137,6 +137,29 @@ public class TeamInvitationService {
         return toResponse(invitationRepository.save(invitation));
     }
 
+    @Transactional(readOnly = true)
+    public TeamInvitationResponse findByTokenForUser(User user, String token) {
+        TeamInvitation invitation = invitationRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("team.invitation.error.notFound"));
+
+        boolean matchesEmail = invitation.getRecipientEmail().equalsIgnoreCase(user.getEmail());
+        boolean matchesUserId = invitation.getRecipientUserId() != null
+                && invitation.getRecipientUserId().equals(user.getId());
+
+        if (!matchesEmail && !matchesUserId) {
+            throw new ForbiddenException("team.invitation.error.forbidden");
+        }
+
+        return toResponse(invitation);
+    }
+
+    @Transactional
+    public TeamInvitationResponse acceptByToken(User user, String token) {
+        TeamInvitation invitation = invitationRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("team.invitation.error.notFound"));
+        return accept(user, invitation.getId());
+    }
+
     @Transactional
     public TeamInvitationResponse accept(User user, String invitationId) {
         TeamInvitation invitation = requireRecipientInvitation(user, invitationId);

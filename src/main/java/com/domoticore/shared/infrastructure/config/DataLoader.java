@@ -50,6 +50,7 @@ public class DataLoader {
             "automation-upcoming-events",
             "automation-smart-suggestion",
             "team-management",
+            "team-membership",
             "business-profile",
             "operations-hub-snapshot",
             "smart-integrations"
