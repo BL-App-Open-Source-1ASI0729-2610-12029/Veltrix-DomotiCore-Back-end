@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,6 +73,14 @@ public class AutomationOperationsController {
     public JsonNode createRule(@RequestBody ObjectNode body) {
         var user = currentUserProvider.requireUser();
         return automationActionService.createRule(user, currentUserProvider.requireSegment(), body);
+    }
+
+    @PatchMapping("/rules/{id}")
+    @ApiPostActionResponses
+    @Operation(summary = "Update automation rule schedule and metadata")
+    public JsonNode patchRule(@PathVariable String id, @RequestBody ObjectNode body) {
+        var user = currentUserProvider.requireUser();
+        return userCollectionAccessService.patch(user, currentUserProvider.requireSegment(), RULES, id, body);
     }
 
     @PostMapping("/shutdown-protocol/steps/{stepId}/toggle")
