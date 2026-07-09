@@ -51,7 +51,7 @@ class TeamManagementControllerTest {
     @BeforeEach
     void setUp() {
         when(currentUserProvider.requireUserId()).thenReturn(7L);
-        when(currentUserProvider.requireUser()).thenReturn(new User());
+        when(currentUserProvider.requireUser()).thenReturn(User.newEmpty());
         doNothing().when(currentUserProvider).requirePermission(any());
     }
 

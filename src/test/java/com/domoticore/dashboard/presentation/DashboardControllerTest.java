@@ -1,6 +1,7 @@
 package com.domoticore.dashboard.presentation;
 
 import com.domoticore.dashboard.application.DashboardService;
+import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter;
 import com.domoticore.shared.infrastructure.security.JwtService;
@@ -43,7 +44,7 @@ class DashboardControllerTest {
         dashboard.put("totalDevices", 12);
         dashboard.put("hasDevices", true);
 
-        when(currentUserProvider.requireUser()).thenReturn(new com.domoticore.iam.domain.model.aggregates.User());
+        when(currentUserProvider.requireUser()).thenReturn(User.newEmpty());
         when(currentUserProvider.requireSegment()).thenReturn("smart-home");
         when(dashboardService.getDashboard(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("smart-home")))
                 .thenReturn(dashboard);

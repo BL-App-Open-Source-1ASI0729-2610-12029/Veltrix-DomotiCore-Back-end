@@ -1,6 +1,7 @@
 package com.domoticore.export.presentation;
 
 import com.domoticore.export.application.ExportService;
+import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter;
 import com.domoticore.shared.infrastructure.security.JwtService;
@@ -40,7 +41,7 @@ class ExportControllerTest {
 
     @Test
     void exportReturnsAttachment() throws Exception {
-        when(currentUserProvider.requireUser()).thenReturn(new com.domoticore.iam.domain.model.aggregates.User());
+        when(currentUserProvider.requireUser()).thenReturn(User.newEmpty());
         when(currentUserProvider.requireSegment()).thenReturn("small-business");
         doNothing().when(currentUserProvider).requirePermission(PlatformPermission.EXPORT_DATA);
         when(exportService.export(

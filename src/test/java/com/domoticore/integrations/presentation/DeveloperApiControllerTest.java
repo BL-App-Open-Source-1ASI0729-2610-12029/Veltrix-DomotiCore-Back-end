@@ -1,6 +1,7 @@
 package com.domoticore.integrations.presentation;
 
 import com.domoticore.integrations.application.DeveloperApiService;
+import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.infrastructure.security.CurrentUserProvider;
 import com.domoticore.shared.infrastructure.security.JwtAuthenticationFilter;
 import com.domoticore.shared.infrastructure.security.JwtService;
@@ -39,7 +40,7 @@ class DeveloperApiControllerTest {
     @Test
     void listDevicesReturnsOk() throws Exception {
         ArrayNode devices = new ObjectMapper().createArrayNode();
-        when(currentUserProvider.requireUser()).thenReturn(new com.domoticore.iam.domain.model.aggregates.User());
+        when(currentUserProvider.requireUser()).thenReturn(User.newEmpty());
         when(developerApiService.listDeviceStatuses(org.mockito.ArgumentMatchers.any())).thenReturn(devices);
 
         mockMvc.perform(get("/api/v1/developer/devices"))
