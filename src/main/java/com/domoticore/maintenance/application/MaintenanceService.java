@@ -1,5 +1,7 @@
 package com.domoticore.maintenance.application;
 
+import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.application.ResourceAuditMetadata;
 import com.domoticore.shared.application.UserScopedJsonResourceService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +34,7 @@ public class MaintenanceService {
     }
 
     @Transactional
-    public JsonNode registerRecord(Long userId, JsonNode payload) {
+    public JsonNode registerRecord(User user, JsonNode payload) {
         String deviceName = payload.path("deviceName").asText("").trim();
         String description = payload.path("description").asText("").trim();
         String performedAt = payload.path("performedAt").asText("").trim();
@@ -51,15 +53,16 @@ public class MaintenanceService {
         if (payload.hasNonNull("technician") && !payload.path("technician").asText("").isBlank()) {
             record.put("technician", payload.path("technician").asText());
         }
+        ResourceAuditMetadata.stampCreated(record, user);
 
-        ArrayNode records = listRecords(userId);
+        ArrayNode records = listRecords(user.getId());
         ArrayNode updated = objectMapper.createArrayNode();
         updated.add(record);
         records.forEach(updated::add);
 
         ObjectNode patch = objectMapper.createObjectNode();
         patch.set("records", updated);
-        scopedJsonResourceService.patchFromTemplate(COLLECTION, userId, TEMPLATE_ID, patch);
+        scopedJsonResourceService.patchFromTemplate(COLLECTION, user.getId(), TEMPLATE_ID, patch);
         return record;
     }
 }

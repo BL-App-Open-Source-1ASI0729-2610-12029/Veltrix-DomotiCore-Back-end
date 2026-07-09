@@ -21,7 +21,6 @@ public class DeviceDetailsController extends AbstractUserScopedJsonCollectionCon
 
     @Override
     protected void beforeCreate() {
-        currentUserProvider.requirePermission(PlatformPermission.DEVICES_DELETE);
     }
 
     @Override

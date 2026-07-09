@@ -56,7 +56,8 @@
               "icon": "lightbulb",
               "connection": "online",
               "active": false,
-              "powerUsageW": 0
+              "powerUsageW": 0,
+              "usageCategory": "lighting"
             },
             {
               "id": "smart-ac",
@@ -64,7 +65,8 @@
               "icon": "acUnit",
               "connection": "online",
               "active": false,
-              "powerUsageW": 0
+              "powerUsageW": 0,
+              "usageCategory": "climate"
             },
             {
               "id": "entertainment-center",
@@ -72,7 +74,8 @@
               "icon": "tv",
               "connection": "online",
               "active": false,
-              "powerUsageW": 0
+              "powerUsageW": 0,
+              "usageCategory": "entertainment"
             },
             {
               "id": "floor-lamp",
@@ -80,7 +83,19 @@
               "icon": "plug",
               "connection": "offline",
               "active": false,
-              "powerUsageW": null
+              "powerUsageW": null,
+              "batteryPercent": 12,
+              "usageCategory": "lighting"
+            },
+            {
+              "id": "front-porch-cam",
+              "name": "Front Porch Camera",
+              "icon": "videocam",
+              "connection": "online",
+              "active": true,
+              "powerUsageW": 8,
+              "statusLabel": "Online • Live",
+              "usageCategory": "security"
             },
             {
               "id": "custom-1781146117204",
@@ -89,7 +104,8 @@
               "connection": "online",
               "active": false,
               "powerUsageW": 0,
-              "statusLabel": "Online • 0W"
+              "statusLabel": "Online • 0W",
+              "usageCategory": "generic"
             }
           ]
         },
@@ -106,7 +122,8 @@
               "connection": "online",
               "active": true,
               "powerUsageW": 850,
-              "statusLabel": "Online • 850W"
+              "statusLabel": "Online • 850W",
+              "usageCategory": "generic"
             },
             {
               "id": "smart-oven",
@@ -115,7 +132,8 @@
               "connection": "offline",
               "active": false,
               "powerUsageW": null,
-              "statusLabel": "Offline"
+              "statusLabel": "Offline",
+              "usageCategory": "generic"
             }
           ]
         },
@@ -135,7 +153,8 @@
               "connection": "online",
               "active": true,
               "powerUsageW": null,
-              "statusLabel": "Heating"
+              "statusLabel": "Heating",
+              "usageCategory": "climate"
             },
             {
               "id": "blinds",
@@ -144,7 +163,8 @@
               "connection": "online",
               "active": true,
               "powerUsageW": null,
-              "statusLabel": "65% Open"
+              "statusLabel": "65% Open",
+              "usageCategory": "generic"
             },
             {
               "id": "air-purifier",
@@ -152,7 +172,8 @@
               "icon": "airPurifier",
               "connection": "online",
               "active": true,
-              "powerUsageW": null
+              "powerUsageW": null,
+              "usageCategory": "climate"
             },
             {
               "id": "bedside-speaker",
@@ -160,7 +181,8 @@
               "icon": "speaker",
               "connection": "online",
               "active": false,
-              "powerUsageW": 0
+              "powerUsageW": 0,
+              "usageCategory": "entertainment"
             }
           ]
         }
@@ -381,7 +403,7 @@
   "activity-streams": [
     {
       "id": "as-1",
-      "occurredAt": "2026-06-07T14:32:00.000Z",
+      "occurredAt": "2026-07-09T14:32:00.000Z",
       "deviceName": "Living Room Pendant",
       "deviceModel": "Smart Bulb v2",
       "deviceIcon": "lightbulb",
@@ -394,7 +416,7 @@
     },
     {
       "id": "as-2",
-      "occurredAt": "2026-06-07T13:15:00.000Z",
+      "occurredAt": "2026-07-09T13:15:00.000Z",
       "deviceName": "Main Gate Sensor",
       "deviceModel": "Motion Sensor Pro",
       "deviceIcon": "door",
@@ -406,7 +428,7 @@
     },
     {
       "id": "as-3",
-      "occurredAt": "2026-06-07T12:00:00.000Z",
+      "occurredAt": "2026-07-08T12:00:00.000Z",
       "deviceName": "Master HVAC",
       "deviceModel": "Climate Hub X1",
       "deviceIcon": "acUnit",
@@ -419,7 +441,7 @@
     },
     {
       "id": "as-4",
-      "occurredAt": "2026-06-07T10:45:00.000Z",
+      "occurredAt": "2026-07-08T10:45:00.000Z",
       "deviceName": "Patio Camera",
       "deviceModel": "Cam Secure 4K",
       "deviceIcon": "videocam",
@@ -431,7 +453,7 @@
     },
     {
       "id": "as-5",
-      "occurredAt": "2026-06-07T09:20:00.000Z",
+      "occurredAt": "2026-07-07T09:20:00.000Z",
       "deviceName": "Living Room AC",
       "deviceModel": "Smart AC Unit",
       "deviceIcon": "acUnit",
@@ -444,7 +466,7 @@
     },
     {
       "id": "as-6",
-      "occurredAt": "2026-06-07T08:10:00.000Z",
+      "occurredAt": "2026-07-06T08:10:00.000Z",
       "deviceName": "Refrigerator",
       "deviceModel": "Kitchen Smart Fridge",
       "deviceIcon": "refrigerator",
@@ -512,25 +534,31 @@
     {
       "id": "living-room",
       "labelKey": "security.cameras.livingRoom",
-      "imageUrl": "assets/icons/smart-home/camera-living-room.jpg",
+      "imageUrl": "assets/icons/smart-home/camera-living-room.png",
+      "streamUrl": "assets/icons/smart-home/camera-living-room.png",
+      "mediaType": "gif",
       "isPrimary": true
     },
     {
       "id": "driveway",
       "labelKey": "security.cameras.driveway",
-      "imageUrl": "assets/icons/smart-home/camera-driveway.jpg",
+      "imageUrl": "assets/icons/smart-home/camera-driveway.png",
+      "streamUrl": "assets/icons/smart-home/camera-driveway.png",
+      "mediaType": "gif",
       "isPrimary": true
     },
     {
       "id": "patio",
       "labelKey": "security.cameras.patio",
-      "imageUrl": "assets/icons/smart-home/camera-driveway.jpg",
+      "imageUrl": "assets/icons/smart-home/camera-driveway.png",
+      "mediaType": "image",
       "isPrimary": false
     },
     {
       "id": "backyard",
       "labelKey": "security.cameras.backyard",
-      "imageUrl": "assets/icons/smart-home/camera-living-room.jpg",
+      "imageUrl": "assets/icons/smart-home/camera-living-room.png",
+      "mediaType": "image",
       "isPrimary": false
     }
   ],
@@ -592,7 +620,7 @@
       "time": "Today, 08:15 AM",
       "iconType": "enter",
       "tone": "success",
-      "snapshotUrl": "assets/icons/smart-home/snapshot-entry.jpg",
+      "snapshotUrl": "assets/icons/smart-home/snapshot-entry.png",
       "snapshotLabelKey": "security.log.snapshotSaved"
     },
     {

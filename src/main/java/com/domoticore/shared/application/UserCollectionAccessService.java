@@ -65,8 +65,11 @@ public class UserCollectionAccessService {
     public JsonNode create(User user, String segment, String collectionName, JsonNode body) {
         ensureSeeded(user.getId(), segment, collectionName);
         String publicId = extractPublicId(body);
-        ObjectNode payload = body.deepCopy();
+        ObjectNode payload = body instanceof ObjectNode objectNode
+                ? objectNode.deepCopy()
+                : objectMapper.convertValue(body, ObjectNode.class);
         payload.put("id", scopedResourceId(user.getId(), segment, publicId));
+        ResourceAuditMetadata.stampCreated(payload, user);
         JsonNode created = jsonResourceService.create(collectionName, payload);
         return toPublicNode(created, scopedResourceId(user.getId(), segment, publicId), prefix(user.getId(), segment));
     }
@@ -75,7 +78,11 @@ public class UserCollectionAccessService {
     public JsonNode patch(User user, String segment, String collectionName, String publicId, JsonNode body) {
         ensureSeeded(user.getId(), segment, collectionName);
         String scopedId = scopedResourceId(user.getId(), segment, publicId);
-        JsonNode patched = jsonResourceService.patch(collectionName, scopedId, body);
+        ObjectNode patch = body instanceof ObjectNode objectNode
+                ? ResourceAuditMetadata.sanitizePatch(objectNode)
+                : objectMapper.createObjectNode();
+        ResourceAuditMetadata.stampUpdated(patch, user);
+        JsonNode patched = jsonResourceService.patch(collectionName, scopedId, patch);
         return toPublicNode(patched, scopedId, prefix(user.getId(), segment));
     }
 
@@ -99,7 +106,10 @@ public class UserCollectionAccessService {
             String fieldName) {
         ensureSeeded(user.getId(), segment, collectionName);
         String scopedId = scopedResourceId(user.getId(), segment, publicId);
-        JsonNode toggled = jsonResourceService.toggleBooleanField(collectionName, scopedId, fieldName);
+        jsonResourceService.toggleBooleanField(collectionName, scopedId, fieldName);
+        ObjectNode auditPatch = objectMapper.createObjectNode();
+        ResourceAuditMetadata.stampUpdated(auditPatch, user);
+        JsonNode toggled = jsonResourceService.patch(collectionName, scopedId, auditPatch);
         return toPublicNode(toggled, scopedId, prefix(user.getId(), segment));
     }
 
@@ -121,6 +131,7 @@ public class UserCollectionAccessService {
             }
             ObjectNode copy = template.deepCopy();
             copy.put("id", scopedResourceId(userId, segment, templateId));
+            ResourceAuditMetadata.stampSystemSeed(copy);
             jsonResourceService.create(collectionName, copy);
         }
     }
