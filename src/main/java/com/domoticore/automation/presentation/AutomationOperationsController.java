@@ -8,11 +8,13 @@ import com.domoticore.shared.config.openapi.ApiGetListResponses;
 import com.domoticore.shared.config.openapi.ApiPostActionResponses;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,6 +63,30 @@ public class AutomationOperationsController {
         var user = currentUserProvider.requireUser();
         return userCollectionAccessService.toggleBooleanField(
                 user, currentUserProvider.requireSegment(), RULES, id, "active");
+    }
+
+    @PostMapping("/rules")
+    @ApiPostActionResponses
+    @Operation(summary = "Create a new automation rule")
+    public JsonNode createRule(@RequestBody ObjectNode body) {
+        var user = currentUserProvider.requireUser();
+        return automationActionService.createRule(user, currentUserProvider.requireSegment(), body);
+    }
+
+    @PostMapping("/shutdown-protocol/steps/{stepId}/toggle")
+    @ApiPostActionResponses
+    @Operation(summary = "Toggle shutdown protocol step enabled state")
+    public JsonNode toggleShutdownStep(@PathVariable String stepId) {
+        var user = currentUserProvider.requireUser();
+        return automationActionService.toggleShutdownStep(user, currentUserProvider.requireSegment(), stepId);
+    }
+
+    @PostMapping("/smart-suggestion/dismiss")
+    @ApiPostActionResponses
+    @Operation(summary = "Dismiss smart automation suggestion")
+    public JsonNode dismissSmartSuggestion() {
+        var user = currentUserProvider.requireUser();
+        return automationActionService.dismissSmartSuggestion(user, currentUserProvider.requireSegment());
     }
 
     @GetMapping("/group-schedules")

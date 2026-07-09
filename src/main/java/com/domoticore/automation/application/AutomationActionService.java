@@ -21,6 +21,8 @@ public class AutomationActionService {
     private static final String SCENES = "automation-active-scenes";
     private static final String SHUTDOWN_PROTOCOL = "automation-shutdown-protocol";
     private static final String DEVICE_DETAILS = "device-details";
+    private static final String RULES = "automation-rules";
+    private static final String SMART_SUGGESTION = "automation-smart-suggestion";
 
     private static final Set<String> SHUTDOWN_SCENES = Set.of("away-mode", "night-mode", "closing-time", "movie-night");
     private static final Set<String> START_SCENES = Set.of("morning-routine");
@@ -124,5 +126,62 @@ public class AutomationActionService {
         } catch (ResourceNotFoundException ex) {
             throw new ResourceNotFoundException("automation.scene.error.notFound:" + sceneId);
         }
+    }
+
+    @Transactional
+    public JsonNode createRule(User user, String segment, JsonNode body) {
+        String id = body.path("id").asText("rule-" + System.currentTimeMillis());
+        ObjectNode rule = objectMapper.createObjectNode();
+        rule.put("id", id);
+        rule.put("name", body.path("name").asText("Custom Rule"));
+        rule.put("description", body.path("description").asText("Custom facility automation scenario."));
+        rule.put("icon", body.path("icon").asText("auto_awesome"));
+        rule.put("active", body.path("active").asBoolean(true));
+        rule.put("group", body.path("group").asText("Custom Group"));
+        rule.put("status", body.path("status").asText("ACTIVE"));
+
+        ObjectNode timeline = objectMapper.createObjectNode();
+        JsonNode incomingTimeline = body.path("timeline");
+        timeline.put("startHour", incomingTimeline.path("startHour").asInt(8));
+        timeline.put("endHour", incomingTimeline.path("endHour").asInt(18));
+        timeline.put("label", incomingTimeline.path("label").asText(body.path("name").asText("Custom Rule")));
+        timeline.put("color", incomingTimeline.path("color").asText("#4263eb"));
+        rule.set("timeline", timeline);
+
+        return userCollectionAccessService.create(user, segment, RULES, rule);
+    }
+
+    @Transactional
+    public JsonNode toggleShutdownStep(User user, String segment, String stepId) {
+        JsonNode protocol = userCollectionAccessService.getSingleton(user, segment, SHUTDOWN_PROTOCOL, "closing-time");
+        ArrayNode steps = protocol.path("steps").isArray()
+                ? (ArrayNode) protocol.get("steps")
+                : objectMapper.createArrayNode();
+
+        ArrayNode updatedSteps = objectMapper.createArrayNode();
+        boolean found = false;
+        for (JsonNode step : steps) {
+            ObjectNode copy = step.deepCopy();
+            if (stepId.equals(step.path("id").asText())) {
+                copy.put("disabled", !step.path("disabled").asBoolean(false));
+                found = true;
+            }
+            updatedSteps.add(copy);
+        }
+
+        if (!found) {
+            throw new ResourceNotFoundException("automation.shutdown.error.stepNotFound:" + stepId);
+        }
+
+        ObjectNode patch = objectMapper.createObjectNode();
+        patch.set("steps", updatedSteps);
+        return userCollectionAccessService.patch(user, segment, SHUTDOWN_PROTOCOL, "closing-time", patch);
+    }
+
+    @Transactional
+    public JsonNode dismissSmartSuggestion(User user, String segment) {
+        ObjectNode patch = objectMapper.createObjectNode();
+        patch.put("visible", false);
+        return userCollectionAccessService.patch(user, segment, SMART_SUGGESTION, "default", patch);
     }
 }

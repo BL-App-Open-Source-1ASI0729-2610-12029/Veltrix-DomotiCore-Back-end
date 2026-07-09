@@ -20,4 +20,8 @@ public class BusinessDevicesService {
     public JsonNode getOverview(User user, String segment) {
         return userCollectionAccessService.getSingleton(user, segment, COLLECTION, DEFAULT_TEMPLATE);
     }
+
+    public JsonNode patchOverview(User user, String segment, JsonNode patch) {
+        return userCollectionAccessService.patch(user, segment, COLLECTION, DEFAULT_TEMPLATE, patch);
+    }
 }
