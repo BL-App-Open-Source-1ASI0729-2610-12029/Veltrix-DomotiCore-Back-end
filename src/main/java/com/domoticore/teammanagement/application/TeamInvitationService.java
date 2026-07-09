@@ -81,7 +81,7 @@ public class TeamInvitationService {
         }
 
         String invitationType = normalizeType(request.type());
-        TeamInvitation invitation = new TeamInvitation();
+        TeamInvitation invitation = TeamInvitation.newEmpty();
         invitation.setId("inv-" + System.currentTimeMillis());
         invitation.setInviterUserId(inviter.getId());
         invitation.setInviterName(inviter.getName());

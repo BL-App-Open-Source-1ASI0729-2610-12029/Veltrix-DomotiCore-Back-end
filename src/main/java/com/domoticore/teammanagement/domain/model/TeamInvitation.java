@@ -62,4 +62,8 @@ public class TeamInvitation {
 
     protected TeamInvitation() {
     }
+
+    public static TeamInvitation newEmpty() {
+        return new TeamInvitation();
+    }
 }
