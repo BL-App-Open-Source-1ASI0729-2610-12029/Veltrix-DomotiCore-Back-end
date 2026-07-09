@@ -29,18 +29,21 @@ public class UserCollectionAccessService {
     private final UserDataScopeResolver scopeResolver;
     private final ObjectMapper objectMapper;
     private final TeamDataScopeService teamDataScopeService;
+    private final GlobalCollectionTemplateService globalCollectionTemplateService;
 
     public UserCollectionAccessService(
             JsonResourceService jsonResourceService,
             JsonResourceRepository repository,
             UserDataScopeResolver scopeResolver,
             ObjectMapper objectMapper,
-            TeamDataScopeService teamDataScopeService) {
+            TeamDataScopeService teamDataScopeService,
+            GlobalCollectionTemplateService globalCollectionTemplateService) {
         this.jsonResourceService = jsonResourceService;
         this.repository = repository;
         this.scopeResolver = scopeResolver;
         this.objectMapper = objectMapper;
         this.teamDataScopeService = teamDataScopeService;
+        this.globalCollectionTemplateService = globalCollectionTemplateService;
     }
 
     public String resolveSegment(User user, String headerSegment) {
@@ -163,6 +166,8 @@ public class UserCollectionAccessService {
         if (repository.existsByCollectionNameAndResourceIdStartingWith(collectionName, scopePrefix)) {
             return;
         }
+
+        globalCollectionTemplateService.ensureGlobalTemplates(collectionName);
 
         for (JsonNode template : jsonResourceService.findAll(collectionName)) {
             String templateId = extractPublicId(template);

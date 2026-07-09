@@ -42,49 +42,89 @@ public class TeamDataScopeService {
         }
 
         JsonNode snapshot = teamMembershipService.getMine(actor);
-        JsonNode activeMembership = findActiveMembership(snapshot);
+        JsonNode activeMembership = findActiveMembership(snapshot, collectionName);
         if (activeMembership == null) {
             return TeamAccessContext.own(actor.getId(), ownSegment);
         }
 
-        Long inviterUserId = activeMembership.path("inviterUserId").asLong(0);
-        if (inviterUserId <= 0) {
+        Long inviterUserId = readInviterUserId(activeMembership);
+        if (inviterUserId == null || inviterUserId <= 0) {
             return TeamAccessContext.own(actor.getId(), ownSegment);
         }
 
-        String inviterSegment = activeMembership.path("inviterSegment").asText("");
-        if (inviterSegment.isBlank()) {
-            inviterSegment = userRepository.findById(inviterUserId)
-                    .map(inviter -> scopeResolver.resolveSegment(inviter, null))
-                    .orElse(ownSegment);
-        }
-
+        String inviterSegment = resolveInviterSegment(activeMembership, inviterUserId);
         List<String> zones = readZones(activeMembership);
         String teamRole = activeMembership.path("teamRole").asText("viewer");
-
-        if (!inviterSegment.equals(ownSegment)) {
-            return TeamAccessContext.own(actor.getId(), ownSegment);
-        }
 
         return new TeamAccessContext(inviterUserId, inviterSegment, true, zones, teamRole);
     }
 
-    private JsonNode findActiveMembership(JsonNode snapshot) {
+    private JsonNode findActiveMembership(JsonNode snapshot, String collectionName) {
         if (!snapshot.has("memberships") || !snapshot.get("memberships").isArray()) {
             return null;
         }
 
-        JsonNode fallback = null;
+        String requiredSegment = requiredSegmentForCollection(collectionName);
+        JsonNode globalFallback = null;
+        JsonNode segmentFallback = null;
+
         for (JsonNode membership : snapshot.get("memberships")) {
             if (!"active".equalsIgnoreCase(membership.path("status").asText(""))) {
                 continue;
             }
+
+            String inviterSegment = resolveInviterSegment(
+                    membership,
+                    readInviterUserId(membership));
+
             if (TeamZoneAccess.hasGlobalAccess(readZones(membership))) {
-                return membership;
+                globalFallback = membership;
             }
-            fallback = membership;
+            if (requiredSegment.equals(inviterSegment)) {
+                segmentFallback = membership;
+            }
         }
-        return fallback;
+
+        if (segmentFallback != null) {
+            return segmentFallback;
+        }
+        return globalFallback;
+    }
+
+    private String requiredSegmentForCollection(String collectionName) {
+        return "business-devices-overview".equals(collectionName) ? "small-business" : "smart-home";
+    }
+
+    private Long readInviterUserId(JsonNode membership) {
+        JsonNode node = membership.get("inviterUserId");
+        if (node == null || node.isNull()) {
+            return null;
+        }
+        if (node.isNumber()) {
+            return node.longValue();
+        }
+        String text = node.asText("").trim();
+        if (text.isEmpty()) {
+            return null;
+        }
+        try {
+            return Long.parseLong(text);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private String resolveInviterSegment(JsonNode membership, Long inviterUserId) {
+        String stored = membership.path("inviterSegment").asText("");
+        if (!stored.isBlank()) {
+            return stored;
+        }
+        if (inviterUserId == null || inviterUserId <= 0) {
+            return "smart-home";
+        }
+        return userRepository.findById(inviterUserId)
+                .map(inviter -> scopeResolver.resolveSegment(inviter, null))
+                .orElse("smart-home");
     }
 
     private List<String> readZones(JsonNode membership) {
