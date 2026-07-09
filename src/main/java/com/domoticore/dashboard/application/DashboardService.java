@@ -298,7 +298,7 @@ public class DashboardService {
             entry.put("id", card.path("id").asText());
             entry.put("name", card.path("name").asText());
             entry.put("room", zoneName);
-            disconnected.add(entry);
+            target.add(entry);
         }
     }
 
@@ -314,7 +314,7 @@ public class DashboardService {
             entry.put("id", row.path("id").asText());
             entry.put("name", row.path("name").asText());
             entry.put("room", zoneName);
-            disconnected.add(entry);
+            target.add(entry);
         }
     }
 
