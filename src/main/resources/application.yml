@@ -25,6 +25,17 @@ spring:
     default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: ${PORT:8080}
@@ -44,6 +55,10 @@ domoticore:
     expiration-ms: 86400000
   cors:
     allowed-origins: http://localhost:4200,http://127.0.0.1:4200
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:DomotiCore <no-reply@domoticore.local>}
+    frontend-url: ${DOMOTICORE_FRONTEND_URL:http://localhost:4200}
 
 springdoc:
   api-docs:
@@ -85,3 +100,7 @@ domoticore:
     secret: ${JWT_SECRET:domoticore-dev-secret-change-in-production-min-256-bits-long-key!!}
   cors:
     allowed-origins: ${DOMOTICORE_CORS_ORIGINS:http://localhost:4200,http://127.0.0.1:4200,https://*.vercel.app}
+  mail:
+    enabled: ${MAIL_ENABLED:true}
+    from: ${MAIL_FROM:DomotiCore <no-reply@domoticore.io>}
+    frontend-url: ${DOMOTICORE_FRONTEND_URL:https://veltrix-domoticore-front-end.vercel.app}
