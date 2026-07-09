@@ -1,5 +1,6 @@
 package com.domoticore.automation.presentation;
 
+import com.domoticore.automation.application.AutomationActionService;
 import com.domoticore.shared.application.UserCollectionAccessService;
 import com.domoticore.shared.config.openapi.ApiAuthenticatedGetResponses;
 import com.domoticore.shared.config.openapi.ApiGetByIdResponses;
@@ -32,12 +33,15 @@ public class AutomationOperationsController {
     private static final String TIMELINE = "automation-active-rule-timeline";
 
     private final UserCollectionAccessService userCollectionAccessService;
+    private final AutomationActionService automationActionService;
     private final CurrentUserProvider currentUserProvider;
 
     public AutomationOperationsController(
             UserCollectionAccessService userCollectionAccessService,
+            AutomationActionService automationActionService,
             CurrentUserProvider currentUserProvider) {
         this.userCollectionAccessService = userCollectionAccessService;
+        this.automationActionService = automationActionService;
         this.currentUserProvider = currentUserProvider;
     }
 
@@ -142,5 +146,21 @@ public class AutomationOperationsController {
         var user = currentUserProvider.requireUser();
         return userCollectionAccessService.getSingleton(
                 user, currentUserProvider.requireSegment(), TIMELINE, "default");
+    }
+
+    @PostMapping("/activate-eco-mode")
+    @ApiPostActionResponses
+    @Operation(summary = "Activate manual eco mode and reduce high-consumption devices")
+    public JsonNode activateEcoMode() {
+        var user = currentUserProvider.requireUser();
+        return automationActionService.activateEcoMode(user, currentUserProvider.requireSegment());
+    }
+
+    @PostMapping("/scenes/{id}/execute")
+    @ApiPostActionResponses
+    @Operation(summary = "Execute an automation scene and apply device actions")
+    public JsonNode executeScene(@PathVariable String id) {
+        var user = currentUserProvider.requireUser();
+        return automationActionService.executeScene(user, currentUserProvider.requireSegment(), id);
     }
 }

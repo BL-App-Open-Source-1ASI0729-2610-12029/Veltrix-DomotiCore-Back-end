@@ -1,6 +1,7 @@
 package com.domoticore.automation.presentation;
 
 import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.automation.application.AutomationActionService;
 import com.domoticore.shared.application.UserCollectionAccessService;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
@@ -35,6 +36,9 @@ class AutomationOperationsControllerTest {
 
     @MockBean
     private UserCollectionAccessService userCollectionAccessService;
+
+    @MockBean
+    private AutomationActionService automationActionService;
 
     @MockBean
     private CurrentUserProvider currentUserProvider;

@@ -1,5 +1,6 @@
 package com.domoticore.teammanagement.presentation;
 
+import com.domoticore.iam.domain.model.aggregates.User;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.shared.security.JwtAuthenticationFilter;
 import com.domoticore.shared.security.JwtService;
@@ -50,6 +51,7 @@ class TeamManagementControllerTest {
     @BeforeEach
     void setUp() {
         when(currentUserProvider.requireUserId()).thenReturn(7L);
+        when(currentUserProvider.requireUser()).thenReturn(new User());
         doNothing().when(currentUserProvider).requirePermission(any());
     }
 
@@ -73,7 +75,7 @@ class TeamManagementControllerTest {
         ObjectNode updated = objectMapper.createObjectNode();
         updated.put("totalMembers", 25);
 
-        when(teamManagementService.updateSnapshot(eq(7L), any())).thenReturn(updated);
+        when(teamManagementService.updateSnapshot(any(User.class), any())).thenReturn(updated);
 
         mockMvc.perform(patch("/api/v1/team-management")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,6 +83,6 @@ class TeamManagementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalMembers").value(25));
 
-        verify(teamManagementService).updateSnapshot(eq(7L), any());
+        verify(teamManagementService).updateSnapshot(any(User.class), any());
     }
 }

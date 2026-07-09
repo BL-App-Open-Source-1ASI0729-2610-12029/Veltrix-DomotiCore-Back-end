@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Device Details")
 public class DeviceDetailsController extends AbstractUserScopedJsonCollectionController {
 
-    private final CurrentUserProvider currentUserProvider;
-
     public DeviceDetailsController(
             UserCollectionAccessService userCollectionAccessService,
             CurrentUserProvider currentUserProvider) {
         super(userCollectionAccessService, currentUserProvider, "device-details");
-        this.currentUserProvider = currentUserProvider;
+    }
+
+    @Override
+    protected void beforeCreate() {
+        currentUserProvider.requirePermission(PlatformPermission.DEVICES_DELETE);
     }
 
     @Override

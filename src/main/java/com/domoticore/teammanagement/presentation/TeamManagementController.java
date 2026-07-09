@@ -40,7 +40,7 @@ public class TeamManagementController {
     @ApiAuthenticatedPatchResponses
     @Operation(summary = "Update team management snapshot")
     public JsonNode patchTeamManagement(@RequestBody JsonNode body) {
-        currentUserProvider.requirePermission(com.domoticore.shared.security.PlatformPermission.TEAM_MANAGE);
-        return teamManagementService.updateSnapshot(currentUserProvider.requireUserId(), body);
+        var user = currentUserProvider.requireUser();
+        return teamManagementService.updateSnapshot(user, body);
     }
 }

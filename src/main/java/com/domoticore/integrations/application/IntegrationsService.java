@@ -1,6 +1,7 @@
 package com.domoticore.integrations.application;
 
 import com.domoticore.shared.application.UserScopedJsonResourceService;
+import com.domoticore.shared.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -67,5 +68,87 @@ public class IntegrationsService {
         response.put("compatible", false);
         response.put("messageKey", "integrations.compatibility.notFound");
         return response;
+    }
+
+    @Transactional
+    public JsonNode createSchedule(Long userId, JsonNode schedule) {
+        ObjectNode integrations = readIntegrationsObject(userId);
+        ArrayNode schedules = schedulesArray(integrations);
+        ObjectNode entry = schedule.deepCopy();
+        if (!entry.hasNonNull("id")) {
+            entry.put("id", "sched-" + System.currentTimeMillis());
+        }
+        schedules.add(entry);
+        integrations.set("schedules", schedules);
+        return saveIntegrations(userId, integrations);
+    }
+
+    @Transactional
+    public JsonNode updateSchedule(Long userId, String scheduleId, JsonNode patch) {
+        ObjectNode integrations = readIntegrationsObject(userId);
+        ArrayNode schedules = schedulesArray(integrations);
+        for (int i = 0; i < schedules.size(); i++) {
+            JsonNode current = schedules.get(i);
+            if (!scheduleId.equals(current.path("id").asText())) {
+                continue;
+            }
+            ObjectNode merged = current.deepCopy();
+            patch.fields().forEachRemaining(field -> merged.set(field.getKey(), field.getValue()));
+            schedules.set(i, merged);
+            integrations.set("schedules", schedules);
+            JsonNode saved = saveIntegrations(userId, integrations);
+            return findSchedule(saved, scheduleId);
+        }
+        throw new ResourceNotFoundException("integrations.schedule.error.notFound:" + scheduleId);
+    }
+
+    @Transactional
+    public JsonNode deleteSchedule(Long userId, String scheduleId) {
+        ObjectNode integrations = readIntegrationsObject(userId);
+        ArrayNode schedules = schedulesArray(integrations);
+        ArrayNode updated = objectMapper.createArrayNode();
+        boolean removed = false;
+        for (JsonNode current : schedules) {
+            if (scheduleId.equals(current.path("id").asText())) {
+                removed = true;
+                continue;
+            }
+            updated.add(current);
+        }
+        if (!removed) {
+            throw new ResourceNotFoundException("integrations.schedule.error.notFound:" + scheduleId);
+        }
+        integrations.set("schedules", updated);
+        return saveIntegrations(userId, integrations);
+    }
+
+    private ObjectNode readIntegrationsObject(Long userId) {
+        JsonNode integrations = getIntegrations(userId);
+        if (integrations instanceof ObjectNode objectNode) {
+            return objectNode.deepCopy();
+        }
+        return objectMapper.createObjectNode();
+    }
+
+    private ArrayNode schedulesArray(ObjectNode integrations) {
+        if (integrations.path("schedules").isArray()) {
+            return (ArrayNode) integrations.get("schedules");
+        }
+        return objectMapper.createArrayNode();
+    }
+
+    private JsonNode saveIntegrations(Long userId, ObjectNode integrations) {
+        ObjectNode patch = objectMapper.createObjectNode();
+        patch.set("schedules", integrations.get("schedules"));
+        return updateIntegrations(userId, patch);
+    }
+
+    private JsonNode findSchedule(JsonNode integrations, String scheduleId) {
+        for (JsonNode schedule : integrations.path("schedules")) {
+            if (scheduleId.equals(schedule.path("id").asText())) {
+                return schedule;
+            }
+        }
+        throw new ResourceNotFoundException("integrations.schedule.error.notFound:" + scheduleId);
     }
 }

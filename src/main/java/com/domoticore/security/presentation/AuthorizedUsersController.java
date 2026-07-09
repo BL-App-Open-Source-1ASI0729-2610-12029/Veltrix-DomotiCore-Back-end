@@ -3,6 +3,7 @@ package com.domoticore.security.presentation;
 import com.domoticore.shared.application.UserCollectionAccessService;
 import com.domoticore.shared.interfaces.AbstractUserScopedJsonCollectionController;
 import com.domoticore.shared.security.CurrentUserProvider;
+import com.domoticore.shared.security.PlatformPermission;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,5 +17,20 @@ public class AuthorizedUsersController extends AbstractUserScopedJsonCollectionC
             UserCollectionAccessService userCollectionAccessService,
             CurrentUserProvider currentUserProvider) {
         super(userCollectionAccessService, currentUserProvider, "authorized-users");
+    }
+
+    @Override
+    protected void beforeCreate() {
+        currentUserProvider.requirePermission(PlatformPermission.SETTINGS_AUTHORIZED_USERS);
+    }
+
+    @Override
+    protected void beforePatch() {
+        currentUserProvider.requirePermission(PlatformPermission.SETTINGS_AUTHORIZED_USERS);
+    }
+
+    @Override
+    protected void beforeDelete() {
+        currentUserProvider.requirePermission(PlatformPermission.SETTINGS_AUTHORIZED_USERS);
     }
 }

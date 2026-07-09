@@ -1,5 +1,6 @@
 package com.domoticore.devicecontrol.presentation;
 
+import com.domoticore.devicecontrol.application.DevicesOverviewRefreshService;
 import com.domoticore.shared.application.UserCollectionAccessService;
 import com.domoticore.shared.security.CurrentUserProvider;
 import com.domoticore.iam.domain.model.aggregates.User;
@@ -38,6 +39,9 @@ class DevicesOverviewControllerTest {
 
     @MockBean
     private UserCollectionAccessService userCollectionAccessService;
+
+    @MockBean
+    private DevicesOverviewRefreshService devicesOverviewRefreshService;
 
     @MockBean
     private CurrentUserProvider currentUserProvider;

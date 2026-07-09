@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class AbstractUserScopedJsonCollectionController {
 
     private final UserCollectionAccessService userCollectionAccessService;
-    private final CurrentUserProvider currentUserProvider;
+    protected final CurrentUserProvider currentUserProvider;
     private final String collectionName;
 
     protected AbstractUserScopedJsonCollectionController(
@@ -59,6 +59,7 @@ public abstract class AbstractUserScopedJsonCollectionController {
     @ApiPostCreateResponses
     @Operation(summary = "Create user-scoped resource")
     public JsonNode create(@RequestBody JsonNode body) {
+        beforeCreate();
         var user = currentUserProvider.requireUser();
         return userCollectionAccessService.create(user, currentUserProvider.requireSegment(), collectionName, body);
     }
@@ -67,6 +68,7 @@ public abstract class AbstractUserScopedJsonCollectionController {
     @ApiPatchMutationResponses
     @Operation(summary = "Partially update user-scoped resource")
     public JsonNode patch(@PathVariable String id, @RequestBody JsonNode body) {
+        beforePatch();
         var user = currentUserProvider.requireUser();
         return userCollectionAccessService.patch(user, currentUserProvider.requireSegment(), collectionName, id, body);
     }
@@ -79,6 +81,12 @@ public abstract class AbstractUserScopedJsonCollectionController {
         beforeDelete();
         var user = currentUserProvider.requireUser();
         userCollectionAccessService.delete(user, currentUserProvider.requireSegment(), collectionName, id);
+    }
+
+    protected void beforeCreate() {
+    }
+
+    protected void beforePatch() {
     }
 
     protected void beforeDelete() {
