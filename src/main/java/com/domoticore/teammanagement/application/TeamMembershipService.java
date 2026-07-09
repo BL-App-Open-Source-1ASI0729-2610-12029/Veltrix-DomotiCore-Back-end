@@ -1,8 +1,10 @@
 package com.domoticore.teammanagement.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.iam.infrastructure.persistence.jpa.UserRepository;
 import com.domoticore.shared.application.JsonResourceService;
 import com.domoticore.shared.application.UserScopedJsonResourceService;
+import com.domoticore.shared.infrastructure.security.UserDataScopeResolver;
 import com.domoticore.teammanagement.domain.model.TeamInvitation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +28,20 @@ public class TeamMembershipService {
     private final UserScopedJsonResourceService scopedJsonResourceService;
     private final JsonResourceService jsonResourceService;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
+    private final UserDataScopeResolver scopeResolver;
 
     public TeamMembershipService(
             UserScopedJsonResourceService scopedJsonResourceService,
             JsonResourceService jsonResourceService,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            UserRepository userRepository,
+            UserDataScopeResolver scopeResolver) {
         this.scopedJsonResourceService = scopedJsonResourceService;
         this.jsonResourceService = jsonResourceService;
         this.objectMapper = objectMapper;
+        this.userRepository = userRepository;
+        this.scopeResolver = scopeResolver;
     }
 
     @Transactional(readOnly = true)
@@ -152,6 +160,7 @@ public class TeamMembershipService {
         entry.put("invitationId", invitation.getId());
         entry.put("inviterUserId", invitation.getInviterUserId());
         entry.put("inviterName", invitation.getInviterName());
+        entry.put("inviterSegment", resolveInviterSegment(invitation.getInviterUserId()));
         entry.put("teamRole", invitation.getTeamRole());
         entry.set("zones", readZonesNode(invitation.getZonesJson()));
         entry.put("status", "active");
@@ -177,6 +186,12 @@ public class TeamMembershipService {
                 invitee.getId(),
                 TEMPLATE_ID,
                 patch);
+    }
+
+    private String resolveInviterSegment(Long inviterUserId) {
+        return userRepository.findById(inviterUserId)
+                .map(inviter -> scopeResolver.resolveSegment(inviter, null))
+                .orElse("smart-home");
     }
 
     private ArrayNode readZonesNode(String zonesJson) {

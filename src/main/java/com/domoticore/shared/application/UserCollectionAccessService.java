@@ -1,9 +1,13 @@
 package com.domoticore.shared.application;
 
 import com.domoticore.iam.domain.model.aggregates.User;
+import com.domoticore.shared.domain.model.ForbiddenException;
 import com.domoticore.shared.infrastructure.JsonResourceEntity;
 import com.domoticore.shared.infrastructure.JsonResourceRepository;
 import com.domoticore.shared.infrastructure.security.UserDataScopeResolver;
+import com.domoticore.teammanagement.application.TeamAccessContext;
+import com.domoticore.teammanagement.application.TeamCollectionFilter;
+import com.domoticore.teammanagement.application.TeamDataScopeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,16 +28,19 @@ public class UserCollectionAccessService {
     private final JsonResourceRepository repository;
     private final UserDataScopeResolver scopeResolver;
     private final ObjectMapper objectMapper;
+    private final TeamDataScopeService teamDataScopeService;
 
     public UserCollectionAccessService(
             JsonResourceService jsonResourceService,
             JsonResourceRepository repository,
             UserDataScopeResolver scopeResolver,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            TeamDataScopeService teamDataScopeService) {
         this.jsonResourceService = jsonResourceService;
         this.repository = repository;
         this.scopeResolver = scopeResolver;
         this.objectMapper = objectMapper;
+        this.teamDataScopeService = teamDataScopeService;
     }
 
     public String resolveSegment(User user, String headerSegment) {
@@ -46,50 +53,77 @@ public class UserCollectionAccessService {
 
     @Transactional
     public List<JsonNode> list(User user, String segment, String collectionName) {
-        ensureSeeded(user.getId(), segment, collectionName);
-        String prefix = scopePrefix(user.getId(), segment);
-        return repository.findByCollectionNameAndResourceIdStartingWith(collectionName, prefix).stream()
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
+        String prefix = prefix(access.ownerUserId(), access.segment());
+        List<JsonNode> items = repository.findByCollectionNameAndResourceIdStartingWith(collectionName, prefix).stream()
                 .map(entity -> toPublicNode(entity, prefix))
                 .toList();
+        if (!access.teamMember()) {
+            return items;
+        }
+        return TeamCollectionFilter.filterList(collectionName, items, access.zones());
     }
 
     @Transactional
     public JsonNode getById(User user, String segment, String collectionName, String publicId) {
-        ensureSeeded(user.getId(), segment, collectionName);
-        String scopedId = scopedResourceId(user.getId(), segment, publicId);
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
+        String scopedId = scopedResourceId(access.ownerUserId(), access.segment(), publicId);
         JsonNode node = jsonResourceService.findById(collectionName, scopedId);
-        return toPublicNode(node, scopedId, prefix(user.getId(), segment));
+        JsonNode publicNode = toPublicNode(node, scopedId, prefix(access.ownerUserId(), access.segment()));
+        if (!access.teamMember()) {
+            return publicNode;
+        }
+        return TeamCollectionFilter.filterNode(collectionName, publicNode, access.zones());
     }
 
     @Transactional
     public JsonNode create(User user, String segment, String collectionName, JsonNode body) {
-        ensureSeeded(user.getId(), segment, collectionName);
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        assertWriteAccess(access);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
         String publicId = extractPublicId(body);
         ObjectNode payload = body instanceof ObjectNode objectNode
                 ? objectNode.deepCopy()
                 : objectMapper.convertValue(body, ObjectNode.class);
-        payload.put("id", scopedResourceId(user.getId(), segment, publicId));
+        payload.put("id", scopedResourceId(access.ownerUserId(), access.segment(), publicId));
         ResourceAuditMetadata.stampCreated(payload, user);
         JsonNode created = jsonResourceService.create(collectionName, payload);
-        return toPublicNode(created, scopedResourceId(user.getId(), segment, publicId), prefix(user.getId(), segment));
+        JsonNode publicNode = toPublicNode(
+                created,
+                scopedResourceId(access.ownerUserId(), access.segment(), publicId),
+                prefix(access.ownerUserId(), access.segment()));
+        if (!access.teamMember()) {
+            return publicNode;
+        }
+        return TeamCollectionFilter.filterNode(collectionName, publicNode, access.zones());
     }
 
     @Transactional
     public JsonNode patch(User user, String segment, String collectionName, String publicId, JsonNode body) {
-        ensureSeeded(user.getId(), segment, collectionName);
-        String scopedId = scopedResourceId(user.getId(), segment, publicId);
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        assertWriteAccess(access);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
+        String scopedId = scopedResourceId(access.ownerUserId(), access.segment(), publicId);
         ObjectNode patch = body instanceof ObjectNode objectNode
                 ? ResourceAuditMetadata.sanitizePatch(objectNode)
                 : objectMapper.createObjectNode();
         ResourceAuditMetadata.stampUpdated(patch, user);
         JsonNode patched = jsonResourceService.patch(collectionName, scopedId, patch);
-        return toPublicNode(patched, scopedId, prefix(user.getId(), segment));
+        JsonNode publicNode = toPublicNode(patched, scopedId, prefix(access.ownerUserId(), access.segment()));
+        if (!access.teamMember()) {
+            return publicNode;
+        }
+        return TeamCollectionFilter.filterNode(collectionName, publicNode, access.zones());
     }
 
     @Transactional
     public void delete(User user, String segment, String collectionName, String publicId) {
-        ensureSeeded(user.getId(), segment, collectionName);
-        jsonResourceService.delete(collectionName, scopedResourceId(user.getId(), segment, publicId));
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        assertWriteAccess(access);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
+        jsonResourceService.delete(collectionName, scopedResourceId(access.ownerUserId(), access.segment(), publicId));
     }
 
     @Transactional
@@ -104,13 +138,19 @@ public class UserCollectionAccessService {
             String collectionName,
             String publicId,
             String fieldName) {
-        ensureSeeded(user.getId(), segment, collectionName);
-        String scopedId = scopedResourceId(user.getId(), segment, publicId);
+        TeamAccessContext access = teamDataScopeService.resolve(user, segment, collectionName);
+        assertWriteAccess(access);
+        ensureSeeded(access.ownerUserId(), access.segment(), collectionName);
+        String scopedId = scopedResourceId(access.ownerUserId(), access.segment(), publicId);
         jsonResourceService.toggleBooleanField(collectionName, scopedId, fieldName);
         ObjectNode auditPatch = objectMapper.createObjectNode();
         ResourceAuditMetadata.stampUpdated(auditPatch, user);
         JsonNode toggled = jsonResourceService.patch(collectionName, scopedId, auditPatch);
-        return toPublicNode(toggled, scopedId, prefix(user.getId(), segment));
+        JsonNode publicNode = toPublicNode(toggled, scopedId, prefix(access.ownerUserId(), access.segment()));
+        if (!access.teamMember()) {
+            return publicNode;
+        }
+        return TeamCollectionFilter.filterNode(collectionName, publicNode, access.zones());
     }
 
     public String scopedResourceId(Long userId, String segment, String publicId) {
@@ -133,6 +173,12 @@ public class UserCollectionAccessService {
             copy.put("id", scopedResourceId(userId, segment, templateId));
             ResourceAuditMetadata.stampSystemSeed(copy);
             jsonResourceService.create(collectionName, copy);
+        }
+    }
+
+    private void assertWriteAccess(TeamAccessContext access) {
+        if (!access.canWrite()) {
+            throw new ForbiddenException("team.membership.error.viewerReadOnly");
         }
     }
 
