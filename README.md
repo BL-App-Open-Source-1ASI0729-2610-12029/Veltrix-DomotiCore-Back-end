@@ -2,6 +2,69 @@
 
 REST API companion for the **DomotiCore Angular frontend**. The backend exposes JWT authentication, OpenAPI documentation, JSON-backed demo resources, PostgreSQL-ready persistence, and bounded-context packages for the smart-home and small-business flows.
 
+## Production Deployment
+
+| Component | Platform | Public URL |
+|-----------|----------|------------|
+| Frontend | Vercel | [veltrix-domoti-core-front-end-omega.vercel.app](https://veltrix-domoti-core-front-end-omega.vercel.app) |
+| API | Render | [domoticore-api.onrender.com](https://domoticore-api.onrender.com) |
+| PostgreSQL | Railway | Database only — dashboard requires Railway login |
+
+[![Render API](https://img.shields.io/website?url=https://domoticore-api.onrender.com/actuator/health&label=Render%20API&up_message=online&down_message=offline)](https://domoticore-api.onrender.com/actuator/health)
+[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D)](https://domoticore-api.onrender.com/swagger-ui.html)
+
+### Architecture
+
+```text
+Vercel (Angular frontend)
+        |
+        v
+Render (domoticore-api)  <-- Spring Boot API lives here
+        |
+        v
+Railway (domoticore-db)  <-- PostgreSQL only
+```
+
+### Live endpoints (public — work in incognito, no login)
+
+| Service | URL |
+|---------|-----|
+| Health check | https://domoticore-api.onrender.com/actuator/health |
+| Swagger UI | https://domoticore-api.onrender.com/swagger-ui.html |
+| OpenAPI JSON | https://domoticore-api.onrender.com/v3/api-docs |
+| API base | https://domoticore-api.onrender.com/api/v1 |
+
+### Railway (PostgreSQL)
+
+| Item | Value |
+|------|-------|
+| Project | `adequate-courage` / `production` |
+| Database service | `domoticore-db` |
+| API service | **Not used** — keep API on Render |
+
+Railway dashboard (requires Railway account — does not open in incognito):
+
+- [Project overview](https://railway.com/project/5fd10694-2337-4ef4-b187-37e989a92ad8)
+- [domoticore-db service](https://railway.com/project/5fd10694-2337-4ef4-b187-37e989a92ad8/service/a30ed271-9d10-4bdb-98db-3fa43c41458b)
+
+**Render `DATABASE_URL` must point to Railway:**
+
+```text
+postgresql://postgres:<password>@nozomi.proxy.rlwy.net:18192/railway?sslmode=require
+```
+
+Use `DATABASE_PUBLIC_URL` from Railway → **Connect** → paste into Render → **Manual Deploy**.
+
+### Fix red X on GitHub commits
+
+If commits show **"adequate-courage - domoticore-api — Deployment failed"**, Railway is trying to deploy the API on every push and failing (missing `DATABASE_URL` on that service).
+
+**Recommended fix:** In [Railway](https://railway.com/project/5fd10694-2337-4ef4-b187-37e989a92ad8), **delete or pause** the `domoticore-api` service. Keep only `domoticore-db`. The API should deploy only on **Render**.
+
+Alternative: open `domoticore-api` → **Settings** → **Source** → **Disconnect** the GitHub repo from that service.
+
+After that, pushes to GitHub will no longer show a failing Railway API check.
+
 ## Stack
 
 - Java 17
@@ -140,25 +203,30 @@ Seed files:
 
 ## Deployment Notes
 
-### Render (backend)
+### Render (API)
 
-The `prod` profile expects PostgreSQL. Render injects `DATABASE_URL` as `postgresql://...` (not JDBC). The app converts it automatically via `RenderDatabaseConfig`.
+The `prod` profile expects PostgreSQL. Render reads `DATABASE_URL` as `postgresql://...` (not JDBC). The app converts it automatically via `RenderDatabaseConfig`.
+
+**Current setup:** API on Render, database on Railway. Set `DATABASE_URL` on Render to Railway `DATABASE_PUBLIC_URL` (with `?sslmode=require` if needed).
 
 **If the service fails with `UnknownHostException: dpg-xxxxx-a`:**
 
-1. Open **domoticore-api** → **Connections** → link **domoticore-db**
-2. Or set **External Database URL** from the Postgres dashboard as `DATABASE_EXTERNAL_URL` (recommended if internal DNS still fails)
-3. Redeploy after changing environment variables
+1. Confirm `DATABASE_URL` uses Railway **public** host (`*.proxy.rlwy.net`), not an internal hostname
+2. Redeploy after changing environment variables
 
 **Required env vars on Render:**
 
 | Variable | Example |
 |----------|---------|
 | `SPRING_PROFILES_ACTIVE` | `prod` |
-| `DATABASE_URL` | auto from linked Postgres (`connectionString`) |
-| `DATABASE_EXTERNAL_URL` | optional override — External Database URL from Render |
+| `DATABASE_URL` | Railway `DATABASE_PUBLIC_URL` |
 | `JWT_SECRET` | long random secret, at least 256 bits |
 | `DOMOTICORE_CORS_ORIGINS` | `https://veltrix-domoti-core-front-end-omega.vercel.app,http://localhost:4200` |
+| `DOMOTICORE_FRONTEND_URL` | `https://veltrix-domoti-core-front-end-omega.vercel.app` |
+
+### Railway (PostgreSQL only)
+
+Do **not** deploy `domoticore-api` on Railway unless you configure all env vars and healthcheck. The recommended layout is **Render API + Railway DB** (see [Production Deployment](#production-deployment)).
 
 ### Vercel (frontend)
 
